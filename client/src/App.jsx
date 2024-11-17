@@ -1,15 +1,17 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import RegisterationForm from './pages/RegisterationForm/RegisterationForm';
+import ResetPassword from './pages/LoginForm/ResetPassword';
+import { Toaster } from 'react-hot-toast';
 
 const routes = createBrowserRouter([
-  { path: '/', element: <RegisterationForm /> },
+  { path: '/', element: <ResetPassword /> },
 ]);
 
 
 const App = () => {
   return (
     <>
+      <Toaster position="top-center" />
       <RouterProvider router={routes} />
     </>
   )

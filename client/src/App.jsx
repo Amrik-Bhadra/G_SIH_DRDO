@@ -1,9 +1,9 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import LoginForm from './pages/LoginForm/LoginForm';
+import RegisterationForm from './pages/RegisterationForm/RegisterationForm';
 
 const routes = createBrowserRouter([
-  { path: '/', element: <LoginForm /> },
+  { path: '/', element: <RegisterationForm /> },
 ]);
 
 

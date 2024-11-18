@@ -24,6 +24,7 @@ const authenticate = (req, res, next) => {
       success: false,
     });
   }
+  // console.log("decoded data :-: \n", decoded.email);
 
   req.user = decoded;
   next();

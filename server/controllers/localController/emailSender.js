@@ -7,7 +7,7 @@ const email_sender = async (from, to, subject, text, html) => {
         "All fields (from, to, subject, text, html) are required."
       );
     }
-
+    
     const transporter = nodemailer.createTransport({
       service: "gmail",
       port: 587,

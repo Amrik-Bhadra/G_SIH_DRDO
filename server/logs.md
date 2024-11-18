@@ -28,3 +28,14 @@ _push_ : server - Expert `model`, `controller`, `routes` ,`verify token` and `lo
 2. all routes are Checked and tested on `POSTMAN`
 
 _push_ : `all things pushed at 2:00PM`
+
+### 2024-11-19
+
+- **Srivaths**: Created the Candidate Model with all necessary attributes in `candidate.js`.
+- **Srivaths**: Implemented Candidate Authentication, including `login`, `signup`, and `signout` functionalities in `login.js`.
+- **Srivaths**: Developed basic CRUD operations for Candidate data management.
+- **Srivaths**: Set up API endpoints for Candidate functionality in `candidateRoutes.js`.
+
+_push_: All changes have been committed and pushed to the Git repository on the `srivaths` branch.  
+_routes_: Testing of all routes will be conducted tomorrow using Postman.
+

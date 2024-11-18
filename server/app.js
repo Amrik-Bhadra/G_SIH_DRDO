@@ -4,12 +4,14 @@ const cookieParser = require("cookie-parser");
 const app = express();
 
 const expertRoutes = require("./routes/expertRoutes");
+const candidateRoutes = require("./routes/candidateRoutes")
 const localRoutes = require("./routes/localRoutes");
 
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/expert", expertRoutes);
+app.use("/api/candidate",candidateRoutes);
 app.use("/api", localRoutes);
 
 const PORT = process.env.PORT || 8000;

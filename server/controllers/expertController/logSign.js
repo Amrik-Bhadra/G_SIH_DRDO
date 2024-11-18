@@ -81,7 +81,6 @@ const loginExpert = asyncHandler(async (req, res) => {
       });
     }
 
-    // find the user with the credintials
     const findExistingUser = await Expert.findOne({
       "contactInformation.email": email,
     });
@@ -102,6 +101,7 @@ const loginExpert = asyncHandler(async (req, res) => {
         {
           id: findExistingUser._id,
           email: findExistingUser.contactInformation.email,
+          role: findExistingUser.role,
         },
         process.env.JWT_SECRET_KEY,
         { expiresIn: "1h" }

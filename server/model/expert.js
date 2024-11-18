@@ -9,6 +9,9 @@ const expertSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  role: { type: String, default: "Expert" },
+  otp: { type: String },
+  otpExpiry: { type: Date },
   contactInformation: {
     email: {
       type: String,

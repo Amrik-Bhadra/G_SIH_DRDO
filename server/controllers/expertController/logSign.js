@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 // PUBLIC ROUTE
-// http://localhost:8000/api/expert/signin
+// http://localhost:8000/api/expert/signup
 const createExpert = asyncHandler(async (req, res) => {
   try {
     const { name, password, email, phone, designation, field } = req.body;
@@ -70,7 +70,7 @@ const createExpert = asyncHandler(async (req, res) => {
 });
 
 // PUBLIC ROUTE
-// http://localhost:8000/api/expert/signup
+// http://localhost:8000/api/expert/signin
 const loginExpert = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -81,7 +81,6 @@ const loginExpert = asyncHandler(async (req, res) => {
       });
     }
 
-    // find the user with the credintials
     const findExistingUser = await Expert.findOne({
       "contactInformation.email": email,
     });
@@ -102,6 +101,7 @@ const loginExpert = asyncHandler(async (req, res) => {
         {
           id: findExistingUser._id,
           email: findExistingUser.contactInformation.email,
+          role: findExistingUser.role,
         },
         process.env.JWT_SECRET_KEY,
         { expiresIn: "1h" }

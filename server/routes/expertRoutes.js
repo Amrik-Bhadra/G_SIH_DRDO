@@ -11,15 +11,23 @@ const {
   loginExpert,
   signoutExpert,
 } = require("../controllers/expertController/logSign");
+const apiLimiter = require("../middleware/apiLimiter");
+const multiRoleAccess = require("../middleware/roleBasedAccess");
 
 //  protected..Routes>
-router.get("/all", authenticate, allExperts);
-router.get("/get/:id", authenticate, findExpert);
-router.post("/update/:id", authenticate, updateExperts);
+router.get("/all", apiLimiter, authenticate, allExperts);
+router.get("/get/:id", apiLimiter, authenticate, findExpert);
+router.post(
+  "/update/:id",
+  apiLimiter,
+  authenticate,
+  multiRoleAccess(["Expert", "Admin"]),
+  updateExperts
+);
 
 // login and signup routes public..Routes>
-router.post("/signin", createExpert);
-router.post("/signup", loginExpert);
-router.post("/signout", signoutExpert);
+router.post("/signup", apiLimiter, createExpert);
+router.post("/signin", apiLimiter, loginExpert);
+router.post("/signout", apiLimiter, signoutExpert);
 
 module.exports = router;

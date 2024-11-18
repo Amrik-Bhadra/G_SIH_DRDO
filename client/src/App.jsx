@@ -1,20 +1,21 @@
-import React from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ResetPassword from './pages/LoginForm/ResetPassword';
-import { Toaster } from 'react-hot-toast';
-
-const routes = createBrowserRouter([
-  { path: '/', element: <ResetPassword /> },
-]);
-
+import React from "react";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import Dashboard from "./components/Dashboard";
 
 const App = () => {
   return (
-    <>
-      <Toaster position="top-center" />
-      <RouterProvider router={routes} />
-    </>
-  )
-}
+    <div className="flex bg-gray-100 h-screen">
+      {/* Sidebar */}
+      <Sidebar />
 
-export default App
+      {/* Main Content */}
+      <div className="flex-1">
+        <Header />
+        <Dashboard />
+      </div>
+    </div>
+  );
+};
+
+export default App;

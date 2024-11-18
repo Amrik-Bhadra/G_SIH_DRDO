@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 // PUBLIC ROUTE
-// http://localhost:8000/api/expert/signin
+// http://localhost:8000/api/expert/signup
 const createExpert = asyncHandler(async (req, res) => {
   try {
     const { name, password, email, phone, designation, field } = req.body;
@@ -70,7 +70,7 @@ const createExpert = asyncHandler(async (req, res) => {
 });
 
 // PUBLIC ROUTE
-// http://localhost:8000/api/expert/signup
+// http://localhost:8000/api/expert/signin
 const loginExpert = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;

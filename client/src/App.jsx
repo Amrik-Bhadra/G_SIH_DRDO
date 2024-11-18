@@ -1,21 +1,28 @@
-import React from "react";
-import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
-import Dashboard from "./components/DashBoard";
+import React from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import LoginForm from './pages/LoginForm/LoginForm';
+import { Toaster } from 'react-hot-toast';
+import ForgotPassword from './pages/LoginForm/ForgotPassword';
+import VerifyOTP from './pages/LoginForm/VerifyOTP';
+import RegistrationForm from './pages/RegistrationForm/RegistrationForm';
+import ResetPassword from './pages/LoginForm/ResetPassword';
+
+const routes = createBrowserRouter([
+  { path: '/', element: <LoginForm /> },
+  { path: '/forgotPassword', element: <ForgotPassword /> },
+  { path: '/verifyOtp', element: <VerifyOTP /> },
+  { path: '/register', element: <RegistrationForm /> },
+  { path: '/resetpassword', element: <ResetPassword /> },
+]);
+
 
 const App = () => {
   return (
-    <div className="flex bg-gray-100 h-screen">
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Main Content */}
-      <div className="flex-1">
-        <Header />
-        <Dashboard />
-      </div>
-    </div>
-  );
-};
+    <>
+      <Toaster position="top-center" />
+      <RouterProvider router={routes} />
+    </>
+  )
+}
 
 export default App;

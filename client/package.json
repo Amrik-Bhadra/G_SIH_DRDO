@@ -12,7 +12,14 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+<<<<<<< HEAD
     "@mui/icons-material": "^6.1.7",
+=======
+<<<<<<< HEAD
+=======
+    "@mui/icons-material": "^6.1.7",
+>>>>>>> dbe270f2d93ac9097d2128a04982b3290e348961
+>>>>>>> main
     "@mui/material": "^6.1.7",
     "axios": "^1.7.7",
     "chart.js": "^4.4.6",

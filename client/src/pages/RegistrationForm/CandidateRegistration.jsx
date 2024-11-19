@@ -10,8 +10,9 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const RegistrationForm = () => {
+const CandidateRegistration = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,7 +27,10 @@ const RegistrationForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
 
@@ -72,7 +76,19 @@ const RegistrationForm = () => {
   const handleRegister = (event) => {
     event.preventDefault();
 
-    if (!email || !password || !confirmPassword) {
+    // Validate email
+    if (!email) {
+      toast.error("Email is required!");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Invalid email format!");
+      return;
+    }
+
+    // Validate password fields
+    if (!password || !confirmPassword) {
       toast.error("All fields are required!");
       return;
     }
@@ -85,7 +101,9 @@ const RegistrationForm = () => {
       return;
     }
 
+    // If all validations pass
     toast.success("Registration successful!");
+    navigate("/register/candidatecompletedetail");
   };
 
   return (
@@ -96,10 +114,7 @@ const RegistrationForm = () => {
           <h1 className="text-2xl font-bold text-[#0E8CCA] ml-3">E.B.R.S.</h1>
         </div>
         <div className="form-header text-center mb-5">
-          <h1 className="text-3xl font-semibold">Create Your Account!</h1>
-          {/* <p className="text-gray-500 mt-1 font-medium text-md">
-            Login to Shine
-          </p> */}
+          <h1 className="text-3xl font-semibold">Register as Candidate!</h1>
         </div>
         <form className="space-y-5" onSubmit={handleRegister}>
           {/* Email Field */}
@@ -142,7 +157,6 @@ const RegistrationForm = () => {
             {/* Password Validation Checklist */}
             <div className="text-sm mt-2">
               <span
-                id="passwordLength"
                 className={
                   passwordChecks.isLength ? "text-green-600" : "text-gray-600"
                 }
@@ -151,7 +165,6 @@ const RegistrationForm = () => {
               </span>
               <br />
               <span
-                id="passwordUpper"
                 className={
                   passwordChecks.hasUpper ? "text-green-600" : "text-gray-600"
                 }
@@ -160,7 +173,6 @@ const RegistrationForm = () => {
               </span>
               <br />
               <span
-                id="passwordLower"
                 className={
                   passwordChecks.hasLower ? "text-green-600" : "text-gray-600"
                 }
@@ -169,7 +181,6 @@ const RegistrationForm = () => {
               </span>
               <br />
               <span
-                id="passwordNumber"
                 className={
                   passwordChecks.hasNumber ? "text-green-600" : "text-gray-600"
                 }
@@ -178,7 +189,6 @@ const RegistrationForm = () => {
               </span>
               <br />
               <span
-                id="passwordSpecial"
                 className={
                   passwordChecks.hasSpecial ? "text-green-600" : "text-gray-600"
                 }
@@ -191,7 +201,6 @@ const RegistrationForm = () => {
             <div className="mt-4">
               <div className="w-full bg-gray-200 h-2 rounded-md">
                 <div
-                  id="passwordStrengthFill"
                   className={`h-2 rounded-md ${
                     passwordStrength === "Strong"
                       ? "bg-green-500 w-full"
@@ -203,7 +212,7 @@ const RegistrationForm = () => {
                   }`}
                 ></div>
               </div>
-              <span id="passwordStrengthText" className="text-sm">
+              <span className="text-sm">
                 {passwordStrength && `Strength: ${passwordStrength}`}
               </span>
             </div>
@@ -251,7 +260,7 @@ const RegistrationForm = () => {
           {/* Already have an account */}
           <p className="text-center mt-4 text-sm text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-500 hover:underline">
+            <Link to="/" className="text-blue-500 hover:underline">
               Login
             </Link>
           </p>
@@ -261,4 +270,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default CandidateRegistration;

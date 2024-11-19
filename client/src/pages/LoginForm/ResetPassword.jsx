@@ -7,12 +7,8 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { toast } from "react-hot-toast";
-<<<<<<< HEAD
-import logo from "../../assets/images/drdo-logo.svg"; // Adjust the path to your logo
-=======
 import logo from "../../assets/images/drdo-logo.svg";
 import { useNavigate } from "react-router-dom";
->>>>>>> main
 
 const ResetPassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -28,11 +24,8 @@ const ResetPassword = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
 
-<<<<<<< HEAD
-=======
   const navigate = useNavigate();
 
->>>>>>> main
   const handleClickShowCurrentPassword = () =>
     setShowCurrentPassword((show) => !show);
   const handleClickShowNewPassword = () =>
@@ -80,37 +73,24 @@ const ResetPassword = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-<<<<<<< HEAD
-    if (!currentPassword || !newPassword) {
-      toast.error("All fields are required!");
-      return;
-    }
-=======
     // Check if fields are empty
     if (!currentPassword.trim() || !newPassword.trim()) {
       toast.error("Both fields are required!");
       return;
     }
 
->>>>>>> main
     if (currentPassword === newPassword) {
       toast.error("New password cannot be the same as the current password!");
       return;
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> main
     if (newPasswordStrength !== "Strong") {
       toast.error("New password is not strong enough!");
       return;
     }
 
     toast.success("Password changed successfully!");
-<<<<<<< HEAD
-=======
     navigate("/");
->>>>>>> main
   };
 
   return (
@@ -183,10 +163,6 @@ const ResetPassword = () => {
             {/* New Password Validation Checklist */}
             <div className="text-sm mt-2">
               <span
-<<<<<<< HEAD
-                id="passwordLength"
-=======
->>>>>>> main
                 className={
                   newPasswordChecks.isLength ? "text-green-600" : "text-gray-600"
                 }
@@ -195,10 +171,6 @@ const ResetPassword = () => {
               </span>
               <br />
               <span
-<<<<<<< HEAD
-                id="passwordUpper"
-=======
->>>>>>> main
                 className={
                   newPasswordChecks.hasUpper ? "text-green-600" : "text-gray-600"
                 }
@@ -207,10 +179,6 @@ const ResetPassword = () => {
               </span>
               <br />
               <span
-<<<<<<< HEAD
-                id="passwordLower"
-=======
->>>>>>> main
                 className={
                   newPasswordChecks.hasLower ? "text-green-600" : "text-gray-600"
                 }
@@ -219,10 +187,6 @@ const ResetPassword = () => {
               </span>
               <br />
               <span
-<<<<<<< HEAD
-                id="passwordNumber"
-=======
->>>>>>> main
                 className={
                   newPasswordChecks.hasNumber ? "text-green-600" : "text-gray-600"
                 }
@@ -231,10 +195,6 @@ const ResetPassword = () => {
               </span>
               <br />
               <span
-<<<<<<< HEAD
-                id="passwordSpecial"
-=======
->>>>>>> main
                 className={
                   newPasswordChecks.hasSpecial
                     ? "text-green-600"
@@ -249,10 +209,6 @@ const ResetPassword = () => {
             <div className="mt-4">
               <div className="w-full bg-gray-200 h-2 rounded-md">
                 <div
-<<<<<<< HEAD
-                  id="passwordStrengthFill"
-=======
->>>>>>> main
                   className={`h-2 rounded-md ${
                     newPasswordStrength === "Strong"
                       ? "bg-green-500 w-full"
@@ -264,11 +220,7 @@ const ResetPassword = () => {
                   }`}
                 ></div>
               </div>
-<<<<<<< HEAD
-              <span id="passwordStrengthText" className="text-sm">
-=======
               <span className="text-sm">
->>>>>>> main
                 {newPasswordStrength && `Strength: ${newPasswordStrength}`}
               </span>
             </div>

@@ -39,3 +39,14 @@ _push_ : `all things pushed at 2:00PM`
 _push_: All changes have been committed and pushed to the Git repository on the `srivaths` branch.  
 _routes_: Testing of all routes will be conducted tomorrow using Postman.
 
+---
+
+### 2024-11-19
+
+- **varun**: Created a `Panel` `routes`,`Controllers` and `Model` and tested on the `Postman`
+- **varun**: Customized the `Expert` Model, added the required Attributes.
+- **varun**: Added `Two Factor Authentication` in the `Expert` login and Checked on `POSTMAN`
+- **varun**: `Forgot Password` For the `Experts` and `Candidate` are checked again and Verified on `Postman`
+- **varun**: Will Create a `Score` `routes`,`Controllers` and `Model` and testing on the `Postman`
+
+#### _push_ : `all things pushed at 10:29 PM`

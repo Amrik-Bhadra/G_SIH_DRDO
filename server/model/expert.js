@@ -19,6 +19,15 @@ const expertSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  twoFactorAuthentication: {
+    twoFacAuth: {
+      type: Boolean,
+      default: true,
+    },
+    code: {
+      type: String,
+    },
+  },
   role: { type: String, default: "Expert" },
   otp: { type: String },
   otpExpiry: { type: Date },
@@ -77,6 +86,11 @@ const expertSchema = new mongoose.Schema({
         },
       ],
     },
+    toolsAndPlatforms: [
+      {
+        type: String,
+      },
+    ],
     additionalInputs: {
       certifications: [
         {
@@ -89,6 +103,10 @@ const expertSchema = new mongoose.Schema({
             required: true,
           },
           year: {
+            type: Number,
+            required: true,
+          },
+          description: {
             type: Number,
             required: true,
           },
@@ -150,6 +168,32 @@ const expertSchema = new mongoose.Schema({
           },
         },
       ],
+      highestQualification: [
+        {
+          type: Number,
+          required: true,
+        },
+      ],
+    },
+    approachAssessment: {
+      problemSolvingApproach: {
+        type: Number,
+      },
+      decisionMakingStyle: {
+        type: Number,
+      },
+      creativityAndInnovation: {
+        type: Number,
+      },
+      analyticalDepth: {
+        type: Number,
+      },
+      analyticalDepth: {
+        type: Number,
+      },
+      collaborationPreference: {
+        type: Number,
+      },
     },
   },
   expertScore: {

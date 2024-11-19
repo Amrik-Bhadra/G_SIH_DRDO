@@ -15,6 +15,10 @@ const candidateSchema = new mongoose.Schema({
             required: true
         }
     },
+    role: {
+        type: String,
+        default: "Candidate"
+    },
     age: {
         type: Number,
         required: true

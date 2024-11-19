@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Expert = require("../../model/expert");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");  
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/expert/all

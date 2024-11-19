@@ -138,6 +138,7 @@ const loginCandidate = asyncHandler(async (req, res) => {
         {
           id: candidate._id,
           email: candidate.contactInformation.email,
+          role: candidate.role
         },
         process.env.JWT_SECRET_KEY,
         {

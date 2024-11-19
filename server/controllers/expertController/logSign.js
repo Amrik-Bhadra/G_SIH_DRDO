@@ -8,36 +8,37 @@ const jwt = require("jsonwebtoken");
 // http://localhost:8000/api/expert/signup
 const createExpert = asyncHandler(async (req, res) => {
   try {
-    const { name, password, email, phone, designation, field } = req.body;
+    const { email, password } = req.body;
 
     const existingExpert = await Expert.findOne({
-      $or: [
-        { "contactInformation.email": email },
-        { "contactInformation.phone": phone },
-      ],
+      $or: [{ "contactInformation.email": email }],
     });
 
     if (existingExpert) {
       return res.status(400).json({
-        message: "Expert with this email or phone already exists",
+        message: "Expert with this email already exists",
         success: false,
       });
     }
 
     const newExpert = new Expert({
-      name,
+      name: {
+        firstname: "NA",
+        middlename: "NA",
+        lastname: "NA",
+      },
       password: bcrypt.hashSync(password, 10),
       contactInformation: {
         email,
-        phone,
+        phone: "NA",
       },
-      designation,
-      field,
+      designation: "NA",
+      field: "NA",
       expertProfile: {
         yearsOfExperience: 0,
         educationDetails: [],
         criticalInputs: {
-          resume: "",
+          resume: "NA",
           skills: [],
           expertise: [],
         },

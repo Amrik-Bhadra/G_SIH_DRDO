@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 
 const expertRoutes = require("./routes/expertRoutes");
-const candidateRoutes = require("./routes/candidateRoutes")
+const candidateRoutes = require("./routes/candidateRoutes");
 const localRoutes = require("./routes/localRoutes");
 
 app.use(express.json());

@@ -1,10 +1,18 @@
 const Candidate = require("../../model/candidate");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const addCandidate = asyncHandler(async (req, res) => {
-  try {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({
+                message: "Email and password are required",
+                success: false,
+            });
+        }
 
     // Check if the email already exists
     const existingCandidate = await Candidate.findOne({
@@ -18,56 +26,66 @@ const addCandidate = asyncHandler(async (req, res) => {
       });
     }
 
-    // Hash the password
-    const hashedPassword = bcrypt.hashSync(password, 10);
+        // Hash the password
+        // const hashedPassword = 
+        console.log("Hashed password:", hashedPassword); // Debugging log
 
-    // Create a new candidate with default values
-    const newCandidate = new Candidate({
-      name: {
-        firstname: "",
-        middlename: "",
-        lastname: "",
-      },
-      password: hashedPassword,
-      age: 0, // Default age (can be null if schema allows)
-      contactInformation: {
-        email: email,
-        phone: "",
-      },
-      gender: "", // Default empty string
-      address: {
-        street: "",
-        city: "",
-        state: "",
-      },
-      securutyQuestion: {
-        question: "",
-        answer: "",
-      },
-      twoFactorAuthentication: {
-        enabled: false, // Default to not enabled
-        method: "",
-      },
-      candidateProfile: {
-        profession: "",
-        professionCategory: "",
-        educationDetails: [],
-        criticalInputs: {
-          resume: "",
-          skills: [],
-          experienceArea: [],
-        },
-        additionalInputs: {
-          certifications: [],
-          portfolioLinks: [],
-          publications: [],
-          languagesKnown: [],
-          professionalProfiles: [],
-        },
-      },
-      CandidateScore: 0, // Default score
-      candidateInterviews: [], // Empty interviews
-    });
+        // Create a new candidate
+        const newCandidate = new Candidate({
+            name: {
+                firstname: "Default",
+                middlename: "",
+                lastname: "User",
+            },
+            password: bcrypt.hashSync(password, 10),
+            age: 0,
+            gender: "Not Specified",
+            idProof: {
+                type: "Not Provided",
+                number: "Not Provided",
+            },
+            contactInformation: {
+                email: email,
+                phone: "0000000000",
+            },
+            address: {
+                addressLine: "Default Address",
+                city: "Default City",
+                state: "Default State",
+                pinCode: "000000",
+            },
+            securityQuestions: [
+                {
+                    question: "Default Question",
+                    answer: "Default Answer",
+                },
+            ],
+            twoFactorAuthentication: {
+                enabled: false,
+                method: "None",
+            },
+            candidateProfile: {
+                profession: "Unemployed",
+                professionCategory: "General",
+                educationDetails: [],
+                criticalInputs: {
+                    resume: "Not Provided",
+                    skills: [],
+                    experienceArea: [],
+                },
+                additionalInputs: {
+                    certifications: [],
+                    portfolioLinks: [],
+                    publications: [],
+                    languagesKnown: [],
+                    professionalProfiles: [],
+                },
+            },
+            candidateScore: 0,
+            candidateInterviews: [],
+        });
+
+        console.log("Candidate object before saving:", newCandidate); // Debugging log
 
     // Save the candidate to the database
     await newCandidate.save();
@@ -90,6 +108,8 @@ const addCandidate = asyncHandler(async (req, res) => {
     });
   }
 });
+
+
 
 const loginCandidate = asyncHandler(async (req, res) => {
   try {
@@ -154,17 +174,17 @@ const signoutCandidate = asyncHandler(async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
-    return res.status(200).json({
-      message: "User successfully signed out",
-      success: true,
-    });
-  } catch (error) {
-    console.error("Error signout candidate :-: ", error);
-    res.status(500).json({
-      message: "Error signout candidate",
-      success: false,
-    });
-  }
+        return res.status(200).json({
+            message: "User successfully signed out",
+            success: true,  
+        });
+    } catch (error) {
+        console.error("Error signout candidate :-: ", error);
+        res.status(500).json({
+            message: "Error signout candidate",
+            success: false,
+        });
+    }
 });
 
 module.exports = { addCandidate, loginCandidate, signoutCandidate };

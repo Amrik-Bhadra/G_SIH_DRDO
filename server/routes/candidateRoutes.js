@@ -8,10 +8,16 @@ const {
 } = require("../controllers/candidateController/c_crud");
 
 const {
-  createCandidate,
+  addCandidate,
   loginCandidate,
   signoutCandidate,
 } = require("../controllers/candidateController/login");
+
+const {
+  forgotPassword_email_sender,
+  otpVerification,
+  newPasswordMaking,
+} = require("../controllers/localController/forgotPassword");
 
 const authenticate = require("../middleware/authenticate");
 const apiLimiter = require("../middleware/apiLimiter");
@@ -27,8 +33,14 @@ router.post(
   updateCandidate
 );
 
-// router.post("/signup", apiLimiter, createCandidate);
+router.post("/signup", apiLimiter, addCandidate);
 router.post("/signin", apiLimiter, loginCandidate);
 router.post("/signout", apiLimiter, signoutCandidate);
+
+router.post("/forgotpass", forgotPassword_email_sender);
+router.post("/otpVerify/:email", otpVerification);
+router.post("/newPassword/:email", newPasswordMaking);
+
+router.get("/all",apiLimiter,authenticate,allCandidates);
 
 module.exports = router;

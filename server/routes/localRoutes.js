@@ -5,7 +5,7 @@ const {
   forgotPassword_email_sender,
   otpVerification,
   newPasswordMaking,
-} = require("../controllers/expertController/forgotPassword");
+} = require("../controllers/localController/forgotPassword");
 
 router.get("/validate", validator);
 

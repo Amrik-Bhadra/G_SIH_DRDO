@@ -48,5 +48,6 @@ _routes_: Testing of all routes will be conducted tomorrow using Postman.
 - **varun**: Added `Two Factor Authentication` in the `Expert` login and Checked on `POSTMAN`
 - **varun**: `Forgot Password` For the `Experts` and `Candidate` are checked again and Verified on `Postman`
 - **varun**: Will Create a `Score` `routes`,`Controllers` and `Model` and testing on the `Postman`
+- **varun**: Created and tested the `nodemailer` code verification transfer on mails on the `Postman`
 
 #### _push_ : `all things pushed at 10:29 PM`

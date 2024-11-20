@@ -2,45 +2,45 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  allCandidates,
-  findCandidate,
-  updateCandidate,
+    allCandidates,
+    findCandidate,
+    updateCandidate,
 } = require("../controllers/candidateController/c_crud");
 
 const {
-  addCandidate,
-  loginCandidate,
-  signoutCandidate,
+    addCandidate,
+    loginCandidate,
+    signoutCandidate,
 } = require("../controllers/candidateController/login");
 
 const {
-  forgotPassword_email_sender,
-  otpVerification,
-  newPasswordMaking,
+    forgotPassword_email_sender,
+    otpVerification,
+    newPasswordMaking,
 } = require("../controllers/localController/forgotPassword");
 
 const authenticate = require("../middleware/authenticate");
 const apiLimiter = require("../middleware/apiLimiter");
 const multiRoleAccess = require("../middleware/roleBasedAccess");
+const upload = require("../db/uploadconfig"); 
 
 router.get("/all", apiLimiter, authenticate, allCandidates);
 router.get("/get/:id", apiLimiter, authenticate, findCandidate);
 router.post(
-  "/update/:id",
-  apiLimiter,
-  authenticate,
-  multiRoleAccess(["Candidate", "Admin"]),
-  updateCandidate
+    "/update/:id",
+    apiLimiter,
+    authenticate,
+    multiRoleAccess(["Candidate", "Admin"]),
+    updateCandidate
 );
 
-router.post("/signup", apiLimiter, addCandidate);
+// Use upload middleware for resume file uploads
+router.post("/signup", apiLimiter, upload.single("resume"), addCandidate);
 router.post("/signin", apiLimiter, loginCandidate);
 router.post("/signout", apiLimiter, signoutCandidate);
 
 router.post("/forgotpass", forgotPassword_email_sender);
 router.post("/otpVerify/:email", otpVerification);
 router.post("/newPassword/:email", newPasswordMaking);
-
-router.get("/all",apiLimiter,authenticate,allCandidates);
 
 module.exports = router;

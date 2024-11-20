@@ -1,113 +1,128 @@
 const Candidate = require("../../model/candidate");
 const asyncHandler = require("express-async-handler");
+const multer= require('multer')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require('fs');
+
+const upload = multer();
 
 const addCandidate = asyncHandler(async (req, res) => {
-    try {
-        const { email, password } = req.body;
+  try {
+      const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.status(400).json({
-                message: "Email and password are required",
-                success: false,
-            });
-        }
+      if (!email || !password) {
+          return res.status(400).json({
+              message: "Email and password are required",
+              success: false,
+          });
+      }
 
-    // Check if the email already exists
-    const existingCandidate = await Candidate.findOne({
-      "contactInformation.email": email,
-    });
-
-    if (existingCandidate) {
-      return res.status(400).json({
-        message: "Email already exists",
-        success: false,
+      // Check if the email already exists
+      const existingCandidate = await Candidate.findOne({
+          "contactInformation.email": email,
       });
-    }
 
-        // Hash the password
-        // const hashedPassword = 
-        console.log("Hashed password:", hashedPassword); // Debugging log
+      if (existingCandidate) {
+          return res.status(400).json({
+              message: "Email already exists",
+              success: false,
+          });
+      }
 
-        // Create a new candidate
-        const newCandidate = new Candidate({
-            name: {
-                firstname: "Default",
-                middlename: "",
-                lastname: "User",
-            },
-            password: bcrypt.hashSync(password, 10),
-            age: 0,
-            gender: "Not Specified",
-            idProof: {
-                type: "Not Provided",
-                number: "Not Provided",
-            },
-            contactInformation: {
-                email: email,
-                phone: "0000000000",
-            },
-            address: {
-                addressLine: "Default Address",
-                city: "Default City",
-                state: "Default State",
-                pinCode: "000000",
-            },
-            securityQuestions: [
-                {
-                    question: "Default Question",
-                    answer: "Default Answer",
-                },
-            ],
-            twoFactorAuthentication: {
-                enabled: false,
-                method: "None",
-            },
-            candidateProfile: {
-                profession: "Unemployed",
-                professionCategory: "General",
-                educationDetails: [],
-                criticalInputs: {
-                    resume: "Not Provided",
-                    skills: [],
-                    experienceArea: [],
-                },
-                additionalInputs: {
-                    certifications: [],
-                    portfolioLinks: [],
-                    publications: [],
-                    languagesKnown: [],
-                    professionalProfiles: [],
-                },
-            },
-            candidateScore: 0,
-            candidateInterviews: [],
-        });
+      // Hash the password
+      const hashedPassword = bcrypt.hashSync(password, 10);
 
-        console.log("Candidate object before saving:", newCandidate); // Debugging log
+      // Handle file upload
+      let resumeData = null;
+      if (req.file) {
+          resumeData = {
+              filename: req.file.filename,
+              fileType: req.file.mimetype,
+              data: fs.readFileSync(req.file.path),
+          };
+          fs.unlinkSync(req.file.path);
+      }
 
-    // Save the candidate to the database
-    await newCandidate.save();
+      // Create a new candidate with default values
+      const newCandidate = new Candidate({
+          name: {
+              firstname: "Default",
+              middlename: "",
+              lastname: "User",
+          },
+          role: "Candidate",
+          age: 0,
+          gender: "Unknown",
+          idProof: {
+              type: "Unknown",
+              number: "N/A",
+          },
+          contactInformation: {
+              email,
+              phone: "0000000000",
+          },
+          address: {
+              addressLine: "Default Address",
+              city: "Default City",
+              state: "Default State",
+              pinCode: "000000",
+          },
+          avatar: "",
+          password: hashedPassword,
+          securityQuestions: [
+              {
+                  question: "Default Question",
+                  answer: "Default Answer",
+              },
+          ],
+          twoFactorAuthentication: {
+              enabled: false,
+              method: "None",
+          },
+          candidateProfile: {
+              profession: "Unknown",
+              professionCategory: "Unknown",
+              educationDetails: [],
+              criticalInputs: {
+                  resume: resumeData,
+                  skills: [],
+                  experienceArea: [],
+              },
+              additionalInputs: {
+                  certifications: [],
+                  portfolioLinks: [],
+                  publications: [],
+                  languagesKnown: [],
+                  professionalProfiles: [],
+              },
+          },
+          candidateScore: 0,
+          candidateInterviews: [],
+      });
 
-    return res.status(201).json({
-      message: "Candidate registered successfully",
-      success: true,
-      data: {
-        email: newCandidate.contactInformation.email,
-        id: newCandidate._id,
-      },
-    });
+      // Save the candidate to the database
+      await newCandidate.save();
+
+      return res.status(201).json({
+          message: "Candidate registered successfully",
+          success: true,
+          data: {
+              email: newCandidate.contactInformation.email,
+              id: newCandidate._id,
+          },
+      });
   } catch (error) {
-    console.error("Error registering candidate:", error);
+      console.error("Error registering candidate:", error);
 
-    return res.status(500).json({
-      message: "An error occurred while registering the candidate",
-      success: false,
-      error: error.message,
-    });
+      return res.status(500).json({
+          message: "An error occurred while registering the candidate",
+          success: false,
+          error: error.message,
+      });
   }
 });
+
 
 
 
@@ -188,4 +203,4 @@ const signoutCandidate = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { addCandidate, loginCandidate, signoutCandidate };
+module.exports = { addCandidate, upload, loginCandidate, signoutCandidate };

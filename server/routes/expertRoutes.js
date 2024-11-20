@@ -4,7 +4,8 @@ const {
   allExperts,
   findExpert,
   updateExperts,
-} = require("../controllers/expertController/crud");
+  delExpert,
+} = require("../controllers/expertController/expert_Crud");
 const authenticate = require("../middleware/authenticate");
 const {
   createExpert,
@@ -23,6 +24,13 @@ router.post(
   authenticate,
   multiRoleAccess(["Expert", "Admin"]),
   updateExperts
+);
+router.delete(
+  "/del/:id",
+  apiLimiter,
+  authenticate,
+  multiRoleAccess(["Expert", "Admin"]),
+  delExpert
 );
 
 // login and signup routes public..Routes>

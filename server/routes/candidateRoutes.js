@@ -39,6 +39,7 @@ router.post("/signup", apiLimiter, upload.single("resume"), addCandidate);
 router.post("/signin", apiLimiter, loginCandidate);
 router.post("/signout", apiLimiter, signoutCandidate);
 
+router.get("/all", apiLimiter, authenticate, allCandidates);
 router.post("/forgotpass", forgotPassword_email_sender);
 router.post("/otpVerify/:email", otpVerification);
 router.post("/newPassword/:email", newPasswordMaking);

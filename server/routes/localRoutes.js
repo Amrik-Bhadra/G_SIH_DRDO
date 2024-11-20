@@ -9,6 +9,10 @@ const {
   otpVerification,
   newPasswordMaking,
 } = require("../controllers/localController/forgotPassword");
+const {
+  TwoFactVerification,
+} = require("../controllers/expertController/logSign");
+const apiLimiter = require("../middleware/apiLimiter");
 
 //File Routes
 // router.post("/upload", upload.single("file"), uploadFile);
@@ -20,4 +24,8 @@ router.get("/validate", validator);
 router.post("/forgotpass", forgotPassword_email_sender);
 router.post("/otpVerify/:email", otpVerification);
 router.post("/newPassword/:email", newPasswordMaking);
+
+// 2FA Authentication Route
+router.post("/2fa/verify/:id", apiLimiter, TwoFactVerification);
+
 module.exports = router;

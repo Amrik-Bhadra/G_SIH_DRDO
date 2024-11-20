@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-import React from 'react'
-
-const LoginForm = () => {
-  return (
-    <main className='h-[100vh] w-[100vw] bg-[#eee] flex justify-center items-center'>
-        
-    </main>
-  )
-}
-
-export default LoginForm
-=======
 import React, { useState } from "react";
 import logo from "../../assets/images/drdo-logo.svg";
 import TextField from "@mui/material/TextField";
@@ -139,7 +126,7 @@ const LoginForm = () => {
 
           <span className="pr-2 font-medium text-sm text-[#C4C4C4]">
             Don't have an account?{" "}
-            <Link to="/register" className="text-[#0E8CCA]">
+            <Link to="/registrationchoice" className="text-[#0E8CCA]">
               Register
             </Link>
           </span>
@@ -150,4 +137,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
->>>>>>> dbe270f2d93ac9097d2128a04982b3290e348961

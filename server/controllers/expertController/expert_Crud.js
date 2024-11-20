@@ -105,8 +105,31 @@ const findExpert = asyncHandler(async (req, res) => {
   }
 });
 
+// PRIVATE ROUTE
+// http://localhost:8000/api/expert/del/:id
+const delExpert = asyncHandler(async (req, res) => {
+  const expertId = req.params.id;
+  try {
+    const result = await Expert.findByIdAndDelete({
+      _id: expertId,
+    });
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ message: "Expert not found", sucess: false });
+    }
+
+    res.status(200).json({ message: "Expert deleted successfully" });
+  } catch (error) {
+    console.error(`Error deleting expert with email ${expertId}:`, error);
+    res.status(500).json({ message: "Error deleting expert", sucess: true });
+  }
+});
+
 module.exports = {
   allExperts,
   findExpert,
   updateExperts,
+  delExpert,
 };

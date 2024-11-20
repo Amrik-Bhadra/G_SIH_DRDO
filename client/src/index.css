@@ -2,14 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Add this to your global CSS file */
 .scrollbar-hide {
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-width: none; /* Firefox */
-  }
-  
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none; /* WebKit browsers */
-  }
-  
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* WebKit browsers */
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Remove the default calendar border */
+.custom-calendar {
+  border: none; /* Removes the outer border of the calendar */
+  box-shadow: none; /* Removes any shadows, if present */
+  width: 100%; /* Optional: Make it responsive */
+}
+
+/* Remove borders around tiles */
+.custom-calendar .react-calendar__tile {
+  border: none; /* Removes borders around each date */
+  border-radius: 8px; /* Optional: adds rounded corners */
+}
+
+/* Optional: Add hover effect for better UI */
+.custom-calendar .react-calendar__tile:hover {
+  background-color: #f1f5f9; /* Light gray on hover */
+  color: #1e40af; /* Indigo text */
+}
+
+/* Highlight selected date */
+.custom-calendar .react-calendar__tile--active {
+  background-color: #3b82f6; /* Indigo background */
+  color: white;
+  border-radius: 8px;
+}
+
+/* Remove borders in the navigation section */
+.custom-calendar .react-calendar__navigation {
+  border: none;
+}
+
+.custom-calendar .react-calendar__navigation button {
+  border: none; /* Removes button borders */
+  background: none; /* Removes button backgrounds */
+  color: #1e40af; /* Indigo text for buttons */
+  font-size: 1rem; /* Adjust font size */
+  cursor: pointer;
+}

@@ -6,10 +6,11 @@ import UpcomingInterviews from "../../components/ExpertDashboard/UpcomingIntervi
 import InterviewStatus from "../../components/ExpertDashboard/InterviewStatus";
 import Calender from "../../components/ExpertDashboard/Calender";
 import Notifications from "../../components/ExpertDashboard/Notifications";
+
 const Expert = () => {
   return (
-    <div className="w-full min-h-screen bg-zinc-50 flex justify-center items-start">
-      <div className="w-[85%] min-h-screen ">
+    <div className="w-full min-h-screen bg-[#f8f9fa] scroll-smooth flex justify-center items-start">
+      <div className="w-full md:w-[85%] min-h-screen ">
         <div className="w-full h-28 flex justify-between items-center">
           <div className="h-full flex justify-start items-center gap-1 pl-1">
             <img className="w-20 h-fit" src={logo} alt="" />
@@ -33,22 +34,22 @@ const Expert = () => {
           </div>
         </div>
         <div className="w-full min-h-screen flex flex-col justify-center items-start ">
-          <div className="w-full h-[300px] p-2 flex justify-between items-center gap-5">
-            <div className="w-[75%] h-full">
+          <div className="w-full h-full md:h-[320px] p-2 md:flex justify-between items-center gap-5">
+            <div className="w-full md:w-[75%] md:h-[300px] h-[350px] overflow-hidden p-2">
               <UpcomingInterviews />
             </div>
-            <div className="w-[25%] h-full">
+            <div className="w-full md:w-[25%] h-[300px]">
               <ExpertNameCard />
             </div>
           </div>
-          <div className="w-full h-[400px] p-2 flex justify-between items-center gap-5">
-            <div className="w-[30%] h-full">
+          <div className="w-full h-[450px] p-2 md:flex justify-between items-center md:gap-5">
+            <div className="w-full md:w-[30%] h-full mb-2 md:mb-0">
               <InterviewStatus />
             </div>
-            <div className="w-[30%] h-full">
+            <div className="w-full md:w-[30%] h-full mb-2 md:mb-0">
               <Calender />
             </div>
-            <div className="w-[40%] h-full">
+            <div className="w-full md:w-[40%] h-full mb-2 md:mb-0">
               <Notifications />
             </div>
           </div>

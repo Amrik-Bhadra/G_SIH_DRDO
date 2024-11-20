@@ -2,7 +2,7 @@ import React from "react";
 
 const ExpertNameCard = () => {
   return (
-    <div className="w-full h-full flex flex-col bg-white shadow-md shadow-slate-200 rounded-xl border border-slate-200">
+    <div className="w-full h-full mt-2 md:mt-0 flex flex-col bg-white shadow-md shadow-slate-200 rounded-xl border border-slate-200">
       <div className="w-full h-1/2 flex justify-center items-center">
         <img
           className="w-32 rounded-full p-2 border shadow-md border-slate-200"

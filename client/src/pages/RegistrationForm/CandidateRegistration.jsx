@@ -8,6 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Checkbox } from "@mui/material";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -66,8 +67,9 @@ const CandidateRegistration = () => {
 
     setPasswordChecks(checks);
 
-    const strength =
-      Object.values(checks).filter((check) => check === true).length;
+    const strength = Object.values(checks).filter(
+      (check) => check === true
+    ).length;
     if (strength === 5) setPasswordStrength("Strong");
     else if (strength >= 3) setPasswordStrength("Medium");
     else setPasswordStrength("Weak");
@@ -109,14 +111,14 @@ const CandidateRegistration = () => {
   return (
     <main className="h-screen w-screen bg-gray-100 flex justify-center items-center shadow-sm">
       <div className="bg-white w-[90%] max-w-[500px] rounded-lg shadow-lg p-6">
-        <div className="flex justify-center items-center mb-6">
+        <div className="flex justify-center items-center mb-3">
           <img src={logo} alt="drdo-logo" className="w-16 h-16" />
           <h1 className="text-2xl font-bold text-[#0E8CCA] ml-3">E.B.R.S.</h1>
         </div>
         <div className="form-header text-center mb-5">
           <h1 className="text-3xl font-semibold">Register as Candidate!</h1>
         </div>
-        <form className="space-y-5" onSubmit={handleRegister}>
+        <form className="space-y-3" onSubmit={handleRegister}>
           {/* Email Field */}
           <TextField
             id="outlined-email-input"
@@ -236,11 +238,7 @@ const CandidateRegistration = () => {
                       onClick={handleClickShowConfirmPassword}
                       onMouseDown={handleMouseDownPassword}
                     >
-                      {showConfirmPassword ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -248,6 +246,11 @@ const CandidateRegistration = () => {
               />
             </FormControl>
           </div>
+
+          <span className="flex items-center">
+            <Checkbox defaultChecked />
+            Enable 2 Factor Authentication
+          </span>
 
           {/* Submit Button */}
           <button

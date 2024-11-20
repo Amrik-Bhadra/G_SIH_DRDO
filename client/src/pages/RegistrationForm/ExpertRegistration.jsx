@@ -11,8 +11,9 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Checkbox } from "@mui/material";
 
-const ExpertRegistration = () => {
+const CandidateRegistration = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -76,10 +77,18 @@ const ExpertRegistration = () => {
   const handleRegister = (event) => {
     event.preventDefault();
 
+    // Validate email
     if (!email) {
       toast.error("Email is required!");
       return;
     }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Invalid email format!");
+      return;
+    }
+
+    // Validate password fields
     if (!password || !confirmPassword) {
       toast.error("All fields are required!");
       return;
@@ -93,30 +102,9 @@ const ExpertRegistration = () => {
       return;
     }
 
+    // If all validations pass
     toast.success("Registration successful!");
-    navigate("/register/expertcompletedetail");
-  };
-
-  const handleExpertRegister = () => {
-    if (!email) {
-      toast.error("Email is required!");
-      return;
-    }
-    if (!password || !confirmPassword) {
-      toast.error("All fields are required!");
-      return;
-    }
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match!");
-      return;
-    }
-    if (passwordStrength !== "Strong") {
-      toast.error("Password is not strong enough!");
-      return;
-    }
-
-    toast.success("Expert registration successful!");
-    navigate("/register/expertcompletedetail");
+    navigate("/register/candidatecompletedetail");
   };
 
   return (
@@ -127,9 +115,9 @@ const ExpertRegistration = () => {
           <h1 className="text-2xl font-bold text-[#0E8CCA] ml-3">E.B.R.S.</h1>
         </div>
         <div className="form-header text-center mb-5">
-          <h1 className="text-3xl font-semibold">Register as Expert!</h1>
+          <h1 className="text-3xl font-semibold">Register as Candidate!</h1>
         </div>
-        <form className="space-y-5" onSubmit={handleRegister}>
+        <form className="space-y-3" onSubmit={handleRegister}>
           {/* Email Field */}
           <TextField
             id="outlined-email-input"
@@ -262,13 +250,18 @@ const ExpertRegistration = () => {
             </FormControl>
           </div>
 
-          {/* Submit Buttons */}
-            <button
-              type="submit"
-              className="w-full bg-[#0E8CCA] text-white py-2 px-4 rounded hover:bg-[#0969A3] transition-all"
-            >
-              Register
-            </button>
+          <span className="flex items-center">
+            <Checkbox defaultChecked />
+            Enable 2 Factor Authentication
+          </span>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-[#0E8CCA] text-white py-2 px-4 rounded hover:bg-[#0969A3] transition-all"
+          >
+            Register
+          </button>
 
           {/* Already have an account */}
           <p className="text-center mt-4 text-sm text-gray-600">
@@ -283,4 +276,4 @@ const ExpertRegistration = () => {
   );
 };
 
-export default ExpertRegistration;
+export default CandidateRegistration;

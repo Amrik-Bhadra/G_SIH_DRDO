@@ -68,20 +68,6 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
     }
   };
 
-  const handleCityStateChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "city") setCity(value);
-    if (name === "state") setState(value);
-
-    setUserData((prevStateData) => ({
-      ...prevStateData,
-      personalInfo: {
-        ...prevStateData.personalInfo,
-        [name]: value,
-      },
-    }));
-  };
-
   return (
     <>
       <h1 className="text-2xl font-semibold text-[#0077b6]">
@@ -235,7 +221,6 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             required
             name="city"
             value={city}
-            onChange={handleCityStateChange}
             fullWidth
           />
           <TextField
@@ -245,7 +230,6 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             required
             name="state"
             value={state}
-            onChange={handleCityStateChange}
             fullWidth
           />
         </div>

@@ -39,3 +39,9 @@ _push_ : server - Expert `model`, `controller`, `routes` ,`verify token` and `lo
 - **varun**: Will Create a `Score` `routes`,`Controllers` and `Model` and testing on the `Postman`
 
 #### _push_ : `all things pushed at 10:29 PM`
+
+---
+
+### 2024-11-20
+
+- **varun**: I have created the `Expert` Dashboard designing and Added functionalities

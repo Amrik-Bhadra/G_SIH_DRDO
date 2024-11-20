@@ -2,15 +2,19 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// Ensure uploads directory exists
-const uploadDir = path.join(__dirname, "../uploads");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
+var uploadDir;
 
 // Multer configuration
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        if(req.body.role == "Candidate"){
+           uploadDir = path.join(__dirname,"../uploads/Candidate/Resume");
+        }else if(req.body.role == "Expert"){
+           uploadDir = path.join(__dirname,"../uploads/Expert/Resume");
+        }
         cb(null, uploadDir); // Files are saved to the "uploads" folder
     },
     filename: (req, file, cb) => {

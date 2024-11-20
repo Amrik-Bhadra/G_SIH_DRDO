@@ -1,11 +1,14 @@
-const mongoose = require("mongoose");
 const Expert = require("../../model/expert");
+const candidate = require("../../model/candidate");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const candidate = require("../../model/candidate");
 const email_sender = require("../localController/emailSender");
 const htmlBody = require("../../assets/htmlBodies/TwoFactorAuth");
+const fs = require('fs');
+const multer = require('multer')
+
+const upload = multer();
 
 // PUBLIC ROUTE
 // http://localhost:8000/api/expert/signup
@@ -40,6 +43,16 @@ const createExpert = asyncHandler(async (req, res) => {
         message: "Candidate with this email already exists",
         success: false,
       });
+    }
+
+    let resumeData = null;
+    if (req.file) {
+      resumeData = {
+        filename: req.file.filename,
+        fileType: req.file.mimetype,
+        data: fs.readFileSync(req.file.path),
+      };
+      fs.unlinkSync(req.file.path);
     }
 
     const newExpert = new Expert({

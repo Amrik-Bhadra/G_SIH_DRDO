@@ -51,3 +51,15 @@ _routes_: Testing of all routes will be conducted tomorrow using Postman.
 - **varun**: Created and tested the `nodemailer` code verification transfer on mails on the `Postman`
 
 #### _push_ : `all things pushed at 10:29 PM`
+
+### 2024-11-20
+
+- **Srivaths**: Completed Postman testing for all routes to ensure functionality and correctness.
+- **Srivaths**: Configured file upload functionality:
+  - Set up an `upload` folder for storing uploaded files.
+  - Added `uploadConfig.js` with separate directory paths for `Expert` and `Candidate` file storage.
+- **Srivaths**: Implemented authorization in `candidateLogin` to secure Candidate-related operations.
+
+_push_: All changes have been successfully pushed to the `srivaths` branch
+
+---

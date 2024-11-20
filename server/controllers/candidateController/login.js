@@ -1,9 +1,12 @@
 const Candidate = require("../../model/candidate");
+const Expert = require("../../model/expert");
 const asyncHandler = require("express-async-handler");
-const multer= require('multer')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const email_sender = require("../localController/emailSender");
+const htmlBody = require("../../assets/htmlBodies/TwoFactorAuth");
 const fs = require('fs');
+const multer= require('multer')
 
 const upload = multer();
 
@@ -22,14 +25,22 @@ const addCandidate = asyncHandler(async (req, res) => {
       const existingCandidate = await Candidate.findOne({
           "contactInformation.email": email,
       });
+      const existingExpert = await Expert.findOne({
+        "contactInformation.email": email,
+      })
+      if (existingExpert) {
+        return res.status(400).json({
+          message: "Expert with this email already exists",
+          success: false,
+        });
+      }
 
       if (existingCandidate) {
           return res.status(400).json({
-              message: "Email already exists",
+              message: "Candidate with this email already exists",
               success: false,
           });
       }
-
       // Hash the password
       const hashedPassword = bcrypt.hashSync(password, 10);
 

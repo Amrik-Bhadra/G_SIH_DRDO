@@ -72,8 +72,21 @@ const expertSchema = new mongoose.Schema({
     ],
     criticalInputs: {
       resume: {
-        type: String,
-        default: "No resume provided",
+        resume: {
+          filename: {
+              type: String,
+              required: true,  // Required validation for filename
+          },
+          fileType: {
+              type: String,
+              required: true,  // Required validation for file type
+          },
+          data: {
+              type: Buffer,
+              required: true,  // Store file data in binary format
+          }
+
+      }
       },
       skills: [
         {

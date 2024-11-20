@@ -5,7 +5,7 @@ function NotificationUserCard() {
     <div className="w-full h-20 flex border-b border-slate-200 gap-1">
       <div className="w-[20%] h-full flex justify-center items-center p-2">
         <img
-          className=" md:h-[70px] rounded-full"
+          className=" md:h-full w-fit rounded-full"
           src="https://media.craiyon.com/2024-03-28/1seVscwMQ86TlE7UFJloCw.webp"
           alt=""
         />

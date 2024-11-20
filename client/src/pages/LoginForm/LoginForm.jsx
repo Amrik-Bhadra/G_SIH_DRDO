@@ -6,16 +6,21 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -30,6 +35,10 @@ const LoginForm = () => {
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
       toast.error("Enter a valid email address!");
+      return false;
+    }
+    if (!role) {
+      toast.error("Role is required!");
       return false;
     }
     if (!password) {
@@ -48,6 +57,7 @@ const LoginForm = () => {
     if (validateForm()) {
       toast.success("Login successful!");
       // Add login logic here (e.g., API call)
+      navigate('/twofactorauthentication')
     }
   };
 
@@ -62,10 +72,11 @@ const LoginForm = () => {
         <div className="form-header">
           <h1 className="text-3xl font-semibold">Welcome Back!</h1>
           <p className="text-gray-500 mt-1 font-medium text-md">
-            Login to Shine
+            Please Enter your details to login
           </p>
         </div>
 
+        {/* Email input */}
         <form className="w-[85%] flex flex-col gap-y-5" onSubmit={handleLogin}>
           <TextField
             id="outlined-email-input"
@@ -77,6 +88,25 @@ const LoginForm = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
 
+          {/* Role Selection Dropdown */}
+          <FormControl fullWidth>
+            <InputLabel id="role-select-label">Select Role</InputLabel>
+            <Select
+              labelId="role-select-label"
+              id="role-select"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              label="Select Role"
+              sx={{
+                textAlign: "left", // Ensure the selected text is aligned to the left
+              }}
+            >
+              <MenuItem value="applicant">Applicant</MenuItem>
+              <MenuItem value="expert">Expert</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* password input */}
           <FormControl variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">
               Password

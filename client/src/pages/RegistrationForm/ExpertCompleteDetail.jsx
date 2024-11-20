@@ -6,10 +6,12 @@ import ExpertCriticalSection from "../../components/ExpertDetailSections/ExpertC
 import ExpertAdditionalInputs from "../../components/ExpertDetailSections/ExpertAdditionalInputs"; 
 import { toast } from "react-hot-toast";
 import ExpertProfessionalInputs from "../../components/ExpertDetailSections/ExpertProfessionalInputs";
+import { useNavigate } from "react-router-dom";
 
 const ExpertCompleteDetail = () => {
   const mini = 1;
   const maxi = 5;
+  const navigate = useNavigate();
   const [stepNo, setStepNo] = useState(1);
   const [userData, setUserData] = useState({
     personalInfo: {
@@ -141,12 +143,11 @@ const ExpertCompleteDetail = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (validateStep()) {
-      return;
-    }
-
     toast.success("Details submitted successfully!");
     console.log("Submitted Data:", userData);
+
+    // Redirect to the QuizPage
+    navigate("/register/expert/quiz");
   };
 
   return (

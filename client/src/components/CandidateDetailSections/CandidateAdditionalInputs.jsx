@@ -14,11 +14,12 @@ import {
 import { Delete } from "@mui/icons-material";
 import { toast } from "react-hot-toast";
 
-const ExpertAdditionalInputs = ({ userData, setUserData }) => {
+const CandidateAdditionalInputs = ({ userData, setUserData }) => {
   const [certificationEntry, setCertificationEntry] = useState({
     name: "",
     issuedBy: "",
     year: "",
+    link: "",
   });
   const [portfolioLink, setPortfolioLink] = useState("");
   const [publicationEntry, setPublicationEntry] = useState({
@@ -38,8 +39,8 @@ const ExpertAdditionalInputs = ({ userData, setUserData }) => {
 
   // Add a certification
   const handleAddCertification = () => {
-    if (!certificationEntry.name || !certificationEntry.issuedBy || !certificationEntry.year) {
-      toast.error("Please fill all certification fields.");
+    if (!certificationEntry.name || !certificationEntry.issuedBy || !certificationEntry.year || !certificationEntry.link) {
+      toast.error("Please fill all certification fields including the link.");
       return;
     }
 
@@ -53,9 +54,8 @@ const ExpertAdditionalInputs = ({ userData, setUserData }) => {
         ],
       },
     }));
-
-    setCertificationEntry({ name: "", issuedBy: "", year: "" });
-  };
+    setCertificationEntry({ name: "", issuedBy: "", year: "", link: "" });
+    };
 
   // Add a publication
   const handleAddPublication = () => {
@@ -119,14 +119,13 @@ const ExpertAdditionalInputs = ({ userData, setUserData }) => {
           <Typography variant="h6" className="mb-2">
             Certifications
           </Typography>
-          <div className="flex gap-3 mb-4">
+          <div className="flex gap-2 mb-4">
             <TextField
-              label="Certification Name"
+              label="Name"
               name="name"
               value={certificationEntry.name}
               onChange={(e) => handleInputChange(e, setCertificationEntry)}
               fullWidth
-              
             />
             <TextField
               label="Issued By"
@@ -164,7 +163,7 @@ const ExpertAdditionalInputs = ({ userData, setUserData }) => {
               onChange={(e) => handleInputChange(e, setCertificationEntry)}
               fullWidth
             />
-            <Button variant="contained" onClick={handleAddCertification} sx={{ whiteSpace: "nowrap" }}>
+            <Button variant="contained" onClick={handleAddCertification}>
               Add
             </Button>
           </div>
@@ -268,7 +267,7 @@ const ExpertAdditionalInputs = ({ userData, setUserData }) => {
               onChange={(e) => setLanguage(e.target.value)}
               fullWidth
             />
-            <Button variant="contained" onClick={handleAddLanguage}>
+            <Button variant="contained" onClick={() => handleAddLanguage()}>
               Add
             </Button>
           </div>
@@ -288,4 +287,4 @@ const ExpertAdditionalInputs = ({ userData, setUserData }) => {
   );
 };
 
-export default ExpertAdditionalInputs;
+export default CandidateAdditionalInputs;

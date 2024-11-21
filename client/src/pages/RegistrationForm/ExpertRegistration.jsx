@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+require("dotenv").config();
 import logo from "../../assets/images/drdo-logo.svg";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
@@ -11,6 +12,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ExpertRegistration = () => {
   const [email, setEmail] = useState("");
@@ -66,8 +68,9 @@ const ExpertRegistration = () => {
 
     setPasswordChecks(checks);
 
-    const strength =
-      Object.values(checks).filter((check) => check === true).length;
+    const strength = Object.values(checks).filter(
+      (check) => check === true
+    ).length;
     if (strength === 5) setPasswordStrength("Strong");
     else if (strength >= 3) setPasswordStrength("Medium");
     else setPasswordStrength("Weak");
@@ -97,7 +100,7 @@ const ExpertRegistration = () => {
     navigate("/register/expertcompletedetail");
   };
 
-  const handleExpertRegister = () => {
+  const handleExpertRegister = async () => {
     if (!email) {
       toast.error("Email is required!");
       return;
@@ -115,8 +118,16 @@ const ExpertRegistration = () => {
       return;
     }
 
-    toast.success("Expert registration successful!");
-    navigate("/register/expertcompletedetail");
+    try {
+      await axios.post(`${process.env.BASE_URL}/api/expert/signup`, {
+        email,
+        password,
+      });
+      toast.success("Expert registration successful!");
+      navigate("/register/expertcompletedetail");
+    } catch (err) {
+      toast.error("Registration failed. Please try again.");
+    }
   };
 
   return (
@@ -218,10 +229,10 @@ const ExpertRegistration = () => {
                     passwordStrength === "Strong"
                       ? "bg-green-500 w-full"
                       : passwordStrength === "Medium"
-                      ? "bg-orange-500 w-2/3"
-                      : passwordStrength === "Weak"
-                      ? "bg-red-500 w-1/3"
-                      : "bg-gray-200 w-0"
+                        ? "bg-orange-500 w-2/3"
+                        : passwordStrength === "Weak"
+                          ? "bg-red-500 w-1/3"
+                          : "bg-gray-200 w-0"
                   }`}
                 ></div>
               </div>
@@ -249,11 +260,7 @@ const ExpertRegistration = () => {
                       onClick={handleClickShowConfirmPassword}
                       onMouseDown={handleMouseDownPassword}
                     >
-                      {showConfirmPassword ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -263,12 +270,12 @@ const ExpertRegistration = () => {
           </div>
 
           {/* Submit Buttons */}
-            <button
-              type="submit"
-              className="w-full bg-[#0E8CCA] text-white py-2 px-4 rounded hover:bg-[#0969A3] transition-all"
-            >
-              Register
-            </button>
+          <button
+            type="submit"
+            className="w-full bg-[#0E8CCA] text-white py-2 px-4 rounded hover:bg-[#0969A3] transition-all"
+          >
+            Register
+          </button>
 
           {/* Already have an account */}
           <p className="text-center mt-4 text-sm text-gray-600">

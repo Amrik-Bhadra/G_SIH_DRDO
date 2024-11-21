@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Chip, Typography } from "@mui/material";
+import { TextField, Button, Chip, Typography, FormControl, Select, MenuItem, InputLabel } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
 
 const CandidateCriticalSection = ({ userData, setUserData }) => {
@@ -13,7 +13,7 @@ const CandidateCriticalSection = ({ userData, setUserData }) => {
         ...prev,
         criticalInputs: {
           ...prev.criticalInputs,
-          resume: file.name, // Or use file.path for more details in Node environments
+          resume: file.name,
         },
       }));
     }
@@ -53,28 +53,63 @@ const CandidateCriticalSection = ({ userData, setUserData }) => {
     }));
   };
 
+  const handleExperienceChange = (e) => {
+    setUserData((prev) => ({
+      ...prev,
+      criticalInputs: {
+        ...prev.criticalInputs,
+        yearsOfExperience: e.target.value,
+      },
+    }));
+  };
+
   return (
     <>
       <h1 className="text-2xl font-semibold text-[#0077b6]">3. Critical Inputs</h1>
       <div className="flex flex-col gap-5">
-        {/* Resume Upload */}
-        <div className="w-full">
-          <Typography variant="body1" gutterBottom>
-            Upload Resume
-          </Typography>
-          <Button
-            variant="outlined"
-            component="label"
-            startIcon={<CloudUpload />}
-          >
-            {userData.criticalInputs?.resume || "Upload Resume"}
-            <input
-              type="file"
-              hidden
-              accept=".pdf,.doc,.docx"
-              onChange={handleResumeUpload}
-            />
-          </Button>
+        {/* Resume Upload and Years of Experience */}
+        <div className="w-[50%] flex gap-10 items-end">
+          <div>
+            <Typography variant="body1" gutterBottom>
+              Upload Resume
+            </Typography>
+            <Button
+              variant="outlined"
+              component="label"
+              startIcon={<CloudUpload />}
+            >
+              {userData.criticalInputs?.resume || "Upload Resume"}
+              <input
+                type="file"
+                hidden
+                accept=".pdf,.doc,.docx"
+                onChange={handleResumeUpload}
+              />
+            </Button>
+          </div>
+          <div style={{ flex: 1 }}>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel id="experience-label">Years of Experience</InputLabel>
+              <Select
+                labelId="experience-label"
+                label="Years of Experience"
+                id="experience"
+                name="yearsOfExperience"
+                value={userData.criticalInputs.yearsOfExperience || ""}
+                onChange={handleExperienceChange}
+                required
+              >
+                <MenuItem value="" disabled>
+                  Select Years
+                </MenuItem>
+                {Array.from({ length: 41 }, (_, i) => (
+                  <MenuItem key={i} value={i}>
+                    {i} {i === 1 ? "Year" : "Years"}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
         </div>
 
         {/* Skills Input */}
@@ -105,7 +140,7 @@ const CandidateCriticalSection = ({ userData, setUserData }) => {
           </div>
         </div>
 
-        {/* ExperienceArea Input */}
+        {/* Expertise Input */}
         <div className="w-full">
           <Typography variant="body1" gutterBottom>
             Add Areas of Experience

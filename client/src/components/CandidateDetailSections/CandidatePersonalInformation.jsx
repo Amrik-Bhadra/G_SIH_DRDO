@@ -15,9 +15,18 @@ import axios from "axios";
 const CandidatePersonalInformation = ({ userData, setUserData }) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  const [errors, setErrors] = useState({
+    age: "",
+    phoneNo: "",
+    recoveryEmail: "",
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Clear error for the specific field
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+
     setUserData((prevStateData) => ({
       ...prevStateData,
       personalInfo: {
@@ -82,16 +91,52 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
     }));
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    const { age, phoneNo, recoveryEmail } = userData.personalInfo;
+
+    // Validate Age
+    if (!age || age < 18 || age > 120) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        age: "Age must be a number between 18 and 120.",
+      }));
+      isValid = false;
+    }
+
+    // Validate Phone Number
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneNo || !phoneRegex.test(phoneNo)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        phoneNo: "Phone number must be 10 digits.",
+      }));
+      isValid = false;
+    }
+
+    // Validate Email
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!recoveryEmail || !emailRegex.test(recoveryEmail)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        recoveryEmail: "Please enter a valid email address.",
+      }));
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
   return (
     <>
       <h1 className="text-2xl font-semibold text-[#0077b6]">
         1. Personal Information
       </h1>
       <div className="flex flex-col gap-7">
-        {/* name group */}
+        {/* Name Group */}
         <div className="w-full flex gap-3">
           <TextField
-            id="outlined-password-input"
+            id="outlined-first-name"
             label="First Name"
             type="text"
             required
@@ -101,7 +146,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             fullWidth
           />
           <TextField
-            id="outlined-password-input"
+            id="outlined-middle-name"
             label="Middle Name"
             type="text"
             value={userData.personalInfo.middleName}
@@ -110,7 +155,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             fullWidth
           />
           <TextField
-            id="outlined-password-input"
+            id="outlined-last-name"
             label="Last Name"
             type="text"
             required
@@ -121,23 +166,29 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
           />
         </div>
 
-        {/* phone number and govt id */}
+        {/* Phone Number and Govt ID */}
         <div className="w-full flex gap-3">
           <TextField
-            id="outlined-password-input"
+            id="outlined-phone-no"
             label="Phone No"
-            type="number"
+            type="text"
             required
+            name="phoneNo"
+            value={userData.personalInfo.phoneNo}
+            onChange={handleInputChange}
+            error={!!errors.phoneNo}
+            helperText={errors.phoneNo}
           />
           <FormControl variant="outlined" sx={{ minWidth: 200 }}>
-            <InputLabel id="demo-simple-select-label">Govt. ID Type</InputLabel>
+            <InputLabel id="govt-id-type-label">Govt. ID Type</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="govt-id-type-label"
+              id="govt-id-type"
               label="Govt. ID Type"
               required
               name="govtIdType"
               onChange={handleInputChange}
+              value={userData.personalInfo.govtIdType}
             >
               <MenuItem value="" disabled>
                 Select Govt. ID Type
@@ -148,79 +199,74 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             </Select>
           </FormControl>
           <TextField
-            id="outlined-password-input"
+            id="outlined-govt-id-no"
             label="Govt ID No"
             type="text"
             required
-            className="w-[50%]"
             name="govtIdNo"
+            value={userData.personalInfo.govtIdNo}
             onChange={handleInputChange}
           />
         </div>
 
+        {/* Gender, Age, Recovery Email */}
         <div className="w-full flex gap-3">
-          <FormControl sx={{ flexWrap: "nowrap", width: "100%" }}>
-            <FormLabel id="demo-row-radio-buttons-group-label">
-              Gender
-            </FormLabel>
+          <FormControl sx={{ flexWrap: "nowrap" }}>
+            <FormLabel id="gender-label">Gender</FormLabel>
             <RadioGroup
               row
-              aria-labelledby="demo-row-radio-buttons-group-label"
+              aria-labelledby="gender-label"
               name="gender"
+              value={userData.personalInfo.gender}
               onChange={handleInputChange}
             >
               <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Female"
-              />
-              <FormControlLabel
-                value="other"
-                control={<Radio />}
-                label="Other"
-              />
+              <FormControlLabel value="female" control={<Radio />} label="Female" />
+              <FormControlLabel value="other" control={<Radio />} label="Other" />
             </RadioGroup>
           </FormControl>
+
           <TextField
-            id="outlined-password-input"
+            id="outlined-age"
             label="Age"
             type="number"
             required
             name="age"
             value={userData.personalInfo.age}
             onChange={handleInputChange}
-            fullWidth
+            error={!!errors.age}
+            helperText={errors.age}
           />
+
           <TextField
-            id="outlined-password-input"
+            id="outlined-recovery-email"
             label="Recovery Email"
             type="email"
             required
-            fullWidth
+            name="recoveryEmail"
+            value={userData.personalInfo.recoveryEmail}
+            onChange={handleInputChange}
+            error={!!errors.email}
+            helperText={errors.email}
           />
         </div>
 
-        {/* address details */}
+        {/* Address Details */}
         <TextField
-          id="outlined-password-input"
+          id="outlined-address"
           label="Address"
-          type="address"
+          type="text"
           required
-          sx={{
-            height: "100px",
-            "& .MuiInputBase-root": {
-              height: "100%",
-            },
-          }}
           name="address"
+          value={userData.personalInfo.address}
           onChange={handleInputChange}
+          fullWidth
         />
 
-        {/* country state zipcode group */}
+        {/* Pincode, City, and State */}
         <div className="w-full flex gap-3">
           <TextField
-            id="outlined-password-input"
+            id="outlined-pincode"
             label="Pin Code"
             type="text"
             required
@@ -229,7 +275,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             fullWidth
           />
           <TextField
-            id="outlined-password-input"
+            id="outlined-city"
             label="City"
             type="text"
             required
@@ -239,7 +285,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             fullWidth
           />
           <TextField
-            id="outlined-password-input"
+            id="outlined-state"
             label="State"
             type="text"
             required

@@ -5,12 +5,11 @@ import ExpertEducationalInformation from "../../components/ExpertDetailSections/
 import ExpertCriticalSection from "../../components/ExpertDetailSections/ExpertCriticalSection";
 import ExpertAdditionalInputs from "../../components/ExpertDetailSections/ExpertAdditionalInputs"; 
 import { toast } from "react-hot-toast";
-import ExpertProfessionalInputs from "../../components/ExpertDetailSections/ExpertProfessionalInputs";
 import { useNavigate } from "react-router-dom";
 
 const ExpertCompleteDetail = () => {
   const mini = 1;
-  const maxi = 5;
+  const maxi = 4;
   const navigate = useNavigate();
   const [stepNo, setStepNo] = useState(1);
   const [userData, setUserData] = useState({
@@ -35,12 +34,9 @@ const ExpertCompleteDetail = () => {
       expertise: [],
     },
     additionalInputs: {
-      certifications: [],
+      projects: [],
       publications: [],
-      languagesKnown: [],
     },
-    professionalProfiles: [],
-    professionalAffiliations: [],
   });
 
   const validateStep = () => {
@@ -79,7 +75,14 @@ const ExpertCompleteDetail = () => {
         toast.error("Phone number must be 10 digits.");
         return false;
       }
-    }
+      
+      // Check if email is valid
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      if (!emailRegex.test(userData.personalInfo.recoveryEmail)) {
+        toast.error("Please provide a valid email address.");
+        return false;
+      }
+  }
 
     if (stepNo === 2) {
       if (userData.educationalInfo.length === 0) {
@@ -100,31 +103,18 @@ const ExpertCompleteDetail = () => {
 
     if (stepNo === 4) {
       const {
-        certifications,
+        projects,
         publications,
-        languagesKnown,
       } = userData.additionalInputs;
       if (
-        certifications.length === 0 ||
-        publications.length === 0 ||
-        languagesKnown.length === 0
+        projects.length === 0 ||
+        publications.length === 0
       ) {
         toast.error(
           "Please add at least one certification, publication, or language."
         );
         return false;
       }
-    }
-
-    if (stepNo === 5) {
-      const { professionalProfiles, professionalAffiliations } = userData;
-    //   if (
-    //     professionalProfiles.length === 0 ||
-    //     professionalAffiliations.length === 0
-    //   ) {
-    //     toast.error("Please add at least one professional profile or affiliation.");
-    //     return false;
-    //   }
     }
 
     return true;
@@ -142,6 +132,9 @@ const ExpertCompleteDetail = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateStep()) {
+      return;
+    }
 
     toast.success("Details submitted successfully!");
     console.log("Submitted Data:", userData);
@@ -184,12 +177,6 @@ const ExpertCompleteDetail = () => {
         )}
         {stepNo === 4 && (
           <ExpertAdditionalInputs
-            userData={userData}
-            setUserData={setUserData}
-          />
-        )}
-        {stepNo === 5 && (
-          <ExpertProfessionalInputs
             userData={userData}
             setUserData={setUserData}
           />

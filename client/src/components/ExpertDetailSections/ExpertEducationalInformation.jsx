@@ -74,7 +74,7 @@ const ExpertEducationalInformation = ({ userData, setUserData }) => {
   return (
     <>
       <h1 className="text-2xl font-semibold text-[#0077b6]">
-        2. Educational Information
+        2. Qualification Information
       </h1>
       <div className="flex flex-col gap-5">
         {/* Education Entry Form */}

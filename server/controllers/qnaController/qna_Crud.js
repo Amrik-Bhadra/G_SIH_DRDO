@@ -35,7 +35,6 @@ const createQuestion = asyncHandler(async (req, res) => {
       options,
     });
 
-    await 
   } catch (error) {
     console.log("Error creating the Question", error);
     res.status(500).json({ message: "Error creating the Question" });

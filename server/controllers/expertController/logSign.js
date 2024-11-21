@@ -71,29 +71,22 @@ const createExpert = asyncHandler(async (req, res) => {
         phone: "NA",
       },
       designation: "NA",
-      field: "NA",
       expertProfile: {
         yearsOfExperience: 0,
-        educationDetails: [],
+        qualification: [],
         criticalInputs: {
           resume: "NA",
           skills: [],
           expertise: [],
         },
         additionalInputs: {
-          certifications: [],
-          portfolioLinks: [],
           publications: [],
-          languagesKnown: [],
-          professionalProfiles: [],
-          professionalAffiliations: [],
-          highestQualification: [],
+          projects
         },
         approachAssessment: {
           problemSolvingApproach: 0,
           decisionMakingStyle: 0,
           creativityAndInnovation: 0,
-          analyticalDepth: 0,
           analyticalDepth: 0,
           collaborationPreference: 0,
         },
@@ -120,10 +113,12 @@ const createExpert = asyncHandler(async (req, res) => {
 const randomOtpGenerator = async () => {
   return Math.floor(1000 + Math.random() * 9000);
 };
+
 // PUBLIC ROUTE
 // http://localhost:8000/api/expert/signin
 const loginExpert = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
   try {
     if (!email || !password) {
       return res.status(400).json({
@@ -133,7 +128,7 @@ const loginExpert = asyncHandler(async (req, res) => {
     }
 
     const findExistingUser = await Expert.findOne({
-      "contactInformation.email": email,
+      "personalDetails.contact.email": email,
     });
 
     if (!findExistingUser) {
@@ -145,7 +140,7 @@ const loginExpert = asyncHandler(async (req, res) => {
 
     const isPasswordMatch = await bcrypt.compare(
       password,
-      findExistingUser.password
+      findExistingUser.personalDetails.password
     );
     if (!isPasswordMatch) {
       return res.status(401).json({
@@ -154,9 +149,9 @@ const loginExpert = asyncHandler(async (req, res) => {
       });
     }
 
-    if (findExistingUser.twoFactorAuthentication.twoFacAuth) {
+    if (findExistingUser.twoFactorAuth.enabled) {
       const twoFACode = await randomOtpGenerator();
-      findExistingUser.twoFactorAuthentication.code = twoFACode;
+      findExistingUser.twoFactorAuth.code = twoFACode;
       await findExistingUser.save();
 
       const sender = process.env.appEmail;
@@ -196,8 +191,8 @@ const loginExpert = asyncHandler(async (req, res) => {
     const token = jwt.sign(
       {
         id: findExistingUser._id,
-        email: findExistingUser.contactInformation.email,
-        role: findExistingUser.role,
+        email: findExistingUser.personalDetails.contact.email,
+        role: "Expert",
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
@@ -237,8 +232,8 @@ const TwoFactVerification = asyncHandler(async (req, res) => {
     }
 
     const user = await Expert.findOne({
-      "contactInformation.email": email,
-      "twoFactorAuthentication.code": twoFACode,
+      "personalDetails.contact.email": email,
+      "twoFactorAuth.code": twoFACode,
     });
 
     if (!user) {
@@ -248,14 +243,14 @@ const TwoFactVerification = asyncHandler(async (req, res) => {
       });
     }
 
-    user.twoFactorAuthentication.code = null;
+    user.twoFactorAuth.code = null; // Clear the 2FA code after successful verification
     await user.save();
 
     const token = jwt.sign(
       {
         id: user._id,
-        email: user.contactInformation.email,
-        role: user.role,
+        email: user.personalDetails.contact.email,
+        role: "Expert",
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
@@ -294,13 +289,14 @@ const signoutExpert = asyncHandler(async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.error("Error signout expert :-: ", error);
+    console.error("Error signing out expert:", error);
     res.status(500).json({
-      message: "Error signout expert",
+      message: "Error signing out expert",
       success: false,
     });
   }
 });
+
 
 module.exports = {
   createExpert,

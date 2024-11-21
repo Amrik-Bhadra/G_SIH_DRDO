@@ -2,9 +2,9 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
+// if (!fs.existsSync(uploadDir)) {
+//     fs.mkdirSync(uploadDir, { recursive: true });
+// }
 var uploadDir;
 
 // Multer configuration

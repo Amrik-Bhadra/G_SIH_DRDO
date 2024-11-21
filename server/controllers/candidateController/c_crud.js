@@ -36,6 +36,18 @@ const allCandidates = asyncHandler(async (req, res) => {
 const updateCandidate = asyncHandler(async (req, res) => {
   const candidateId = req.params.id;
   const candidateData = req.body;
+
+  console.log("Candidate ID to update:", candidateId);
+  console.log("Data received for update:", candidateData);
+
+  // Validate the candidateId
+  if (!mongoose.Types.ObjectId.isValid(candidateId)) {
+    return res.status(400).json({
+      message: "Invalid candidate ID",
+      success: false,
+    });
+  }
+
   try {
     // Prevent password updates directly here
     if (candidateData.password) {
@@ -45,7 +57,7 @@ const updateCandidate = asyncHandler(async (req, res) => {
     const candidate = await Candidate.findByIdAndUpdate(
       candidateId,
       { $set: candidateData },
-      { new: true }
+      { new: true } // Return updated document
     );
 
     if (!candidate) {
@@ -55,16 +67,19 @@ const updateCandidate = asyncHandler(async (req, res) => {
       });
     }
 
+    console.log("Updated candidate data:", candidate);
+
     res.status(200).json({
       message: "Candidate updated successfully",
       success: true,
       data: candidate,
     });
   } catch (error) {
-    console.log(`Error updating candidate with ID ${candidateId} :-: \n\n`, error);
-    res.status(500).json({ message: "Error updating candidate" });
+    console.error(`Error updating candidate with ID ${candidateId}:`, error);
+    res.status(500).json({ message: "Error updating candidate", success: false });
   }
 });
+
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/candidate/find/:id

@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const validator = require("../controllers/localController/validator");
+// const { uploadFile, getFile } = require("../controllers/localController/fileController");
+const upload = require("../db/uploadconfig")
+
 const {
   forgotPassword_email_sender,
   otpVerification,
@@ -10,6 +13,10 @@ const {
   TwoFactVerification,
 } = require("../controllers/expertController/logSign");
 const apiLimiter = require("../middleware/apiLimiter");
+
+//File Routes
+// router.post("/upload", upload.single("file"), uploadFile);
+// router.get("/:id", getFile);
 
 router.get("/validate", validator);
 

@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import {
   TextField,
-  Button,
-  IconButton,
-  Typography,
-  Tooltip,
   FormControl,
   Select,
   MenuItem,
@@ -49,10 +45,10 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
       }));
       return false;
     }
-    if (age < 18 || age > 120) {
+    if (age < 18 || age > 100) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        age: "Age must be between 18 and 120",
+        age: "Age must be between 18 and 100",
       }));
       return false;
     }
@@ -237,7 +233,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
           />
           <TextField
             id="outlined-field"
-            label="Field"
+            label="Domain"
             type="text"
             required
             name="field"

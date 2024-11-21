@@ -108,7 +108,7 @@ const ExpertCriticalSection = ({ userData, setUserData }) => {
         {/* Expertise Input */}
         <div className="w-full">
           <Typography variant="body1" gutterBottom>
-            Add Areas of Expertise
+            Field of Expertise
           </Typography>
           <div className="flex gap-3">
             <TextField

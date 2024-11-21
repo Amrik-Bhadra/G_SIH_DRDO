@@ -5,12 +5,11 @@ import CandidatePersonalInformation from "../../components/CandidateDetailSectio
 import CandidateEducationalInformation from "../../components/CandidateDetailSections/CandidateEducationalInformation";
 import CandidateCriticalSection from "../../components/CandidateDetailSections/CandidateCriticalSection";
 import CandidateAdditionalInputs from "../../components/CandidateDetailSections/CandidateAdditionalInputs";
-import CandidateProfessionalInputs from "../../components/CandidateDetailSections/CandidateProfessionalInputs";
 import { useNavigate } from "react-router-dom";
 
 const CandidateCompleteDetail = () => {
   const mini = 1;
-  const maxi = 5;
+  const maxi = 4;
   const navigate = useNavigate();
   const [stepNo, setStepNo] = useState(1);
   const [userData, setUserData] = useState({
@@ -32,16 +31,14 @@ const CandidateCompleteDetail = () => {
     educationalInfo: [],
     criticalInputs: {
       resume: "",
+      yearsOfExperience: "",
       skills: [],
-      experience: [],
+      expertise: [],
     },
     additionalInputs: {
-      certifications: [],
+      projects: [],
       publications: [],
-      languagesKnown: [],
     },
-    professionalProfiles: [],
-    hobbies: [],
   });
 
   const validateStep = () => {
@@ -108,40 +105,28 @@ const CandidateCompleteDetail = () => {
     }
 
     if (stepNo === 3) {
-      const { resume, skills, experience } = userData.criticalInputs;
-      if (!resume || skills.length === 0 || experience.length === 0) {
+      const { resume, yearsOfExperience, skills, expertise } = userData.criticalInputs;
+      if (!resume || !yearsOfExperience || skills.length === 0 || expertise.length === 0) {
         toast.error(
-          "Please upload your resume, add at least one skill, and specify an area of expertise."
+          "Please upload your resume, select years of experience, add at least one skill, and specify an area of expertise."
         );
         return false;
       }
     }
+    
 
     if (stepNo === 4) {
       const {
-        certifications,
+        projects,
         publications,
-        languagesKnown,
       } = userData.additionalInputs;
       if (
-        certifications.length === 0 ||
-        publications.length === 0 ||
-        languagesKnown.length === 0
+        projects.length === 0 ||
+        publications.length === 0
       ) {
         toast.error(
           "Please add at least one certification, publication, or language."
         );
-        return false;
-      }
-    }
-
-    if (stepNo === 5) {
-      const { professionalProfiles, hobbies } = userData;
-      if (
-        professionalProfiles.length === 0 ||
-        hobbies.length === 0
-      ) {
-        toast.error("Please add at least one professional profile or hobby.");
         return false;
       }
     }
@@ -161,7 +146,6 @@ const CandidateCompleteDetail = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!validateStep()) {
       return;
     }
@@ -207,12 +191,6 @@ const CandidateCompleteDetail = () => {
         )}
         {stepNo === 4 && (
           <CandidateAdditionalInputs
-            userData={userData}
-            setUserData={setUserData}
-          />
-        )}
-        {stepNo === 5 && (
-          <CandidateProfessionalInputs
             userData={userData}
             setUserData={setUserData}
           />

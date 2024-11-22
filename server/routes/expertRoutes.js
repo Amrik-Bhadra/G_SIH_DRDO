@@ -5,6 +5,7 @@ const {
   findExpert,
   updateExperts,
   delExpert,
+  findExpertByEmail,
 } = require("../controllers/expertController/expert_Crud");
 const authenticate = require("../middleware/authenticate");
 const {
@@ -18,6 +19,7 @@ const multiRoleAccess = require("../middleware/roleBasedAccess");
 //  protected..Routes>
 router.get("/all", apiLimiter, authenticate, allExperts);
 router.get("/get/:id", apiLimiter, authenticate, findExpert);
+router.get("/get/email/:id", apiLimiter, findExpertByEmail);
 router.post(
   "/update/:id",
   apiLimiter,

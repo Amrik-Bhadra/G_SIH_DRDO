@@ -2,16 +2,16 @@ import React from "react";
 
 function NotificationUserCard() {
   return (
-    <div className="w-full h-20 flex border-b border-slate-400 gap-1">
+    <div className="w-full h-20 flex border-b border-slate-200 gap-1">
       <div className="w-[20%] h-full flex justify-center items-center p-2">
         <img
-          className=" h-[70px] rounded-full"
+          className=" md:h-full w-fit rounded-full"
           src="https://media.craiyon.com/2024-03-28/1seVscwMQ86TlE7UFJloCw.webp"
           alt=""
         />
       </div>
       <div className="w-[55%] p-2 h-full flex justify-center items-center">
-        <p>thoeidn dkfnsdf slkdfnslkdf kdslfnslkdfn lsdkfnsl dfns dlfksndf </p>
+        <p>Expert ka Dashboard </p>
       </div>
       <div className="w-[25%] h-full p-2 flex justify-center items-center">
         <button className="bg-slate-900 text-white px-3 py-1.5 text-xs rounded-2xl">

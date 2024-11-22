@@ -33,6 +33,7 @@ const panelSchema = new mongoose.Schema({
     required: true,
   },
   noOfCandidates: {
+    // as per rohan agrawal
     type: Number,
     required: true,
   },

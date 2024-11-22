@@ -3,8 +3,14 @@ import { Button } from "@mui/material";
 import { toast } from "react-hot-toast";
 import CandidatePersonalInformation from "../../components/CandidateDetailSections/CandidatePersonalInformation";
 import CandidateEducationalInformation from "../../components/CandidateDetailSections/CandidateEducationalInformation";
+import CandidateCriticalSection from "../../components/CandidateDetailSections/CandidateCriticalSection";
+import CandidateAdditionalInputs from "../../components/CandidateDetailSections/CandidateAdditionalInputs";
+import { useNavigate } from "react-router-dom";
 
 const CandidateCompleteDetail = () => {
+  const mini = 1;
+  const maxi = 4;
+  const navigate = useNavigate();
   const [stepNo, setStepNo] = useState(1);
   const [userData, setUserData] = useState({
     personalInfo: {
@@ -23,6 +29,16 @@ const CandidateCompleteDetail = () => {
       address: "",
     },
     educationalInfo: [],
+    criticalInputs: {
+      resume: "",
+      yearsOfExperience: "",
+      skills: [],
+      expertise: [],
+    },
+    additionalInputs: {
+      projects: [],
+      publications: [],
+    },
   });
 
   const validateStep = () => {
@@ -88,6 +104,33 @@ const CandidateCompleteDetail = () => {
       }
     }
 
+    if (stepNo === 3) {
+      const { resume, yearsOfExperience, skills, expertise } = userData.criticalInputs;
+      if (!resume || !yearsOfExperience || skills.length === 0 || expertise.length === 0) {
+        toast.error(
+          "Please upload your resume, select years of experience, add at least one skill, and specify an area of expertise."
+        );
+        return false;
+      }
+    }
+    
+
+    if (stepNo === 4) {
+      const {
+        projects,
+        publications,
+      } = userData.additionalInputs;
+      if (
+        projects.length === 0 ||
+        publications.length === 0
+      ) {
+        toast.error(
+          "Please add at least one certification, publication, or language."
+        );
+        return false;
+      }
+    }
+
     return true;
   };
 
@@ -95,6 +138,24 @@ const CandidateCompleteDetail = () => {
     if (validateStep()) {
       setStepNo(stepNo + 1);
     }
+  };
+
+  const handlePrevious = () => {
+    setStepNo(stepNo - 1);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validateStep()) {
+      return;
+    }
+
+    toast.success("Details submitted successfully!");
+    console.log("Submitted Data:", userData);
+
+    // Redirect to the QuizPage
+    navigate("/register/candidate/quiz");
+
   };
 
   return (
@@ -108,6 +169,7 @@ const CandidateCompleteDetail = () => {
           maxHeight: "800px",
           overflowY: "auto",
         }}
+        onSubmit={handleSubmit}
       >
         {stepNo === 1 && (
           <CandidatePersonalInformation
@@ -121,24 +183,45 @@ const CandidateCompleteDetail = () => {
             setUserData={setUserData}
           />
         )}
+        {stepNo === 3 && (
+          <CandidateCriticalSection
+            userData={userData}
+            setUserData={setUserData}
+          />
+        )}
+        {stepNo === 4 && (
+          <CandidateAdditionalInputs
+            userData={userData}
+            setUserData={setUserData}
+          />
+        )}
 
         <div className="flex gap-3">
-          {stepNo > 1 && (
+          {stepNo > mini && (
             <Button
               variant="outlined"
               sx={{ width: "6rem", padding: "0.5rem" }}
-              onClick={() => setStepNo(stepNo - 1)}
+              onClick={handlePrevious}
             >
               Previous
             </Button>
           )}
-          {stepNo < 4 && (
+          {stepNo < maxi && (
             <Button
               variant="contained"
               sx={{ width: "6rem", padding: "0.5rem" }}
               onClick={handleNext}
             >
               Next
+            </Button>
+          )}
+          {stepNo === maxi && (
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ width: "6rem", padding: "0.5rem" }}
+            >
+              Submit
             </Button>
           )}
         </div>

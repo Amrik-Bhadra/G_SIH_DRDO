@@ -14,7 +14,7 @@ import {
 import { Delete } from "@mui/icons-material";
 import { toast } from "react-hot-toast";
 
-const ExpertAdditionalInputs = ({ userData, setUserData }) => {
+const CandidateAdditionalInputs = ({ userData, setUserData }) => {
   const [projectEntry, setProjectEntry] = useState({
     title: "",
     description: "",
@@ -225,4 +225,4 @@ const ExpertAdditionalInputs = ({ userData, setUserData }) => {
   );
 };
 
-export default ExpertAdditionalInputs;
+export default CandidateAdditionalInputs;

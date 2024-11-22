@@ -5,7 +5,7 @@ import NotificationUserCard from "./NotificationUserCard";
 
 function Notifications() {
   return (
-    <div className="w-full h-full pl-5 pr-5 border-2 border-slate-200 shadow-md rounded-2xl p-2 flex flex-col justify-start items-center">
+    <div className="w-full h-full pl-5 pr-5 bg-white border-2 border-slate-200 shadow-md rounded-2xl p-2 flex flex-col justify-start items-center">
       <div className="w-full h-[20%] flex justify-between items-center p-2">
         <p className="text-xl -tracking-tight font-semibold text-slate-800">
           Notifications

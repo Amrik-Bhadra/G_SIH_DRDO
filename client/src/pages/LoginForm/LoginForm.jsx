@@ -9,10 +9,12 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
+import axios from "axios";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,11 +45,32 @@ const LoginForm = () => {
     return true;
   };
 
-  const handleLogin = (event) => {
+  const base_url = import.meta.env.VITE_BASE_URL;
+  const handleLogin = async (event) => {
     event.preventDefault();
-    if (validateForm()) {
-      toast.success("Login successful!");
-      // Add login logic here (e.g., API call)
+    try {
+      const user = await axios.post(
+        `${base_url}/api/auth`,
+        { email, password },
+        {
+          withCredentials: true,
+        }
+      );
+      if (user && user?.data?.role) {
+        console.log(user);
+        if (validateForm()) {
+          toast.success("Login successful!");
+          if (user?.data?.role === "Expert") {
+            navigate("/expert/dashboard");
+          } else {
+            navigate("/candidate/dashboard");
+          }
+        }
+      }
+    } catch (error) {
+      toast.error("Unable to make a Login!");
+      setEmail("");
+      setPassword("");
     }
   };
 

@@ -1,30 +1,30 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const Expert = require("../../model/expert");
 const Candidate = require("../../model/candidate");
 const htmlBody = require("../../assets/htmlBodies/TwoFactorAuth");
 const email_sender = require("./emailSender");
 
-const randomOtpGenerator = async () => {
+const randomOtpGenerator = () => {
   return Math.floor(1000 + Math.random() * 9000);
 };
 
 const masterAuth = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res.status(400).json({
-        message: "Email and Password are required",
+        message: "Email and Password are required.",
         success: false,
       });
     }
 
-    const findExistingExpert = await Expert.findOne({
-      "personalDetails.contact.email": email,
-    });
-    const findExistingCandidate = await Candidate.findOne({
-      "personalDetails.contact.email": email,
-    });
+    const [findExistingExpert, findExistingCandidate] = await Promise.all([
+      Expert.findOne({ "personalDetails.contact.email": email }),
+      Candidate.findOne({ "personalDetails.contact.email": email }),
+    ]);
 
     if (!findExistingExpert && !findExistingCandidate) {
       return res.status(404).json({
@@ -33,47 +33,23 @@ const masterAuth = asyncHandler(async (req, res) => {
       });
     }
 
-    let isPasswordMatch = false;
+    const user = findExistingExpert || findExistingCandidate;
+    const isPasswordMatch = await bcrypt.compare(
+      password,
+      user.personalDetails.password
+    );
 
-    if (findExistingExpert) {
-      isPasswordMatch = await bcrypt.compare(
-        password,
-        findExistingExpert.personalDetails.password
-      );
-      if (!isPasswordMatch) {
-        return res.status(401).json({
-          message: "Incorrect Expert password. Please try again.",
-          success: false,
-        });
-      }
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        message: `Incorrect ${findExistingExpert ? "Expert" : "Candidate"} password. Please try again.`,
+        success: false,
+      });
     }
 
-    if (findExistingCandidate) {
-      isPasswordMatch = await bcrypt.compare(
-        password,
-        findExistingCandidate.personalDetails.password
-      );
-      if (!isPasswordMatch) {
-        return res.status(401).json({
-          message: "Incorrect Candidate password. Please try again.",
-          success: false,
-        });
-      }
-    }
-
-    if (
-      (findExistingCandidate && findExistingCandidate.twoFactorAuth?.enabled) ||
-      (findExistingExpert && findExistingExpert.twoFactorAuth?.enabled)
-    ) {
+    if (user.twoFactorAuth?.enabled) {
       const twoFACode = randomOtpGenerator();
-
-      if (findExistingCandidate) {
-        findExistingCandidate.twoFactorAuth.method = twoFACode;
-        await findExistingCandidate.save();
-      } else if (findExistingExpert) {
-        findExistingExpert.twoFactorAuth.method = twoFACode;
-        await findExistingExpert.save();
-      }
+      user.twoFactorAuth.method = twoFACode;
+      await user.save();
 
       const sender = process.env.appEmail;
       const receiver = email;
@@ -89,6 +65,7 @@ const masterAuth = asyncHandler(async (req, res) => {
           text,
           htBody
         );
+
         if (!send2FACode) {
           return res.status(500).json({
             message: "Unable to send the two-factor authentication code.",
@@ -103,27 +80,39 @@ const masterAuth = asyncHandler(async (req, res) => {
       } catch (err) {
         console.error("Error sending 2FA code:", err);
         return res.status(500).json({
-          message: "Error during 2FA process.",
+          message: "Error during the 2FA process.",
           success: false,
         });
       }
     }
 
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.personalDetails.contact.email,
+        role: user.personalDetails.role,
+      },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1800000, // 30 minutes
+      sameSite: "Strict",
+    });
+
     return res.status(200).json({
       message: "Login successful.",
       success: true,
-      role: findExistingCandidate
-        ? findExistingCandidate.personalDetails.role
-        : findExistingExpert.personalDetails.role,
-      response: findExistingCandidate
-        ? findExistingCandidate
-        : findExistingExpert,
+      role: user.personalDetails.role,
+      response: user,
     });
   } catch (error) {
-    console.error("Error Making a Master Login", error);
+    console.error("Error making a master login:", error);
     res
       .status(500)
-      .json({ message: "Error Making Master login", success: false });
+      .json({ message: "Error making master login.", success: false });
   }
 });
 

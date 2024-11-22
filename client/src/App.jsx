@@ -27,7 +27,10 @@ const routes = createBrowserRouter([
     path: "/register/candidatecompletedetail",
     element: <CandidateCompleteDetail />,
   },
-  { path: "/register/expertcompletedetail/:id", element: <ExpertCompleteDetail /> },
+  {
+    path: "/register/expertcompletedetail/:id",
+    element: <ExpertCompleteDetail />,
+  },
   { path: "/register/candidate/quiz", element: <CandidateQuizRedirect /> },
   { path: "/register/expert/quiz", element: <ExpertQuizRedirect /> },
   { path: "/candidate/dashboard", element: <Candidatedashboard /> },

@@ -8,7 +8,7 @@ const RacHeadDashboard = () => {
   
 
   return (
-    <section className="h-screen w-screen flex bg-[#f4f4f4]">
+    <section className="h-screen w-screen flex bg-[#f6f6f6]">
       {/* Sidebar */}
       <SideNavbar/>
 

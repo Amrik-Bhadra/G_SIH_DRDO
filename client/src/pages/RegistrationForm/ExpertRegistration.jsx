@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-require("dotenv").config();
 import logo from "../../assets/images/drdo-logo.svg";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
@@ -29,6 +28,7 @@ const ExpertRegistration = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const base_url = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -40,13 +40,11 @@ const ExpertRegistration = () => {
     event.preventDefault();
   };
 
-  // Validate password and calculate strength
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
 
     if (!value) {
-      // Reset everything if the password field is cleared
       setPasswordChecks({
         isLength: false,
         hasUpper: false,
@@ -76,7 +74,7 @@ const ExpertRegistration = () => {
     else setPasswordStrength("Weak");
   };
 
-  const handleRegister = (event) => {
+  const handleExpertRegister = async (event) => {
     event.preventDefault();
 
     if (!email) {
@@ -96,37 +94,40 @@ const ExpertRegistration = () => {
       return;
     }
 
-    toast.success("Registration successful!");
-    navigate("/register/expertcompletedetail");
-  };
-
-  const handleExpertRegister = async () => {
-    if (!email) {
-      toast.error("Email is required!");
-      return;
-    }
-    if (!password || !confirmPassword) {
-      toast.error("All fields are required!");
-      return;
-    }
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match!");
-      return;
-    }
-    if (passwordStrength !== "Strong") {
-      toast.error("Password is not strong enough!");
-      return;
-    }
+    console.log("Email - ", email);
+    console.log("Password - ", password);
+    console.log(base_url);
 
     try {
-      await axios.post(`${process.env.BASE_URL}/api/expert/signup`, {
-        email,
-        password,
-      });
-      toast.success("Expert registration successful!");
-      navigate("/register/expertcompletedetail");
+      const response = await axios.post(
+        `${base_url}/api/expert/signup`,
+        { email, password },
+        { withCredentials: true }
+      );
+
+      // Check if the registration was successful
+      if (response.data?.success) {
+        const userId = response.data?.data?._id; // Assuming response.data.data contains the user object
+        if (userId) {
+          console.log("User ID: ", userId); // Log the user ID
+          toast.success("Expert registration successful!");
+          navigate(`/register/expertcompletedetail/${userId}`);
+        } else {
+          toast.error("User ID not found after registration.");
+        }
+      } else {
+        toast.error(
+          response.data?.message || "Registration failed. Please try again."
+        );
+      }
     } catch (err) {
-      toast.error("Registration failed. Please try again.");
+      console.error("Registration Error: ", err);
+
+      // Handle different types of errors, such as network issues
+      const errorMessage =
+        err.response?.data?.message ||
+        "Registration failed due to a network error.";
+      toast.error(errorMessage);
     }
   };
 
@@ -140,7 +141,7 @@ const ExpertRegistration = () => {
         <div className="form-header text-center mb-5">
           <h1 className="text-3xl font-semibold">Register as Expert!</h1>
         </div>
-        <form className="space-y-5" onSubmit={handleRegister}>
+        <form className="space-y-5" onSubmit={handleExpertRegister}>
           {/* Email Field */}
           <TextField
             id="outlined-email-input"

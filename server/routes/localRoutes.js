@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const validator = require("../controllers/localController/validator");
 // const { uploadFile, getFile } = require("../controllers/localController/fileController");
-const upload = require("../db/uploadconfig")
+const upload = require("../db/uploadconfig");
 
 const {
   forgotPassword_email_sender,
@@ -13,6 +13,7 @@ const {
   TwoFactVerification,
 } = require("../controllers/expertController/logSign");
 const apiLimiter = require("../middleware/apiLimiter");
+const { masterAuth } = require("../controllers/localController/login");
 
 //File Routes
 // router.post("/upload", upload.single("file"), uploadFile);
@@ -27,5 +28,8 @@ router.post("/newPassword/:email", newPasswordMaking);
 
 // 2FA Authentication Route
 router.post("/2fa/verify/:id", apiLimiter, TwoFactVerification);
+
+// Master-Auth-Login
+router.post("/auth", apiLimiter, masterAuth);
 
 module.exports = router;

@@ -52,6 +52,11 @@ const expertSchema = new mongoose.Schema({
         required: true,
       },
     },
+    role: {
+      type: String,
+      required: true,
+      default: "Expert",
+    },
   },
   fieldOfExpertise: {
     domain: {
@@ -203,173 +208,10 @@ const expertSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  twoFactorAuth: {
+    enabled: { type: Boolean, required: true, default: false },
+    method: { type: String, required: true },
+  },
 });
 
 module.exports = mongoose.model("Expert", expertSchema);
-
-
-
-// const mongoose = require("mongoose");
-
-// const expertSchema = new mongoose.Schema({
-//   name: {
-//     firstname: {
-//       type: String,
-//       required: true,
-//     },
-//     middlename: {
-//       type: String,
-//       required: true,
-//     },
-//     lastname: {
-//       type: String,
-//       required: true,
-//     },
-//   },
-//   password: {
-//     type: String,
-//     required: true,
-//   },
-//   gender:{
-//     type:String,
-//     required:true
-//   },
-//   twoFactorAuthentication: {
-//     twoFacAuth: {
-//       type: Boolean,
-//       default: true,
-//     },
-//     code: {
-//       type: String,
-//     },
-//   },
-//   role: { type: String, default: "Expert" },
-//   otp: { type: String },
-//   otpExpiry: { type: Date },
-//   contactInformation: {
-//     email: {
-//       type: String,
-//       required: true,
-//     },
-//     phone: {
-//       type: String,
-//       required: true,
-//     },
-//   },
-//   designation: {
-//     type: String,
-//     required: true,
-//   },
-//   expertProfile: {
-//     yearsOfExperience: {
-//       type: Number,
-//       required: true,
-//     },
-//     qualification: [
-//       {
-//         degree: {
-//           type: String,
-//           required: true,
-//         },
-//         institution: {
-//           type: String,
-//           required: true,
-//         },
-//         yearOfCompletion: {
-//           type: Number,
-//           required: true,
-//         },
-//       },
-//     ],
-//     criticalInputs: {
-//         resume: {
-//           filename: {
-//               type: String,
-//               required: true,  // Required validation for filename
-//           },
-//           fileType: {
-//               type: String,
-//               required: true,  // Required validation for file type
-//           },
-//           data: {
-//               type: Buffer,
-//               required: true,  // Store file data in binary format
-//           }
-//       },
-//       skills: [
-//         {
-//           type: String,
-//         },
-//       ],
-//       expertise: [
-//         {
-//           type: String,
-//         },
-//       ],
-//     },
-//     additionalInputs: {
-//       publications: [
-//         {
-//           title: {
-//             type: String,
-//             required: true,
-//           },
-//           link: {
-//             type: String,
-//             required: true,
-//           },
-//           description: {
-//             type: String,
-//             required: true,
-//           },
-//           skills:{
-//             type: String,
-//             required:true,
-//           }
-//         },
-//       ],
-//       projects:[
-//         {
-//           title: {
-//             type: String,
-//             required: true,
-//           },
-//           description:{
-//             type: String,
-//             required: true,
-//           },
-//           skills:{
-//             type: String,
-//             required:true,
-//           }
-//         }
-//       ]
-//     },
-//     approachAssessment: {
-//       problemSolvingApproach: {
-//         type: Number,
-//       },
-//       decisionMakingStyle: {
-//         type: Number,
-//       },
-//       creativityAndInnovation: {
-//         type: Number,
-//       },
-//       analyticalDepth: {
-//         type: Number,
-//       },
-//       collaborationPreference: {
-//         type: Number,
-//       },
-//     },
-//   },
-//   expertScore: {
-//     type: Number,
-//   },
-//   availiability:{
-//     type: Boolean,
-//     default: true,
-//   },
-// });
-
-// module.exports = mongoose.model("Expert", expertSchema);

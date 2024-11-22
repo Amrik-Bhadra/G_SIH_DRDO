@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Expert = require("../../model/expert");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");  
+const jwt = require("jsonwebtoken");
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/expert/all
@@ -106,6 +106,45 @@ const findExpert = asyncHandler(async (req, res) => {
 });
 
 // PRIVATE ROUTE
+// http://localhost:8000/api/expert/find/:email
+const findExpertByEmail = asyncHandler(async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  try {
+    if (!id) {
+      return res.status(400).json({
+        message: "Invalid or missing Expert ID",
+        success: false,
+      });
+    }
+    const expert = await Expert.findOne(
+      {
+        "personalDetails.contact.email": id,
+      },
+      {
+        "personalDetails.password": 0,
+        "personalDetails.idProof": 0,
+      }
+    );
+
+    if (!expert) {
+      return res.status(404).json({
+        message: `Unable to fetch the expert with email :-: ${id}`,
+        success: false,
+      });
+    }
+    res.status(200).json({
+      message: "Expert fetched successfully",
+      success: true,
+      data: expert,
+    });
+  } catch (error) {
+    console.log(`Error fetching experts with ${id} :-:\n\n `, error);
+    res.status(500).json({ message: "Error fetching experts" });
+  }
+});
+
+// PRIVATE ROUTE
 // http://localhost:8000/api/expert/del/:id
 const delExpert = asyncHandler(async (req, res) => {
   const expertId = req.params.id;
@@ -132,4 +171,5 @@ module.exports = {
   findExpert,
   updateExperts,
   delExpert,
+  findExpertByEmail,
 };

@@ -5,8 +5,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const email_sender = require("../localController/emailSender");
 const htmlBody = require("../../assets/htmlBodies/TwoFactorAuth");
-const fs = require('fs');
-const multer = require('multer')
+const fs = require("fs");
+const multer = require("multer");
 
 const upload = multer();
 
@@ -14,7 +14,7 @@ const upload = multer();
 // http://localhost:8000/api/expert/signup
 const createExpert = asyncHandler(async (req, res) => {
   try {
-    const { email, password, twoFactorCode } = req.body;
+    const { email, password, twoFactorCode = false } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({
@@ -24,11 +24,11 @@ const createExpert = asyncHandler(async (req, res) => {
     }
 
     const existingExpert = await Expert.findOne({
-      $or: [{ "contactInformation.email": email }],
+      $or: [{ "personalDetails.contact.email": email }],
     });
 
     const existingCandidate = await candidate.findOne({
-      $or: [{ "contactInformation.email": email }],
+      $or: [{ "personalDetails.contact.email": email }],
     });
 
     if (existingExpert) {
@@ -56,42 +56,62 @@ const createExpert = asyncHandler(async (req, res) => {
     }
 
     const newExpert = new Expert({
-      name: {
-        firstname: "NA",
-        middlename: "NA",
-        lastname: "NA",
+      personalDetails: {
+        name: {
+          firstName: "NA",
+          middleName: "NA",
+          lastName: "NA",
+        },
+        gender: "NA",
+        age: 0,
+        contact: {
+          email: email,
+          phoneNo: "NA",
+          recoveryEmail: "NA",
+        },
+        password: bcrypt.hashSync(password, 10),
+        idProof: {
+          type: "NA",
+          number: "NA",
+        },
+        role: "Expert",
       },
-      twoFactorAuthentication: {
-        twoFacAuth: twoFactorCode,
-        code: "NA",
-      },
-      password: bcrypt.hashSync(password, 10),
-      contactInformation: {
-        email,
-        phone: "NA",
-      },
-      designation: "NA",
-      expertProfile: {
+      fieldOfExpertise: {
+        domain: "NA",
+        designation: "NA",
+        skills: [],
         yearsOfExperience: 0,
-        qualification: [],
-        criticalInputs: {
-          resume: "NA",
-          skills: [],
-          expertise: [],
-        },
-        additionalInputs: {
-          publications: [],
-          projects
-        },
-        approachAssessment: {
-          problemSolvingApproach: 0,
-          decisionMakingStyle: 0,
-          creativityAndInnovation: 0,
-          analyticalDepth: 0,
-          collaborationPreference: 0,
+        qualifications: [],
+        projects: [],
+        publications: [],
+        resume: {
+          filename: "NA",
+          fileType: "NA",
+          data: "NA",
         },
       },
-      expertScore: 0,
+      availability: true,
+      skillRelevancyScore: {
+        skills: 0,
+        yearsOfExperience: 0,
+        qualifications: 0,
+        researchPapers: 0,
+        projects: 0,
+        totalSkillRelevancyScore: 0,
+      },
+      approachRelevancyScore: {
+        problemSolving: 0,
+        collaboration: 0,
+        decisionMaking: 0,
+        creativity: 0,
+        analyticalDepth: 0,
+        totalApproachRelevancyScore: 0,
+      },
+      finalScore: 0,
+      twoFactorAuth: {
+        enabled: twoFactorCode,
+        method: "NA",
+      },
     });
 
     await newExpert.save();
@@ -151,7 +171,7 @@ const loginExpert = asyncHandler(async (req, res) => {
 
     if (findExistingUser.twoFactorAuth.enabled) {
       const twoFACode = await randomOtpGenerator();
-      findExistingUser.twoFactorAuth.code = twoFACode;
+      findExistingUser.twoFactorAuth.method = twoFACode;
       await findExistingUser.save();
 
       const sender = process.env.appEmail;
@@ -200,13 +220,16 @@ const loginExpert = asyncHandler(async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 3600000, // 1 hour
+      maxAge: 1800000,
       sameSite: "Strict",
     });
 
     return res.status(200).json({
       message: "User successfully logged in.",
       success: true,
+      role: findExistingUser
+        ? findExistingUser?.personalDetails?.role
+        : findExistingUser?.personalDetails?.role,
     });
   } catch (error) {
     console.error("Error logging in expert:", error);
@@ -296,7 +319,6 @@ const signoutExpert = asyncHandler(async (req, res) => {
     });
   }
 });
-
 
 module.exports = {
   createExpert,

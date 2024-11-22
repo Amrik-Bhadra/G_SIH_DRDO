@@ -25,6 +25,7 @@ const candidateSchema = new mongoose.Schema({
             state: { type: String, required: true },
             pinCode: { type: String, required: true }
         },
+        role: { type: String, default: "Candidate" },
     },
     twoFactorAuth: {
         enabled: { type: Boolean, required: true },
@@ -57,7 +58,7 @@ const candidateSchema = new mongoose.Schema({
         {
             title: { type: String, required: true },
             description: { type: String, required: true },
-            skills: [{ type: String, required: true }], 
+            skills: [{ type: String, required: true }],
             link: { type: String, required: false }
         }
     ],

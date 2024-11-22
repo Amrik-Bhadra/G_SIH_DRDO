@@ -6,13 +6,18 @@ const jwt = require("jsonwebtoken");
 const email_sender = require("../localController/emailSender");
 const htmlBody = require("../../assets/htmlBodies/TwoFactorAuth");
 const fs = require('fs');
-const multer = require('multer')
-
-const upload = multer();
+const upload = require('../../db/uploadconfig')
 
 const addCandidate = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
+    // console.log(req.file);
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Resume file is required and should be uploaded correctly.",
+        success: false,
+      });
+    }
 
     if (!email || !password || !req.file) {
       return res.status(400).json({
@@ -47,11 +52,10 @@ const addCandidate = asyncHandler(async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     // Handle resume upload
-    const resumeData = {
-      filename: req.file.originalname,
+    resume = {
+      filename: req.file.filename,
       fileType: req.file.mimetype,
-      data: req.file.buffer,
-    };
+    }
 
     // Create a new candidate with default values
     const newCandidate = new Candidate({
@@ -86,7 +90,7 @@ const addCandidate = asyncHandler(async (req, res) => {
       },
       skills: [],
       areaOfExpertise: [],
-      resume: resumeData,
+      resume: resume,
       yearsOfExperience: 0,
       qualifications: [],
       projects: [],
@@ -144,7 +148,7 @@ const loginCandidate = asyncHandler(async (req, res) => {
     }
 
     const candidate = await Candidate.findOne({
-      "contactInformation.email": email,
+      "personalDetails.contact.email": email,
     });
     if (!candidate) {
       return res.status(404).json({
@@ -153,16 +157,16 @@ const loginCandidate = asyncHandler(async (req, res) => {
       });
     }
 
-    const isPasswordMatch = bcrypt.compareSync(password, candidate.password);
+    const isPasswordMatch = bcrypt.compareSync(password, candidate.personalDetails.password);
     if (isPasswordMatch) {
       const token = jwt.sign(
         {
           id: candidate._id,
-          email: candidate.contactInformation.email,
-          role: candidate.role
+          email: candidate.personalDetails.contact.email,
+          role: candidate.personalDetails.role
         },
         process.env.JWT_SECRET_KEY,
-        {
+        { 
           expiresIn: "1h",
         }
       );

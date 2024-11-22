@@ -27,7 +27,7 @@ const candidateSchema = new mongoose.Schema({
     },
     role: {
       type: String,
-      required: true,
+      default: "Candidate"
     },
   },
   twoFactorAuth: {
@@ -39,7 +39,6 @@ const candidateSchema = new mongoose.Schema({
   resume: {
     filename: { type: String, required: true },
     fileType: { type: String, required: true },
-    data: { type: Buffer, required: true },
   },
   yearsOfExperience: { type: Number, required: true },
   qualifications: [

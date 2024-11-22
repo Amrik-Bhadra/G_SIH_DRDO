@@ -16,6 +16,7 @@ const createExpert = asyncHandler(async (req, res) => {
   try {
     const { email, password, twoFactorCode = false } = req.body;
 
+    console.log(req.body);
     if (!email || !password) {
       return res.status(400).json({
         message: "Email & Password & 2FA are required",

@@ -93,7 +93,7 @@ const findCandidate = asyncHandler(async (req, res) => {
       });
     }
     const candidate = await Candidate.findById(id, {
-      password: 0,
+      personalDetails:{password: 0},
       candidateProfile: {
         additionalInputs: {
           // Remove publications or specific fields if needed

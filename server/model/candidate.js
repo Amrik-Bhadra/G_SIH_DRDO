@@ -1,39 +1,11 @@
 const mongoose = require("mongoose");
 
 const candidateSchema = new mongoose.Schema({
-<<<<<<< HEAD
-    personalDetails: {
-        name: {
-            firstname: { type: String, required: true },
-            middlename: { type: String, required: false },
-            lastname: { type: String, required: true },
-        },
-        gender: { type: String, required: true },
-        age: { type: Number, required: true },
-        contact: {
-            email: { type: String, required: true },
-            phoneNo: { type: String, required: true },
-            recoveryEmail: { type: String, required: false }
-        },
-        password: { type: String, required: true },
-        idProof: {
-            type: { type: String, required: true },
-            number: { type: String, required: true }
-        },
-        permanentAddress: {
-            addressLine: { type: String, required: true },
-            city: { type: String, required: true },
-            state: { type: String, required: true },
-            pinCode: { type: String, required: true }
-        },
-        role: { type: String, default: "Candidate" },
-=======
   personalDetails: {
     name: {
       firstname: { type: String, required: true },
       middlename: { type: String, required: false },
       lastname: { type: String, required: true },
->>>>>>> f0fd49b688e8f017238a3e2a64f72670922aef0a
     },
     gender: { type: String, required: true },
     age: { type: Number, required: true },
@@ -47,49 +19,15 @@ const candidateSchema = new mongoose.Schema({
       type: { type: String, required: true },
       number: { type: String, required: true },
     },
-<<<<<<< HEAD
-    yearsOfExperience: { type: Number, required: true },
-    qualifications: [
-        {
-            degree: { type: String, required: true },
-            institute: { type: String, required: true },
-            yearOfAdmission: { type: Number, required: true },
-            yearOfCompletion: { type: Number, required: true }
-        }
-    ],
-    projects: [
-        {
-            title: { type: String, required: true },
-            description: { type: String, required: true },
-            skillsGained: [{ type: String, required: true }]
-        }
-    ],
-    researchPapers: [
-        {
-            title: { type: String, required: true },
-            description: { type: String, required: true },
-            skills: [{ type: String, required: true }],
-            link: { type: String, required: false }
-        }
-    ],
-    skillRelevancyScore: {
-        skills: { type: Number, required: false },
-        yearsOfExperience: { type: Number, required: false },
-        qualification: { type: Number, required: false },
-        researchPapers: { type: Number, required: false },
-        projects: { type: Number, required: false },
-        total: { type: Number, required: false }
-=======
     permanentAddress: {
       addressLine: { type: String, required: true },
       city: { type: String, required: true },
       state: { type: String, required: true },
       pinCode: { type: String, required: true },
->>>>>>> f0fd49b688e8f017238a3e2a64f72670922aef0a
     },
     role: {
       type: String,
-      required: true,
+      default: "Candidate"
     },
   },
   twoFactorAuth: {
@@ -101,7 +39,6 @@ const candidateSchema = new mongoose.Schema({
   resume: {
     filename: { type: String, required: true },
     fileType: { type: String, required: true },
-    data: { type: Buffer, required: true },
   },
   yearsOfExperience: { type: Number, required: true },
   qualifications: [

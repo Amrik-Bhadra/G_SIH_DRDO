@@ -5,7 +5,7 @@ const {
     allCandidates,
     findCandidate,
     updateCandidate,
-} = require("../controllers/candidateController/c_crud");
+} = require("../controllers/candidateController/candidate_crud");
 
 const {
     addCandidate,
@@ -25,7 +25,7 @@ const multiRoleAccess = require("../middleware/roleBasedAccess");
 const upload = require("../db/uploadconfig"); 
 
 router.get("/all", apiLimiter, authenticate, allCandidates);
-router.get("/get/:id", apiLimiter, authenticate, findCandidate);
+router.get("/find/:id", apiLimiter, authenticate, findCandidate);
 router.post(
     "/update/:id",
     apiLimiter,

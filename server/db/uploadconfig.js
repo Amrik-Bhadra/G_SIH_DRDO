@@ -2,20 +2,30 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// if (!fs.existsSync(uploadDir)) {
-//     fs.mkdirSync(uploadDir, { recursive: true });
-// }
-var uploadDir;
-
 // Multer configuration
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        if(req.body.role == "Candidate"){
-           uploadDir = path.join(__dirname,"../uploads/Candidate/Resume");
-        }else if(req.body.role == "Expert"){
-           uploadDir = path.join(__dirname,"../uploads/Expert/Resume");
+        let uploadDir;
+        console.log(req.body.email);
+        console.log(req.body.role);
+        // Determine upload directory based on role
+        if (req.body.role == "Candidate") {
+            uploadDir = path.join(__dirname, "../uploads/Candidate/Resume");
+            console.log(req.body.role);
+        } else if (req.body.role == "Expert") {
+            uploadDir = path.join(__dirname, "../uploads/Expert/Resume");
+            console.log(req.body.role);
+        } else {
+            return cb(new Error("Invalid role specified")); // Return error for invalid role
         }
-        cb(null, uploadDir); // Files are saved to the "uploads" folder
+
+        // Ensure the directory exists
+        fs.mkdir(uploadDir, { recursive: true }, (err) => {
+            if (err) {
+                return cb(err); // Handle directory creation errors
+            }
+            cb(null, uploadDir);
+        });
     },
     filename: (req, file, cb) => {
         const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
@@ -27,12 +37,13 @@ const fileFilter = (req, file, cb) => {
     // Accept only specific file types (e.g., PDF, DOCX)
     const allowedTypes = /pdf|doc|docx/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+    const mimetype = allowedTypes.test(file.mimetype.toLowerCase());
     if (extname && mimetype) {
         cb(null, true);
     } else {
-        cb(new Error("Only PDF and DOCX files are allowed"));
+        cb(new Error("Only PDF, DOC, and DOCX files are allowed"));
     }
+
 };
 
 const upload = multer({

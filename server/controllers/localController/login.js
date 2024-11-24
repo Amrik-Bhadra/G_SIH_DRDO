@@ -5,6 +5,8 @@ const Expert = require("../../model/expert");
 const Candidate = require("../../model/candidate");
 const htmlBody = require("../../assets/htmlBodies/TwoFactorAuth");
 const email_sender = require("./emailSender");
+const requestIp = require("request-ip");
+const UnknownIpAlert = require("../../assets/htmlBodies/UnknownIp");
 
 const randomOtpGenerator = () => {
   return Math.floor(1000 + Math.random() * 9000);
@@ -84,6 +86,53 @@ const masterAuth = asyncHandler(async (req, res) => {
           success: false,
         });
       }
+    } else {
+      const clientIp = requestIp.getClientIp(req);
+      const normalizedIp = clientIp === "::1" ? "127.0.0.1" : clientIp;
+      const userIps = user.personalDetails.ips || [];
+
+      if (!userIps.includes(normalizedIp)) {
+        // userIps.push(normalizedIp);
+        // user.personalDetails.ips = userIps;
+        // await user.save();
+        // console.log("New IP added to user details:", normalizedIp);
+        const senderEmail = process.env.appEmail;
+        const sender = senderEmail;
+        const receiver = email;
+        const subject = `Unknown IP Alert for ${email}`;
+        const text = `Unknown IP login detected for ${email}`;
+        const newdate = new Date().toISOString();
+        const htmlBody = await UnknownIpAlert(
+          `${user.personalDetails.name.firstName}${user.personalDetails.name.middleName}${user.personalDetails.name.lastName}` ||
+            "User",
+          email,
+          normalizedIp,
+          newdate
+        );
+
+        try {
+          const sendIpAlert = await email_sender(
+            sender,
+            receiver,
+            subject,
+            text,
+            htmlBody
+          );
+          if (!sendIpAlert) {
+            return res.status(500).json({
+              message: "Unable to send IP Alert email.",
+              success: false,
+            });
+          }
+          console.log("IP Alert email sent.");
+        } catch (err) {
+          console.error("Error sending IP alert email:", err);
+          return res.status(500).json({
+            message: "Error sending IP alert email.",
+            success: false,
+          });
+        }
+      }
     }
 
     const token = jwt.sign(
@@ -98,10 +147,10 @@ const masterAuth = asyncHandler(async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 1800000, // 30 minutes
+      maxAge: 1800000,
       sameSite: "Strict",
     });
-
+    req.userId = user._id;
     return res.status(200).json({
       message: "Login successful.",
       success: true,

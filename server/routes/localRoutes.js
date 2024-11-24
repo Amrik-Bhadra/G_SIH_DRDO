@@ -14,6 +14,7 @@ const {
 } = require("../controllers/expertController/logSign");
 const apiLimiter = require("../middleware/apiLimiter");
 const { masterAuth } = require("../controllers/localController/login");
+const verifyUserForIpAlert = require("../controllers/localController/verifyUserForIpAlert");
 
 //File Routes
 // router.post("/upload", upload.single("file"), uploadFile);
@@ -31,5 +32,8 @@ router.post("/2fa/verify/:id", apiLimiter, TwoFactVerification);
 
 // Master-Auth-Login
 router.post("/auth", apiLimiter, masterAuth);
+
+// Other Ip Verification-User
+router.get("/verifyUser", verifyUserForIpAlert);
 
 module.exports = router;

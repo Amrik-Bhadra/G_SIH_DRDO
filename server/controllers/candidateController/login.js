@@ -26,7 +26,6 @@ const addCandidate = asyncHandler(async (req, res) => {
       });
     }
 
-    // Check if the email already exists
     const existingCandidate = await Candidate.findOne({
       "personalDetails.contact.email": email,
     });

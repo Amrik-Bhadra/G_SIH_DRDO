@@ -3,6 +3,7 @@ const candidate = require("../../model/candidate");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const requestIp = require("request-ip");
 const email_sender = require("../localController/emailSender");
 const htmlBody = require("../../assets/htmlBodies/TwoFactorAuth");
 const fs = require("fs");
@@ -56,6 +57,8 @@ const createExpert = asyncHandler(async (req, res) => {
       fs.unlinkSync(req.file.path);
     }
 
+    const clientIp = requestIp.getClientIp(req);
+    const normalizedIp = clientIp === "::1" ? "127.0.0.1" : clientIp;
     const newExpert = new Expert({
       personalDetails: {
         name: {
@@ -76,6 +79,7 @@ const createExpert = asyncHandler(async (req, res) => {
           number: "NA",
         },
         role: "Expert",
+        ips: [],
       },
       fieldOfExpertise: {
         domain: "NA",
@@ -114,7 +118,7 @@ const createExpert = asyncHandler(async (req, res) => {
         method: "NA",
       },
     });
-
+    newExpert.personalDetails.ips.push(normalizedIp);
     await newExpert.save();
 
     res.status(201).json({
@@ -224,7 +228,6 @@ const loginExpert = asyncHandler(async (req, res) => {
       maxAge: 1800000,
       sameSite: "Strict",
     });
-
     return res.status(200).json({
       message: "User successfully logged in.",
       success: true,

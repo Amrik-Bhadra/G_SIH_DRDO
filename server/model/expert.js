@@ -57,6 +57,10 @@ const expertSchema = new mongoose.Schema({
       required: true,
       default: "Expert",
     },
+    ips: {
+      type: [String],
+      required: true,
+    },
   },
   fieldOfExpertise: {
     domain: {

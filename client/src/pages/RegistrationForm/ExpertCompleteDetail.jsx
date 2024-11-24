@@ -272,3 +272,78 @@ const ExpertCompleteDetail = () => {
 };
 
 export default ExpertCompleteDetail;
+
+    <div className="min-h-[100vh] w-[100vw] bg-[#eee] flex justify-center items-center py-10">
+      <form
+        className="form-container bg-white rounded-lg p-8 flex flex-col gap-y-8 shadow-md"
+        style={{
+          width: "95%",
+          maxWidth: "900px",
+          height: "95%",
+          maxHeight: "800px",
+          overflowY: "auto",
+        }}
+        onSubmit={handleSubmit}
+      >
+        {/* Render Step Components */}
+        {stepNo === 1 && (
+          <ExpertPersonalInformation
+            userData={userData}
+            setUserData={setUserData}
+          />
+        )}
+        {stepNo === 2 && (
+          <ExpertEducationalInformation
+            userData={userData}
+            setUserData={setUserData}
+          />
+        )}
+        {stepNo === 3 && (
+          <ExpertCriticalSection
+            userData={userData}
+            setUserData={setUserData}
+          />
+        )}
+        {stepNo === 4 && (
+          <ExpertAdditionalInputs
+            userData={userData}
+            setUserData={setUserData}
+          />
+        )}
+
+        {/* Navigation Buttons */}
+        <div className="flex gap-3">
+          {stepNo > 1 && (
+            <Button
+              variant="outlined"
+              sx={{ width: "6rem", padding: "0.5rem" }}
+              onClick={handlePrevious}
+            >
+              Previous
+            </Button>
+          )}
+          {stepNo < 4 && (
+            <Button
+              variant="contained"
+              sx={{ width: "6rem", padding: "0.5rem" }}
+              onClick={handleNext}
+            >
+              Next
+            </Button>
+          )}
+          {stepNo === 4 && (
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ width: "6rem", padding: "0.5rem" }}
+            >
+              Submit
+            </Button>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default ExpertCompleteDetail;

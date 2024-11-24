@@ -63,3 +63,30 @@ _routes_: Testing of all routes will be conducted tomorrow using Postman.
 _push_: All changes have been successfully pushed to the `srivaths` branch
 
 ---
+
+### 2024-11-24
+
+- **Srivaths**: Updated `Candidate` and `Expert` routes to integrate the `uploadConfig` functionality for file handling.
+- **Srivaths**: Refined `Candidate` and `Expert` schemas to align with the relevancy model for improved data structure.
+- **Srivaths**: Created `Job` module:
+  - Developed `jobModel.js` with required attributes.
+  - Implemented `jobController.js` to handle business logic.
+  - Set up `jobRoutes.js` for API endpoints.
+- **Srivaths**: Committed and pushed all backend updates to the Git repository.
+- **Srivaths**: Pulled the latest changes from the `main` branch and updated the client-side frontend accordingly.
+- **Srivaths**: Updated expert model, with the date of interview and interview count attribute
+_push_: All updates have been successfully added to the `srivaths` branch.
+
+### 2024-11-24
+
+- **Varun**: Integrated `Master Authentication` functionality with the frontend for secure user management.
+- **Varun**: Developed an `Unknown IP Middleware` to monitor and handle access from unfamiliar IP addresses.
+- **Varun**: Created the `QnA` module:
+  - Designed `qnaModel.js` with necessary schema attributes.
+  - Implemented `qnaController.js` to manage QnA logic.
+  - Set up `qnaRoutes.js` for API endpoints.
+- **Varun**: Built an `Authentication Context` in the frontend to manage user authentication state and session handling.
+
+_push_: All changes have been committed and pushed to the `varun` branch.
+
+

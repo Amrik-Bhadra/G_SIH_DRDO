@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { toast } from "react-hot-toast";
-import CandidatePersonalInformation from "../../components/CandidateDetailSections/CandidatePersonalInformation";
-import CandidateEducationalInformation from "../../components/CandidateDetailSections/CandidateEducationalInformation";
-import CandidateCriticalSection from "../../components/CandidateDetailSections/CandidateCriticalSection";
-import CandidateAdditionalInputs from "../../components/CandidateDetailSections/CandidateAdditionalInputs";
+import CandidatePersonalInformation from "../../components/ExpertDetailSections/ExpertPersonalInformation";
+import CandidateEducationalInformation from "../../components/ExpertDetailSections/ExpertEducationalInformation";
+import CandidateCriticalSection from "../../components/ExpertDetailSections/ExpertCriticalSection";
+import CandidateAdditionalInputs from "../../components/ExpertDetailSections/ExpertAdditionalInputs";
 import { useNavigate } from "react-router-dom";
 
 const CandidateCompleteDetail = () => {

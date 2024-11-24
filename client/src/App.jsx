@@ -4,7 +4,6 @@ import LoginForm from "./pages/LoginForm/LoginForm";
 import { Toaster } from "react-hot-toast";
 import ForgotPassword from "./pages/LoginForm/ForgotPassword";
 import VerifyOTP from "./pages/LoginForm/VerifyOTP";
-import RegistrationForm from "./pages/RegistrationForm/CandidateRegistration";
 import ResetPassword from "./pages/LoginForm/ResetPassword";
 // import RacHeadDashboard from "./pages/RacHeadPages/RacHeadDashboard";
 // import RacHeadAnalytics from "./pages/RacHeadPages/RacHeadAnalytics";
@@ -15,9 +14,13 @@ import ExpertRegistrationForm from "./pages/RegistrationForm/ExpertRegistration"
 import ExpertRegistration from "./pages/RegistrationForm/ExpertRegistration";
 import CandidateRegistration from "./pages/RegistrationForm/CandidateRegistration";
 import RegistrationChoice from "./pages/RegistrationForm/RegistrationChoice";
-// import TwoFactorAuthentication from "./pages/LoginForm/TwoFactorAuthentication";
-// import CreatePanelForm from "./components/RacHeadComponents/CreatePanelForm";
-// import GeneratedExpertsPage from "./pages/RacHeadPages/GeneratedExpertsPage";
+import TwoFactorAuthentication from "./pages/LoginForm/TwoFactorAuthentication";
+import CreatePanelForm from "./components/RacHeadComponents/CreatePanelForm";
+import GeneratedExpertsPage from "./pages/RacHeadPages/GeneratedExpertsPage";
+import CandidateQuizRedirect from "./pages/RegistrationForm/CanidateQuizRedirect"
+import ExpertQuizRedirect from "./pages/RegistrationForm/ExpertQuizRedirect"
+import CandidateDashboard from "./pages/CandidatePages/Candidatedashboard";
+import ExpertDashboard from "./pages/ExpertPages/ExpertDashboard";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -37,11 +40,11 @@ const routes = createBrowserRouter([
   },
   { path: "/register/expertcompletedetail", element: <ExpertCompleteDetail /> },
   { path: "/resetpassword", element: <ResetPassword /> },
-  // { path: "/rachead/", element: <RacHeadDashboard /> },
-  // // { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
-  // { path: "/rachead/pannels", element: <RacHeadPannels /> },
-  // { path: "/rachead/createPanel", element: <CreatePanelForm /> },
-  // { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
+  { path: "/rachead/", element: <RacHeadDashboard /> },
+  { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
+  { path: "/rachead/pannels", element: <RacHeadPannels /> },
+  { path: "/rachead/createPanel", element: <CreatePanelForm /> },
+  { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
 ]);
 
 const App = () => {

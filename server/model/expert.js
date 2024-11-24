@@ -216,6 +216,19 @@ const expertSchema = new mongoose.Schema({
     enabled: { type: Boolean, required: true, default: false },
     method: { type: String, required: true },
   },
+  interviewData: [
+    {
+      dateOfInterview: {
+        type: Date,
+        required: true,
+      },
+      interviewCount: {
+        type: Number,
+        default: 0,
+      },
+    },
+  ],
+
 });
 
 module.exports = mongoose.model("Expert", expertSchema);

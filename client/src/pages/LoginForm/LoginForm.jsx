@@ -12,7 +12,8 @@ import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import axios from "axios";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthenticationContext";
+
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -96,7 +97,7 @@ const LoginForm = () => {
             Login to Shine
           </p>
         </div>
-
+        
         <form className="w-[85%] flex flex-col gap-y-5" onSubmit={handleLogin}>
           <TextField
             id="outlined-email-input"

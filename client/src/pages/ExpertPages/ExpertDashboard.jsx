@@ -6,7 +6,7 @@ import UpcomingInterviews from "../../components/ExpertDashboardSections/Upcomin
 import InterviewStatus from "../../components/ExpertDashboardSections/InterviewStatus";
 import Calender from "../../components/ExpertDashboardSections/Calender";
 import Notifications from "../../components/ExpertDashboardSections/Notifications";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthenticationContext";
 
 const ExpertDashboard = () => {
   const { currentUser } = useContext(AuthContext);

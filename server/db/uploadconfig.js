@@ -6,8 +6,6 @@ const fs = require("fs");
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let uploadDir;
-        console.log(req.body.email);
-        console.log(req.body.role);
         // Determine upload directory based on role
         if (req.body.role == "Candidate") {
             uploadDir = path.join(__dirname, "../uploads/Candidate/Resume");
@@ -16,7 +14,8 @@ const storage = multer.diskStorage({
             uploadDir = path.join(__dirname, "../uploads/Expert/Resume");
             console.log(req.body.role);
         } else {
-            return cb(new Error("Invalid role specified")); // Return error for invalid role
+            uploadDir = path.join(__dirname, "../uploads/");
+             // Return error for invalid role
         }
 
         // Ensure the directory exists

@@ -53,8 +53,8 @@ const addCandidate = asyncHandler(async (req, res) => {
 
     // Handle resume upload
     resume = {
-      filename: req.file.filename,
-      fileType: req.file.mimetype,
+        filename: req.file.filename,
+        fileType: req.file.mimetype,
     }
 
     // Create a new candidate with default values

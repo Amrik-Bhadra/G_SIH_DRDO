@@ -10,6 +10,7 @@ const localRoutes = require("./routes/localRoutes");
 const panelRoutes = require("./routes/panelRoute");
 const machineLearningRoutes = require("./routes/ML_Routes");
 const jobRoutes = require("./routes/jobRoutes");
+const qnaRoutes = require("./routes/qnaRoutes");
 
 const corsOptions = {
   origin: "http://localhost:5173",
@@ -29,6 +30,7 @@ app.use("/api/panel", panelRoutes);
 app.use("/api/mlr", machineLearningRoutes);
 app.use("/api/job",jobRoutes);
 
+app.use("/api/qna", qnaRoutes);
 
 const PORT = process.env.PORT || 8000;
 const mongoURI = process.env.MONGO_URI;

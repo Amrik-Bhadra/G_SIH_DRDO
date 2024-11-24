@@ -292,5 +292,3 @@ const ExpertRegistration = () => {
 };
 
 export default ExpertRegistration;
-
-export default ExpertRegistration;

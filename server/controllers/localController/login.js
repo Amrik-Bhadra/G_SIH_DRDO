@@ -123,14 +123,8 @@ const masterAuth = asyncHandler(async (req, res) => {
               message: "Unable to send IP Alert email.",
               success: false,
             });
-          } else {
-            console.log("IP Alert email sent.");
-            return res.status(200).json({
-              message:
-                "Ask the account holder for the permission 'YES' on the Email ",
-              success: true,
-            });
           }
+          console.log("IP Alert email sent.");
         } catch (err) {
           console.error("Error sending IP alert email:", err);
           return res.status(500).json({

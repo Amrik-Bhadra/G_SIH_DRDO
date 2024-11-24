@@ -19,7 +19,7 @@ const RacHeadPannels = () => {
       <SideNavbar />
 
       {/* Main Content */}
-      <main className="relative flex px-8 py-4 flex-col w-full gap-y-12 pt-6">
+      <main className="flex px-8 py-4 flex-col w-full gap-y-12 pt-6">
         <RacHeader />
         <div className="main-content flex justify-between items-center">
           <h2 className="font-semibold text-[#464646] text-xl">
@@ -96,7 +96,7 @@ const RacHeadPannels = () => {
 
         {/* pannels card container starts */}
         <div
-          className="pannels-container flex flex-wrap gap-y-5 gap-x-6 overflow-y-auto"
+          className="pannels-container flex flex-wrap gap-y-5 gap-x-5 overflow-y-auto"
           style={{
             height: "calc(100% - 150px)", // Adjust height dynamically
             paddingBottom: "16px",

@@ -15,7 +15,7 @@ const SideNavbar = () => {
   return (
     <aside
       className={`flex flex-col items-center pt-8 relative top-0 left-0 bg-white transition-all duration-300 ${
-        isSidebarCollapsed ? "w-[8%]" : "w-[18%]"
+        isSidebarCollapsed ? "max-w-[8%] w-full" : "max-w-[18%] w-full"
       } h-full px-8 gap-y-10`}
       style={{
         boxShadow: "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",

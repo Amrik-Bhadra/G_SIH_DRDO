@@ -1,11 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/drdo-logo.svg";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { toast, Toaster } from "react-hot-toast";
-import { useNavigate, Link } from "react-router-dom";
 
-const VerifyOTP = () => {
+const TwoFactorAuthentication = () => {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const navigate = useNavigate();
 
@@ -46,21 +46,21 @@ const VerifyOTP = () => {
 
     toast.success("OTP Verified Successfully!");
     // Add OTP verification logic here (e.g., API call)
-    navigate("/resetpassword"); // Navigate to Reset Password page
+    navigate(""); // Navigate to Reset Password page
   };
 
   return (
     <main className="h-[100vh] w-[100vw] bg-[#eee] flex justify-center items-center">
       <Toaster />
-      <div className="form-div bg-white max-w-[500px] w-[90%] h-fit px-8 py-8 rounded-lg shadow-sm flex flex-col justify-center items-center gap-y-8 text-center">
+      <div className="form-div bg-white max-w-[500px] w-[90%] h-fit px-5 py-8 rounded-lg shadow-sm flex flex-col justify-center items-center gap-y-8 text-center">
         <div className="img-box flex items-center gap-x-3">
           <img src={logo} alt="drdo-logo" className="w-20" />
           <h1 className="text-2xl font-bold text-[#0E8CCA]">E.B.R.S.</h1>
         </div>
         <div className="form-header flex flex-col gap-y-4">
-          <h1 className="text-3xl font-semibold">Verify OTP</h1>
-          <p className="text-gray-500 mt-1 font-medium text-md">
-            Enter the 4-digit OTP sent to your email to verify your account.
+          <h1 className="text-3xl font-semibold">Authenticate Your Account</h1>
+          <p className="text-gray-500 mt-1 font-normal text-[0.9rem]">
+            Protecting your information is our top priority. Please confirm your account by entering the authorization code sent to  am**********@gmail.com
           </p>
         </div>
 
@@ -94,7 +94,6 @@ const VerifyOTP = () => {
             type="submit"
             variant="contained"
             sx={{
-              width: "100%",
               backgroundColor: "#0e8cca",
               padding: "0.8em 1rem",
               fontWeight: 600,
@@ -112,16 +111,9 @@ const VerifyOTP = () => {
             </button>
           </span>
         </form>
-
-        {/* <span className="pr-2 font-medium text-sm text-[#C4C4C4]">
-          Don't have an account?{" "}
-          <Link to="/registrationchoice" className="text-[#0E8CCA]">
-            Register
-          </Link>
-        </span> */}
       </div>
     </main>
   );
 };
 
-export default VerifyOTP;
+export default TwoFactorAuthentication;

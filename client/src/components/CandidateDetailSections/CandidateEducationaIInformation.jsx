@@ -75,7 +75,7 @@ const CandidateEducationalInformation = ({ userData, setUserData }) => {
   return (
     <>
       <h1 className="text-2xl font-semibold text-[#0077b6]">
-        2. Qualification Information
+        2. Educational Information
       </h1>
       <div className="flex flex-col gap-5">
         {/* Education Entry Form */}
@@ -194,7 +194,6 @@ const CandidateEducationalInformation = ({ userData, setUserData }) => {
                       variant="body2"
                       className="text-gray-500 w-1/3 truncate"
                     >
-                    {item.yearOfAdmission}-
                       {item.yearOfCompletion}
                     </Typography>
                   </div>

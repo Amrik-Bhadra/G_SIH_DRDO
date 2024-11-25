@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { toast } from "react-hot-toast";
-import CandidatePersonalInformation from "../../components/ExpertDetailSections/ExpertPersonalInformation";
-import CandidateEducationalInformation from "../../components/ExpertDetailSections/ExpertEducationalInformation";
-import CandidateCriticalSection from "../../components/ExpertDetailSections/ExpertCriticalSection";
-import CandidateAdditionalInputs from "../../components/ExpertDetailSections/ExpertAdditionalInputs";
+// import CandidatePersonalInformation from "../../components/ExpertDetailSections/ExpertPersonalInformation";
+import CandidatePersonalInformation from "../../components/CandidateDetailSections/CandidatePersonalInformation"
+// import CandidateEducationalInformation from "../../components/ExpertDetailSections/ExpertEducationalInformation";
+import CandidateEducationalInformation from "../../components/CandidateDetailSections/CandidateEducationaIInformation"
+// import CandidateCriticalSection from "../../components/ExpertDetailSections/ExpertCriticalSection";
+import CandidateCriticalSection from "../../components/CandidateDetailSections/CandidateCriticalSection";
+// import CandidateAdditionalInputs from "../../components/ExpertDetailSections/ExpertAdditionalInputs";
+import CandidateAdditionalInputs from "../../components/CandidateDetailSections/CandidateAdditionalInputs";
 import { useNavigate } from "react-router-dom";
 
 const CandidateCompleteDetail = () => {
@@ -12,6 +16,7 @@ const CandidateCompleteDetail = () => {
   const maxi = 4;
   const navigate = useNavigate();
   const [stepNo, setStepNo] = useState(1);
+  // console.log(stepNo);
   const [userData, setUserData] = useState({
     personalInfo: {
       firstName: "",
@@ -102,6 +107,7 @@ const CandidateCompleteDetail = () => {
         toast.error("Please add at least one educational detail.");
         return false;
       }
+
     }
 
     if (stepNo === 3) {
@@ -114,22 +120,14 @@ const CandidateCompleteDetail = () => {
       }
     }
     
-
     if (stepNo === 4) {
-      const {
-        projects,
-        publications,
-      } = userData.additionalInputs;
-      if (
-        projects.length === 0 ||
-        publications.length === 0
-      ) {
-        toast.error(
-          "Please add at least one certification, publication, or language."
-        );
+      const { projects, publications } = userData.additionalInputs;
+      if (projects.length === 0 || publications.length === 0) {
+        toast.error("Please add at least one project and one publication.");
         return false;
       }
     }
+    
 
     return true;
   };
@@ -144,10 +142,19 @@ const CandidateCompleteDetail = () => {
     setStepNo(stepNo - 1);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const email = new URLSearchParams(location.search).get('email');
     e.preventDefault();
     if (!validateStep()) {
       return;
+    }
+    try {
+      const response = await axios.post(`/api/candidate/candidatecompletedetail?email=${encodeURIComponent(email)}`,userData);
+      if (response.status === 200) {
+        toast.success("Candidate details saved successfully.");
+      }
+    } catch (error) {
+      toast.error("Failed to save candidate details.");
     }
 
     toast.success("Details submitted successfully!");

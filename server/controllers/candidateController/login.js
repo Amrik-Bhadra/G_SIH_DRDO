@@ -26,7 +26,6 @@ const addCandidate = asyncHandler(async (req, res) => {
       });
     }
 
-    // Check if the email already exists
     const existingCandidate = await Candidate.findOne({
       "personalDetails.contact.email": email,
     });
@@ -52,10 +51,10 @@ const addCandidate = asyncHandler(async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     // Handle resume upload
-    resume = {
-        filename: req.file.filename,
-        fileType: req.file.mimetype,
-    }
+      resume = {
+          filename: req.file.filename,
+          fileType: req.file.mimetype,
+      }
 
     // Create a new candidate with default values
     const newCandidate = new Candidate({

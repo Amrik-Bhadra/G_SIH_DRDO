@@ -103,7 +103,7 @@ const CandidateRegistration = () => {
 
     // If all validations pass
     toast.success("Registration successful!");
-    navigate("/register/candidatecompletedetail");
+    navigate(`/register/candidatecompletedetail?email=${encodeURIComponent(email)}`);
   };
 
   return (

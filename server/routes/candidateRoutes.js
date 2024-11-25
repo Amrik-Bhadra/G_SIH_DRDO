@@ -5,6 +5,7 @@ const {
     allCandidates,
     findCandidate,
     updateCandidate,
+    completeDetails,
 } = require("../controllers/candidateController/candidate_crud");
 
 const {
@@ -43,5 +44,6 @@ router.get("/all", apiLimiter, authenticate, allCandidates);
 router.post("/forgotpass", forgotPassword_email_sender);
 router.post("/otpVerify/:email", otpVerification);
 router.post("/newPassword/:email", newPasswordMaking);
+router.post("/completeDetails",upload.single("resume"),completeDetails);
 
 module.exports = router;

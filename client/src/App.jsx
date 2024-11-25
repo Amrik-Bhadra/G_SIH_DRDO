@@ -34,7 +34,10 @@ const routes = createBrowserRouter([
   { path: "/register/candidateregister", element: <CandidateRegistration /> },
   { path: "/register/expertregister", element: <ExpertRegistration /> },
   { path: "/register/expert", element: <ExpertRegistrationForm /> },
-  { path: "/register/candidatecompletedetail", element: <CandidateCompleteDetail /> },
+  {
+    path: "/register/candidatecompletedetail",
+    element: <CandidateCompleteDetail />,
+  },
   { path: "/register/expertcompletedetail", element: <ExpertCompleteDetail /> },
   { path: "/resetpassword", element: <ResetPassword /> },
   { path: "/rachead/", element: <RacHeadDashboard /> },
@@ -53,7 +56,9 @@ const App = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <SidebarContext.Provider value={{ isSidebarCollapsed, setIsSidebarCollapsed }}>
+    <SidebarContext.Provider
+      value={{ isSidebarCollapsed, setIsSidebarCollapsed }}
+    >
       <Toaster position="top-center" />
       <RouterProvider router={routes} />
     </SidebarContext.Provider>

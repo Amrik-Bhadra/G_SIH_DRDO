@@ -26,6 +26,8 @@ import QuestionnareHome from "./pages/Questionnaire/QuestionnareHome";
 import QuestionSectionPage from "./pages/Questionnaire/QuestionSectionPage";
 import QuestionAnswerPage from "./pages/Questionnaire/QuestionAnswerPage";
 import QuestionnareResultPage from "./pages/Questionnaire/QuestionnareResultPage";
+import PanelDetails from "./pages/ExpertPages/PanelDetails";
+import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -65,7 +67,10 @@ const App = () => {
 
     { path: "/questionnaire/questionsections", element: <QuestionSectionPage totalScore={totalScore} setTotalScore={setTotalScore} /> },
     { path: "/questionnaire/questionsection/quizpage", element: <QuestionAnswerPage totalScore={totalScore} setTotalScore={setTotalScore} /> },
-    { path: "/questionnaire/resultpage", element: <QuestionnareResultPage totalScore={totalScore}/>}
+    { path: "/questionnaire/resultpage", element: <QuestionnareResultPage totalScore={totalScore}/>},
+
+    { path:"/expert/panneldetails", element: <PanelDetails/> },
+    { path:"/expert/candidateevaluation", element: <CandidateEvaluation/> },
   ]);
 
   return (

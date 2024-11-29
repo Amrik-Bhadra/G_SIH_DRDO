@@ -1,4 +1,5 @@
 const express = require("express");
+const attachEmail = require("../middleware/attachMail");
 const router = express.Router();
 
 const {
@@ -36,7 +37,7 @@ router.post(
 );
 
 // Use upload middleware for resume file uploads
-router.post("/signup", apiLimiter, upload.single("resume"), addCandidate);
+router.post("/signup", apiLimiter, addCandidate);
 router.post("/signin", apiLimiter, loginCandidate);
 router.post("/signout", apiLimiter, signoutCandidate);
 
@@ -44,6 +45,6 @@ router.get("/all", apiLimiter, authenticate, allCandidates);
 router.post("/forgotpass", forgotPassword_email_sender);
 router.post("/otpVerify/:email", otpVerification);
 router.post("/newPassword/:email", newPasswordMaking);
-router.post("/completeDetails",upload.single("resume"),completeDetails);
+router.post("/completeDetails", upload.single("resume"), completeDetails);
 
 module.exports = router;

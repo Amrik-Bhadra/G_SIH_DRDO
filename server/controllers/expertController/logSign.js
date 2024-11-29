@@ -47,15 +47,15 @@ const createExpert = asyncHandler(async (req, res) => {
       });
     }
 
-    let resumeData = null;
-    if (req.file) {
-      resumeData = {
-        filename: req.file.filename,
-        fileType: req.file.mimetype,
-        data: fs.readFileSync(req.file.path),
-      };
-      fs.unlinkSync(req.file.path);
-    }
+    // let resumeData = null;
+    // if (req.file) {
+    //   resumeData = {
+    //     filename: req.file.filename,
+    //     fileType: req.file.mimetype,
+    //     data: fs.readFileSync(req.file.path),
+    //   };
+    //   fs.unlinkSync(req.file.path);
+    // }
 
     const clientIp = requestIp.getClientIp(req);
     const normalizedIp = clientIp === "::1" ? "127.0.0.1" : clientIp;

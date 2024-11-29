@@ -12,16 +12,10 @@ const addCandidate = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
     // console.log(req.file);
-    if (!req.file) {
-      return res.status(400).json({
-        message: "Resume file is required and should be uploaded correctly.",
-        success: false,
-      });
-    }
 
-    if (!email || !password || !req.file) {
+    if (!email || !password) {
       return res.status(400).json({
-        message: "Email, password, and resume file are required",
+        message: "Email, password are required",
         success: false,
       });
     }
@@ -51,10 +45,10 @@ const addCandidate = asyncHandler(async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     // Handle resume upload
-      resume = {
-          filename: req.file.filename,
-          fileType: req.file.mimetype,
-      }
+      // resume = {
+      //     filename: req.file.filename,
+      //     fileType: req.file.mimetype,
+      // }
 
     // Create a new candidate with default values
     const newCandidate = new Candidate({
@@ -89,7 +83,10 @@ const addCandidate = asyncHandler(async (req, res) => {
       },
       skills: [],
       areaOfExpertise: [],
-      resume: resume,
+      resume: {
+        filename: "default_filename",
+        fileType: "application/octet-stream",
+      },
       yearsOfExperience: 0,
       qualifications: [],
       projects: [],

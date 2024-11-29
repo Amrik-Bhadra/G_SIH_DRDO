@@ -38,7 +38,7 @@ const routes = createBrowserRouter([
     path: "/register/candidatecompletedetail",
     element: <CandidateCompleteDetail />,
   },
-  { path: "/register/expertcompletedetail", element: <ExpertCompleteDetail /> },
+  { path: "/register/expertcompletedetail/:userId", element: <ExpertCompleteDetail /> },
   { path: "/resetpassword", element: <ResetPassword /> },
   { path: "/rachead/", element: <RacHeadDashboard /> },
   { path: "/rachead/analytics", element: <RacHeadAnalytics /> },

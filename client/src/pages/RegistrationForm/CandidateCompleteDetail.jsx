@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { toast } from "react-hot-toast";
 // import CandidatePersonalInformation from "../../components/ExpertDetailSections/ExpertPersonalInformation";
-import CandidatePersonalInformation from "../../components/CandidateDetailSections/CandidatePersonalInformation"
+import CandidatePersonalInformation from "../../components/CandidateDetailSections/CandidatePersonalInformation";
 // import CandidateEducationalInformation from "../../components/ExpertDetailSections/ExpertEducationalInformation";
-import CandidateEducationalInformation from "../../components/CandidateDetailSections/CandidateEducationaIInformation"
+import CandidateEducationalInformation from "../../components/CandidateDetailSections/CandidateEducationaIInformation";
 // import CandidateCriticalSection from "../../components/ExpertDetailSections/ExpertCriticalSection";
 import CandidateCriticalSection from "../../components/CandidateDetailSections/CandidateCriticalSection";
 // import CandidateAdditionalInputs from "../../components/ExpertDetailSections/ExpertAdditionalInputs";
 import CandidateAdditionalInputs from "../../components/CandidateDetailSections/CandidateAdditionalInputs";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CandidateCompleteDetail = () => {
   const mini = 1;
@@ -32,6 +33,7 @@ const CandidateCompleteDetail = () => {
       city: "",
       state: "",
       address: "",
+      role:"candidate"
     },
     educationalInfo: [],
     criticalInputs: {
@@ -107,19 +109,24 @@ const CandidateCompleteDetail = () => {
         toast.error("Please add at least one educational detail.");
         return false;
       }
-
     }
 
     if (stepNo === 3) {
-      const { resume, yearsOfExperience, skills, expertise } = userData.criticalInputs;
-      if (!resume || !yearsOfExperience || skills.length === 0 || expertise.length === 0) {
+      const { resume, yearsOfExperience, skills, expertise } =
+        userData.criticalInputs;
+      if (
+        !resume ||
+        !yearsOfExperience ||
+        skills.length === 0 ||
+        expertise.length === 0
+      ) {
         toast.error(
           "Please upload your resume, select years of experience, add at least one skill, and specify an area of expertise."
         );
         return false;
       }
     }
-    
+
     if (stepNo === 4) {
       const { projects, publications } = userData.additionalInputs;
       if (projects.length === 0 || publications.length === 0) {
@@ -127,7 +134,6 @@ const CandidateCompleteDetail = () => {
         return false;
       }
     }
-    
 
     return true;
   };
@@ -143,26 +149,59 @@ const CandidateCompleteDetail = () => {
   };
 
   const handleSubmit = async (e) => {
-    const email = new URLSearchParams(location.search).get('email');
     e.preventDefault();
+
+    // Validate data before submission
     if (!validateStep()) {
       return;
     }
-    try {
-      const response = await axios.post(`/api/candidate/candidatecompletedetail?email=${encodeURIComponent(email)}`,userData);
-      if (response.status === 200) {
-        toast.success("Candidate details saved successfully.");
+
+    // Extract email from the URL
+    const email = new URLSearchParams(location.search).get("email");
+    const formData = new FormData();
+
+    // Append userData to FormData
+    for (const key in userData) {
+      if (Array.isArray(userData[key]) || typeof userData[key] === "object") {
+        formData.append(key, JSON.stringify(userData[key]));
+      } else {
+        formData.append(key, userData[key]);
       }
-    } catch (error) {
-      toast.error("Failed to save candidate details.");
     }
 
-    toast.success("Details submitted successfully!");
-    console.log("Submitted Data:", userData);
+    // Append the resume file
+    if (userData.criticalInputs.resume) {
+      console.log("Resume: ",userData.criticalInputs.resume);
+      console.log(typeof userData.criticalInputs.resume)
+      formData.append("resume", userData.criticalInputs.resume); // Append the File object
+    }
 
-    // Redirect to the QuizPage
-    navigate("/register/candidate/quiz");
+    // Append email if available
+    if (email) {
+      formData.append("email", email);
+    }
 
+    try {
+      // Debugging FormData entries
+      // for (const [key, value] of formData.entries()) {
+      //   // console.log(`${key}:`, value);
+      // }
+      console.log(formData.criticalInputs);
+      // Make POST request to the API
+      const response = await axios.post(
+        "http://localhost:8000/api/candidate/completeDetails",
+        formData,
+      );
+      if (response.status === 200) {
+        toast.success("Candidate details saved successfully.");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error:", error.response?.data || error.message);
+      toast.error(
+        error.response?.data?.error || "Failed to save candidate details."
+      );
+    }
   };
 
   return (

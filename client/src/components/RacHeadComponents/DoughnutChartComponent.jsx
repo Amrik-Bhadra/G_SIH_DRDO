@@ -51,7 +51,7 @@ const DoughnutChartComponent = () => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => ` ${context.label}: ${context.raw}%`,
+          label: (context) => `${context.label}: ${context.raw}%`,
         },
       },
     },

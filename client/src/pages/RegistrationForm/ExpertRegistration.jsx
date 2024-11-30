@@ -11,9 +11,9 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { Checkbox } from "@mui/material";
+import axios from "axios";
 
-const CandidateRegistration = () => {
+const ExpertRegistration = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,6 +28,7 @@ const CandidateRegistration = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const base_url = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -39,13 +40,11 @@ const CandidateRegistration = () => {
     event.preventDefault();
   };
 
-  // Validate password and calculate strength
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
 
     if (!value) {
-      // Reset everything if the password field is cleared
       setPasswordChecks({
         isLength: false,
         hasUpper: false,
@@ -67,28 +66,21 @@ const CandidateRegistration = () => {
 
     setPasswordChecks(checks);
 
-    const strength =
-      Object.values(checks).filter((check) => check === true).length;
+    const strength = Object.values(checks).filter(
+      (check) => check === true
+    ).length;
     if (strength === 5) setPasswordStrength("Strong");
     else if (strength >= 3) setPasswordStrength("Medium");
     else setPasswordStrength("Weak");
   };
 
-  const handleRegister = (event) => {
+  const handleExpertRegister = async (event) => {
     event.preventDefault();
 
-    // Validate email
     if (!email) {
       toast.error("Email is required!");
       return;
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      toast.error("Invalid email format!");
-      return;
-    }
-
-    // Validate password fields
     if (!password || !confirmPassword) {
       toast.error("All fields are required!");
       return;
@@ -102,9 +94,41 @@ const CandidateRegistration = () => {
       return;
     }
 
-    // If all validations pass
-    toast.success("Registration successful!");
-    navigate("/register/candidatecompletedetail");
+    console.log("Email - ", email);
+    console.log("Password - ", password);
+    console.log(base_url);
+
+    try {
+      const response = await axios.post(
+        `${base_url}/api/expert/signup`,
+        { email, password },
+        { withCredentials: true }
+      );
+
+      // Check if the registration was successful
+      if (response.data?.success) {
+        const userId = response.data?.data?._id; // Assuming response.data.data contains the user object
+        if (userId) {
+          console.log("User ID: ", userId); // Log the user ID
+          toast.success("Expert registration successful!");
+          navigate(`/register/expertcompletedetail/${userId}`);
+        } else {
+          toast.error("User ID not found after registration.");
+        }
+      } else {
+        toast.error(
+          response.data?.message || "Registration failed. Please try again."
+        );
+      }
+    } catch (err) {
+      console.error("Registration Error: ", err);
+
+      // Handle different types of errors, such as network issues
+      const errorMessage =
+        err.response?.data?.message ||
+        "Registration failed due to a network error.";
+      toast.error(errorMessage);
+    }
   };
 
   return (
@@ -115,9 +139,9 @@ const CandidateRegistration = () => {
           <h1 className="text-2xl font-bold text-[#0E8CCA] ml-3">E.B.R.S.</h1>
         </div>
         <div className="form-header text-center mb-5">
-          <h1 className="text-3xl font-semibold">Register as Candidate!</h1>
+          <h1 className="text-3xl font-semibold">Register as Expert!</h1>
         </div>
-        <form className="space-y-3" onSubmit={handleRegister}>
+        <form className="space-y-5" onSubmit={handleExpertRegister}>
           {/* Email Field */}
           <TextField
             id="outlined-email-input"
@@ -206,10 +230,10 @@ const CandidateRegistration = () => {
                     passwordStrength === "Strong"
                       ? "bg-green-500 w-full"
                       : passwordStrength === "Medium"
-                      ? "bg-orange-500 w-2/3"
-                      : passwordStrength === "Weak"
-                      ? "bg-red-500 w-1/3"
-                      : "bg-gray-200 w-0"
+                        ? "bg-orange-500 w-2/3"
+                        : passwordStrength === "Weak"
+                          ? "bg-red-500 w-1/3"
+                          : "bg-gray-200 w-0"
                   }`}
                 ></div>
               </div>
@@ -237,11 +261,7 @@ const CandidateRegistration = () => {
                       onClick={handleClickShowConfirmPassword}
                       onMouseDown={handleMouseDownPassword}
                     >
-                      {showConfirmPassword ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -250,12 +270,7 @@ const CandidateRegistration = () => {
             </FormControl>
           </div>
 
-          <span className="flex items-center">
-            <Checkbox defaultChecked />
-            Enable 2 Factor Authentication
-          </span>
-
-          {/* Submit Button */}
+          {/* Submit Buttons */}
           <button
             type="submit"
             className="w-full bg-[#0E8CCA] text-white py-2 px-4 rounded hover:bg-[#0969A3] transition-all"
@@ -276,4 +291,4 @@ const CandidateRegistration = () => {
   );
 };
 
-export default CandidateRegistration;
+export default ExpertRegistration;

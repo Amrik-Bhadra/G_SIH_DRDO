@@ -1,11 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -107,10 +102,14 @@ const DoughnutChartComponent = () => {
     }
   }, []);
 
-
   return (
     <div
-    style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        width: "100%",
+      }}
     >
       <div className="flex gap-6 items-center justify-between m-4">
         <h2 className="font-semibold text-lg">Interview Panel Status</h2>

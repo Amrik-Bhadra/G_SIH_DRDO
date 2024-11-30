@@ -36,13 +36,31 @@ const Linechart = () => {
 
   const chartRef = useRef(null);
 
-  const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const labels = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   const dataValues = [5, 7, 6, 8, 9, 11, 14, 15, 12, 13, 14, 16];
 
   const createGradient = (context, chartArea) => {
     const { ctx } = context.chart;
     if (!chartArea) return null;
-    const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+    const gradient = ctx.createLinearGradient(
+      0,
+      chartArea.top,
+      0,
+      chartArea.bottom
+    );
     gradient.addColorStop(0, "#12CDF7");
     gradient.addColorStop(0.5, "#AED8ED");
     gradient.addColorStop(1, "#FFFFFF");
@@ -100,47 +118,86 @@ const Linechart = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        width: "100%",
+      }}
+    >
       <div className="flex gap-6 items-center justify-between m-4">
         <h2 className="font-semibold text-lg">Expert Performance Over Year</h2>
-        <FormControl sx={{ minWidth: 120 }} size="small">
-          <InputLabel id="demo-simple-select-autowidth-label">Select Expert</InputLabel>
-          <Select
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={age}
-            onChange={handleChange}
-            autoWidth
-            label="Select Expert"
+        <div className="">
+          <FormControl
+            sx={{
+              marginTop: 1,
+              minWidth: 160,
+              background: "transparent",
+            }}
+            size="small"
           >
-            <MenuItem value="">
-              <em>All</em>
-            </MenuItem>
-            <MenuItem value={10}>Expert1</MenuItem>
-            <MenuItem value={20}>Expert2</MenuItem>
-            <MenuItem value={30}>Expert3</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl sx={{ minWidth: 120 }} size="small">
-          <InputLabel id="demo-simple-select-autowidth-label">Select Year</InputLabel>
-          <Select
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={age}
-            onChange={handleChange}
-            autoWidth
-            label="Select Expert"
+            <InputLabel id="demo-select-small-label" sx={{ color: "#646464" }}>
+              Select Expert
+            </InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              label="Select Month"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { border: "none" },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#646464",
+                  },
+                },
+                color: "#646464",
+              }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl
+            sx={{
+              m: 1,
+              minWidth: 160,
+              background: "transparent",
+            }}
+            size="small"
           >
-            <MenuItem value="">
-              <em>All</em>
-            </MenuItem>
-            <MenuItem value={10}>2022</MenuItem>
-            <MenuItem value={20}>2023</MenuItem>
-            <MenuItem value={30}>2024</MenuItem>
-          </Select>
-        </FormControl>
+            <InputLabel id="demo-select-small-label" sx={{ color: "#646464" }}>
+              Select Year
+            </InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              label="Select Year"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { border: "none" },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#646464",
+                  },
+                },
+                color: "#646464",
+              }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
       </div>
-      <div style={{ flexGrow: 1, margin:"1rem"}}>
+      <div style={{ flexGrow: 1, margin: "1rem" }}>
         <Line ref={chartRef} data={data} options={options} />
       </div>
     </div>

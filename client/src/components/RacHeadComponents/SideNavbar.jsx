@@ -4,8 +4,10 @@ import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { IoAnalytics } from "react-icons/io5";
 import { MdGroups } from "react-icons/md";
 import { IoIosHelpCircleOutline } from "react-icons/io";
+import { IoPerson } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
 import logo from "../../assets/images/drdo-logo.svg";
+import { IoPersonCircle } from "react-icons/io5";
 import NavItems from "./NavItems";
 import { SidebarContext } from "../../App"; // Import Context
 
@@ -39,10 +41,10 @@ const SideNavbar = () => {
         )}
       </div>
 
-      <div className="sidenavbar w-full flex flex-col gap-y-10">
+      <div className="sidenavbar w-full flex flex-col gap-y-8">
         <div className="sidenavbar-g1 w-full flex flex-col gap-y-2">
-          <span className="group-header text-[#bbb]">MENU</span>
-          <ul className="group-menu-box flex flex-col gap-y-3">
+          <span className="group-header text-[#bbb] text-sm">MENU</span>
+          <ul className="group-menu-box flex flex-col gap-y-2">
             <li className="group-menu-items flex">
               <NavItems
                 link="/rachead/"
@@ -67,12 +69,28 @@ const SideNavbar = () => {
                 isCollapsed={isSidebarCollapsed}
               />
             </li>
+            <li className="group-menu-items flex">
+              <NavItems
+                link="/rachead/expertsData"
+                title="Experts"
+                icon={IoPersonCircle}
+                isCollapsed={isSidebarCollapsed}
+              />
+            </li>
+            <li className="group-menu-items flex">
+              <NavItems
+                link="/rachead/candidatesData"
+                title="Candidates"
+                icon={IoPerson}
+                isCollapsed={isSidebarCollapsed}
+              />
+            </li>
           </ul>
         </div>
 
         <div className="sidenavbar-g2 w-full flex flex-col gap-y-2">
-          <span className="group-header text-[#bbb]">TOOLS</span>
-          <ul className="group-menu-box flex flex-col gap-y-3">
+          <span className="group-header text-[#bbb] text-sm">TOOLS</span>
+          <ul className="group-menu-box flex flex-col gap-y-2">
             <NavItems
               link="/rachead/settings"
               title="Settings"

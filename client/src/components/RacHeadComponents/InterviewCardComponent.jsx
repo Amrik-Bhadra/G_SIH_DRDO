@@ -1,18 +1,12 @@
 import React from "react";
-import { Card, CardContent, Typography } from "@mui/material";
 
-const InterviewCardComponent = (card) => {
+const InterviewCardComponent = () => {
   return (
-    <Card key={card.id} sx={{ maxWidth: 350 }}>
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {card.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {card.description}
-        </Typography>
-      </CardContent>
-    </Card>
+    <div className="bg-[#F6F8FB] h-[290px] w-[276px] border border-gray-300 rounded-md p-4 flex-grow">
+      {/* Render the card's content */}
+      <h2 className="text-xl font-bold text-gray-800 mb-2">title</h2>
+      <p className="text-sm text-gray-600">description</p>
+    </div>
   );
 };
 

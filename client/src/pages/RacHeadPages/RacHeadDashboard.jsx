@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import SideNavbar from "../../components/RacHeadComponents/SideNavbar";
 import RacHeader from "../../components/RacHeadComponents/RacHeader";
 import DashboardNumberCards from "../../components/RacHeadComponents/DashboardNumberCards";
 import Grid from "@mui/material/Grid2";
-import { Chip } from "@mui/material";
 import { FaUser } from "react-icons/fa";
 import { MdGroups } from "react-icons/md";
 import { RiCalendarScheduleFill } from "react-icons/ri";
@@ -13,11 +12,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InterviewCardComponent from "../../components/RacHeadComponents/InterviewCardComponent";
-
-// import AreaChartComponent from "../../components/ChartsComponents/AreaChartComponent";
 import BarChartComponent from "../../components/ChartsComponents/BarChartComponent";
 import DoughnutChatComponent from "../../components/ChartsComponents/DoughnutChartComponent";
-
 import Slider from "react-slick";
 
 const RacHeadDashboard = () => {
@@ -32,58 +28,20 @@ const RacHeadDashboard = () => {
 
   const settings = {
     dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3, // Number of cards visible at once
+    infinite: false,
+    speed: 600,
+    slidesToShow: 3,
     slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
+    swipeToSlide: true,
   };
 
   // Sample card data
   const cards = [
-    {
-      id: 1,
-      title: "Card 1",
-      description: "This is card 1",
-      
-    },
-    {
-      id: 2,
-      title: "Card 2",
-      description: "This is card 2",
-     
-    },
-    {
-      id: 3,
-      title: "Card 3",
-      description: "This is card 3",
-      
-    },
-    {
-      id: 4,
-      title: "Card 4",
-      description: "This is card 4",
-      
-    },
-    {
-      id: 5,
-      title: "Card 5",
-      description: "This is card 5",
-      
-    },
+    { id: 1, title: "Card 1", description: "This is card 1" },
+    { id: 2, title: "Card 2", description: "This is card 2" },
+    { id: 3, title: "Card 3", description: "This is card 3" },
+    { id: 4, title: "Card 4", description: "This is card 4" },
+    { id: 5, title: "Card 5", description: "This is card 5" },
   ];
 
   return (
@@ -94,11 +52,10 @@ const RacHeadDashboard = () => {
       {/* Main Content */}
       <main className="relative flex flex-col flex-grow gap-y-8 px-8 py-6 overflow-y-auto">
         <RacHeader />
-
         <div className="pannels-container flex flex-grow gap-y-5 gap-x-5">
           <Grid container spacing={2} sx={{ flexGrow: 1 }}>
             <Grid size={5}>
-              {/* number cards */}
+              {/* Number cards */}
               <Grid container rowSpacing={2} columnSpacing={2}>
                 <DashboardNumberCards
                   numberCardsStyle={numberCardsStyle}
@@ -127,17 +84,15 @@ const RacHeadDashboard = () => {
               </Grid>
             </Grid>
 
-            {/* grid for bar chart */}
+            {/* Grid for bar chart */}
             <Grid
               size={7}
               sx={{
                 borderRadius: "10px",
                 background: "#fff",
-                // maxHeight: "fit-content",
                 padding: "1.2rem",
               }}
             >
-              {/* <AreaChartComponent/> */}
               <div className="flex justify-between items-center w-full mb-6">
                 <h1 className="font-semibold text-xl text-[#333]">
                   Relevancy Percentage
@@ -152,9 +107,7 @@ const RacHeadDashboard = () => {
                 >
                   <InputLabel
                     id="demo-select-small-label"
-                    sx={{
-                      color: "#646464", // Label color
-                    }}
+                    sx={{ color: "#646464" }}
                   >
                     Select Department
                   </InputLabel>
@@ -164,14 +117,12 @@ const RacHeadDashboard = () => {
                     label="Select Department"
                     sx={{
                       "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          border: "none", // No border
-                        },
+                        "& fieldset": { border: "none" },
                         "&.Mui-focused fieldset": {
-                          borderColor: "#646464", // Border color when focused (active state)
+                          borderColor: "#646464",
                         },
                       },
-                      color: "#646464", // Text color
+                      color: "#646464",
                     }}
                   >
                     <MenuItem value="">
@@ -186,7 +137,7 @@ const RacHeadDashboard = () => {
               <BarChartComponent />
             </Grid>
 
-            {/* doughnut chart for pannl status */}
+            {/* Doughnut chart */}
             <Grid
               size={5}
               sx={{
@@ -210,9 +161,7 @@ const RacHeadDashboard = () => {
                 >
                   <InputLabel
                     id="demo-select-small-label"
-                    sx={{
-                      color: "#646464", // Label color
-                    }}
+                    sx={{ color: "#646464" }}
                   >
                     Select Department
                   </InputLabel>
@@ -222,14 +171,12 @@ const RacHeadDashboard = () => {
                     label="Select Department"
                     sx={{
                       "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          border: "none", // No border
-                        },
+                        "& fieldset": { border: "none" },
                         "&.Mui-focused fieldset": {
-                          borderColor: "#646464", // Border color when focused (active state)
+                          borderColor: "#646464",
                         },
                       },
-                      color: "#646464", // Text color
+                      color: "#646464",
                     }}
                   >
                     <MenuItem value="">
@@ -241,11 +188,10 @@ const RacHeadDashboard = () => {
                   </Select>
                 </FormControl>
               </div>
-
               <DoughnutChatComponent />
             </Grid>
 
-            {/* upcoming inteviews */}
+            {/* Upcoming interviews */}
             <Grid
               size={7}
               sx={{
@@ -268,9 +214,7 @@ const RacHeadDashboard = () => {
                 >
                   <InputLabel
                     id="demo-select-small-label"
-                    sx={{
-                      color: "#646464", // Label color
-                    }}
+                    sx={{ color: "#646464" }}
                   >
                     Select Month
                   </InputLabel>
@@ -280,14 +224,12 @@ const RacHeadDashboard = () => {
                     label="Select Month"
                     sx={{
                       "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          border: "none", // No border
-                        },
+                        "& fieldset": { border: "none" },
                         "&.Mui-focused fieldset": {
-                          borderColor: "#646464", // Border color when focused (active state)
+                          borderColor: "#646464",
                         },
                       },
-                      color: "#646464", // Text color
+                      color: "#646464",
                     }}
                   >
                     <MenuItem value="">
@@ -299,13 +241,13 @@ const RacHeadDashboard = () => {
                   </Select>
                 </FormControl>
               </div>
-
-              <div style={{ padding: "20px" }}>
+              <div className="md:h-[80%] h-[70%] w-full p-2">
                 <Slider {...settings}>
-                  {cards.map((card) => (
-                    <InterviewCardComponent card={card}/>
-
-                  ))}
+                  <InterviewCardComponent />
+                  <InterviewCardComponent />
+                  <InterviewCardComponent />
+                  <InterviewCardComponent />
+                  <InterviewCardComponent />                  
                 </Slider>
               </div>
             </Grid>

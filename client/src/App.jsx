@@ -75,11 +75,11 @@ const routes = createBrowserRouter([
     path: "/",
     element: <RequiredAuth />,
     children: [
-      { path: "/rachead/", element: <RacHeadDashboard /> },
-      { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
-      { path: "/rachead/pannels", element: <RacHeadPannels /> },
-      { path: "/rachead/createPanel", element: <CreatePanelForm /> },
-      { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
+      // { path: "/rachead/", element: <RacHeadDashboard /> },
+      // { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
+      // { path: "/rachead/pannels", element: <RacHeadPannels /> },
+      // { path: "/rachead/createPanel", element: <CreatePanelForm /> },
+      // { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
     ],
   },
 ]);

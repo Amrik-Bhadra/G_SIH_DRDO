@@ -34,8 +34,8 @@ export const ExpertRoleContext = () => {
     );
   }
 
-  return currentUser.role !== "Expert" ? (
-    <Navigate to="/candidate/dashboard" />
+  return currentUser?.role !== "Expert" ? (
+    <Navigate to="/" />
   ) : (
     <div className="w-full min-h-screen flex justify-center items-start">
       <Outlet />
@@ -54,8 +54,8 @@ export const CandidateRoleContext = () => {
     );
   }
 
-  return currentUser.role !== "Candidate" ? (
-    <Navigate to="/expert/dashboard" />
+  return currentUser?.role !== "Candidate" ? (
+    <Navigate to="/" />
   ) : (
     <div className="w-full min-h-screen flex justify-center items-start">
       <Outlet />

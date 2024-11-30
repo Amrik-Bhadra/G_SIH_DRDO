@@ -29,12 +29,14 @@ const ExpertCompleteDetail = () => {
         type: "",
         number: "",
       },
+      role: "Expert",
+      ips: [],
     },
     fieldOfExpertise: {
       domain: "",
       designation: "",
       skills: [],
-      yearsOfExperience: "",
+      yearsOfExperience: 0,
       qualifications: [
         {
           degree: "",
@@ -81,10 +83,16 @@ const ExpertCompleteDetail = () => {
       totalApproachRelevancyScore: 0,
     },
     finalScore: 0,
-    twoFactorAuthentication: {
-      twoFacAuth: false,
-      code: "",
+    twoFactorAuth: {
+      enabled: false,
+      method: "",
     },
+    interviewData: [
+      {
+        dateOfInterview: "",
+        interviewCount: 0,
+      },
+    ],
   });
 
   const { id } = useParams();
@@ -103,22 +111,22 @@ const ExpertCompleteDetail = () => {
         age,
       } = userData.personalDetails;
 
-      if (
-        !firstName ||
-        !lastName ||
-        !phoneNo ||
-        !gender ||
-        !govtIdType ||
-        !govtIdNo ||
-        !recoveryEmail ||
-        !age
-      ) {
-        toast.error("Please complete all personal information fields.");
-        return false;
-      }
+      // if (
+      //   !firstName ||
+      //   !lastName ||
+      //   !phoneNo ||
+      //   !gender ||
+      //   !govtIdType ||
+      //   !govtIdNo ||
+      //   !recoveryEmail ||
+      //   !age
+      // ) {
+      //   toast.error("Please complete all personal information fields.");
+      //   return false;
+      // }
 
       // Additional validation for age and phone number
-      if (age < 18 || age > 100) {
+      if (age > 18 || age < 100) {
         toast.error("Age must be between 18 and 100 years.");
         return false;
       }

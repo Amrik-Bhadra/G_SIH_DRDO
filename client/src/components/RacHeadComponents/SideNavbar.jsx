@@ -16,7 +16,7 @@ const SideNavbar = () => {
 
   return (
     <aside
-      className={`flex flex-col items-center pt-8 relative top-0 left-0 bg-white transition-all duration-300 ${
+      className={`relative flex flex-col items-center pt-8 top-0 left-0 bg-white transition-all duration-300 ${
         isSidebarCollapsed ? "max-w-[8%] w-full" : "max-w-[18%] w-full"
       } h-full px-8 gap-y-10`}
       style={{

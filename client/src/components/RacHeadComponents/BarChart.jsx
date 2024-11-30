@@ -29,7 +29,12 @@ const BarChart = () => {
   const createGradient = (context) => {
     if (!context.chart.chartArea) return null;
     const { ctx, chartArea } = context.chart;
-    const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+    const gradient = ctx.createLinearGradient(
+      0,
+      chartArea.top,
+      0,
+      chartArea.bottom
+    );
     gradient.addColorStop(0, "#2AFADF");
     gradient.addColorStop(1, "#4C83FF");
     return gradient;
@@ -76,29 +81,51 @@ const BarChart = () => {
       },
     },
     categoryPercentage: 0.9, // Adjust space within categories
-    barPercentage: 0.9,  
+    barPercentage: 0.9,
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        width: "100%",
+      }}
+    >
       <div className="flex gap-6 items-center justify-between m-4">
         <h2 className="font-semibold text-lg">Relevancy Chart</h2>
-        <FormControl sx={{ minWidth: 120 }} size="small">
-          <InputLabel id="demo-simple-select-autowidth-label">Department</InputLabel>
+        <FormControl
+          sx={{
+            m: 1,
+            minWidth: 200,
+            background: "transparent",
+          }}
+          size="small"
+        >
+          <InputLabel id="demo-select-small-label" sx={{ color: "#646464" }}>
+            Select Department
+          </InputLabel>
           <Select
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={department}
-            onChange={handleChange}
-            autoWidth
+            labelId="demo-select-small-label"
+            id="demo-select-small"
             label="Select Department"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { border: "none" },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#646464",
+                },
+              },
+              color: "#646464",
+            }}
           >
             <MenuItem value="">
-              <em>All</em>
+              <em>None</em>
             </MenuItem>
-            <MenuItem value="IT">IT</MenuItem>
-            <MenuItem value="HR">HR</MenuItem>
-            <MenuItem value="Finance">Finance</MenuItem>
+            <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
           </Select>
         </FormControl>
       </div>

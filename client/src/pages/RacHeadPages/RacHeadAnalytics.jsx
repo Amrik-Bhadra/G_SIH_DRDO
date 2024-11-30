@@ -193,7 +193,7 @@ const RacHeadAnalytics = () => {
   };
 
   return (
-    <section className="h-screen w-screen flex bg-[#f4f4f4] gap-4">
+    <section className="h-screen w-screen flex bg-[#f4f4f4] gap-4 overflow-y-auto">
       {/* Sidebar */}
       <SideNavbar />
 
@@ -228,7 +228,7 @@ const RacHeadAnalytics = () => {
 
             {/* Other charts below */}
             <Grid item xs={12} sm={5} md={5}>
-              <div
+            <div
                 className="rounded-lg p-1"
                 style={{ height: "90%", background: "white", width: "fit" }}
               >

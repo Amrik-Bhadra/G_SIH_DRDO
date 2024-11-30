@@ -12,8 +12,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InterviewCardComponent from "../../components/RacHeadComponents/InterviewCardComponent";
-import BarChartComponent from "../../components/ChartsComponents/BarChartComponent";
-import DoughnutChatComponent from "../../components/ChartsComponents/DoughnutChartComponent";
+// import BarChartComponent from "../../components/ChartsComponents/BarChartComponent";
+import BarChart from "../../components/RacHeadComponents/Barchart";
+// import DoughnutChatComponent from "../../components/ChartsComponents/DoughnutChartComponent";
+import DoughnutChartComponent from "../../components/RacHeadComponents/DoughnutChartComponent";
 import Slider from "react-slick";
 
 const RacHeadDashboard = () => {
@@ -50,9 +52,9 @@ const RacHeadDashboard = () => {
       <SideNavbar />
 
       {/* Main Content */}
-      <main className="relative flex flex-col flex-grow gap-y-8 px-8 py-6 overflow-y-auto">
+      <main className="relative flex flex-col flex-grow gap-y-8 px-8 py-6 h-full overflow-y-auto">
         <RacHeader />
-        <div className="pannels-container flex flex-grow gap-y-5 gap-x-5">
+        <div className="pannels-container flex flex-grow gap-y-5 gap-x-5 ">
           <Grid container spacing={2} sx={{ flexGrow: 1 }}>
             <Grid size={5}>
               {/* Number cards */}
@@ -90,10 +92,9 @@ const RacHeadDashboard = () => {
               sx={{
                 borderRadius: "10px",
                 background: "#fff",
-                padding: "1.2rem",
               }}
             >
-              <div className="flex justify-between items-center w-full mb-6">
+              {/* <div className="flex justify-between items-center w-full mb-6">
                 <h1 className="font-semibold text-xl text-[#333]">
                   Relevancy Percentage
                 </h1>
@@ -134,7 +135,14 @@ const RacHeadDashboard = () => {
                   </Select>
                 </FormControl>
               </div>
-              <BarChartComponent />
+              <BarChartComponent /> */}
+
+              <div
+                className="p-1 rounded-[10px]"
+                style={{ height: "95%", background: "white", width: "fit" }}
+              >
+                <BarChart />
+              </div>
             </Grid>
 
             {/* Doughnut chart */}
@@ -144,51 +152,14 @@ const RacHeadDashboard = () => {
                 borderRadius: "10px",
                 background: "#fff",
                 maxHeight: "fit-content",
-                padding: "1.2rem",
               }}
             >
-              <div className="flex justify-between items-center w-full mb-6">
-                <h1 className="font-semibold text-xl text-[#333]">
-                  Interview Panel Status
-                </h1>
-                <FormControl
-                  sx={{
-                    m: 1,
-                    minWidth: 200,
-                    background: "rgba(227, 227, 227, 0.25)",
-                  }}
-                  size="small"
-                >
-                  <InputLabel
-                    id="demo-select-small-label"
-                    sx={{ color: "#646464" }}
-                  >
-                    Select Department
-                  </InputLabel>
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    label="Select Department"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": { border: "none" },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#646464",
-                        },
-                      },
-                      color: "#646464",
-                    }}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
+              <div
+                className="rounded-lg p-1"
+                style={{ height: "90%", background: "white", width: "fit" }}
+              >
+                <DoughnutChartComponent />
               </div>
-              <DoughnutChatComponent />
             </Grid>
 
             {/* Upcoming interviews */}
@@ -247,7 +218,7 @@ const RacHeadDashboard = () => {
                   <InterviewCardComponent />
                   <InterviewCardComponent />
                   <InterviewCardComponent />
-                  <InterviewCardComponent />                  
+                  <InterviewCardComponent />
                 </Slider>
               </div>
             </Grid>

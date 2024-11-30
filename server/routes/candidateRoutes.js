@@ -1,5 +1,4 @@
 const express = require("express");
-const attachEmail = require("../middleware/attachMail");
 const router = express.Router();
 
 const {

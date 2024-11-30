@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const candidateSchema = new mongoose.Schema({
   personalDetails: {
     name: {
-      firstname: { type: String, required: true },
-      middlename: { type: String, required: false },
-      lastname: { type: String, required: true },
+      firstName: { type: String, required: true },
+      middleName: { type: String, required: false },
+      lastName: { type: String, required: true },
     },
     gender: { type: String, required: true },
     age: { type: Number, required: true },
@@ -27,12 +27,12 @@ const candidateSchema = new mongoose.Schema({
     },
     role: {
       type: String,
-      default: "Candidate"
+      default: "Candidate",
     },
   },
   twoFactorAuth: {
-    enabled: { type: Boolean, required: true },
-    method: { type: String, required: true },
+    enabled: { type: Boolean },
+    method: { type: String },
   },
   skills: [{ type: String, required: true }],
   areaOfExpertise: [{ type: String, required: true }],

@@ -25,7 +25,7 @@ const apiLimiter = require("../middleware/apiLimiter");
 const multiRoleAccess = require("../middleware/roleBasedAccess");
 const upload = require("../db/uploadconfig"); 
 
-router.get("/all", apiLimiter, authenticate, allCandidates);
+router.get("/all", apiLimiter, allCandidates);
 router.get("/find/:id", apiLimiter, authenticate, findCandidate);
 router.post(
     "/update/:id",

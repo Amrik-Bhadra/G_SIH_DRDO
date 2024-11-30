@@ -20,11 +20,11 @@ const multiRoleAccess = require("../middleware/roleBasedAccess");
 router.get("/all", apiLimiter, allExperts); // here i have removed the authenticate middlware
 router.get("/get/:id", apiLimiter, authenticate, findExpert);
 router.get("/get/email/:id", apiLimiter, findExpertByEmail);
-router.post(
+router.put(
   "/update/:id",
   apiLimiter,
-  authenticate,
-  multiRoleAccess(["Expert", "Admin"]),
+  // authenticate,
+  // multiRoleAccess(["Expert", "Admin"]),
   updateExperts
 );
 router.delete(

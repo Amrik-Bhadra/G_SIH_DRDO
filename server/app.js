@@ -11,7 +11,7 @@ const panelRoutes = require("./routes/panelRoute");
 const machineLearningRoutes = require("./routes/ML_Routes");
 const jobRoutes = require("./routes/jobRoutes");
 const qnaRoutes = require("./routes/qnaRoutes");
-const requestIp = require("request-ip");
+const { flaskFlag } = require("./config/flaskConnect");
 
 const corsOptions = {
   origin: "http://localhost:5173",
@@ -34,14 +34,16 @@ app.use("/api/qna", qnaRoutes);
 
 const PORT = process.env.PORT || 8000;
 const mongoURI = process.env.MONGO_URI;
+const flaskURI = process.env.FLASK_PORT || "http://127.0.0.1:5001/";
 
 const connection = async () => {
   await connectDB(mongoURI);
   app.listen(PORT, () => {
     console.log(
-      "Server Status\t\t { OK } :-:\nDB Status\t\t { OK } :-:\nMiddlewares(5/5) Status\t { OK } :-:"
+      "> Server Status\t\t\t { OK } :-:\n> DB Status\t\t\t { OK } :-:\n> Middlewares(5/5) Status\t { OK } :-:"
     );
   });
+  await flaskFlag(flaskURI);
 };
 
 connection();

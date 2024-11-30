@@ -22,15 +22,15 @@ const JobSchema = new mongoose.Schema({
     uploadDate: { type: Date, default: Date.now },
   },
   minimumQualifications: {
-    type: [String], // Array of qualifications
+    type: String,
   },
-  yearsOfExperience:{
+  yearsOfExperience: {
     type: Number,
-    required: true
+    required: true,
   },
   preferredSkills: {
     type: [String], // Array of skills
   },
 });
 
-module.exports = mongoose.model("Job",JobSchema);
+module.exports = mongoose.model("Job", JobSchema);

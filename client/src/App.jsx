@@ -17,34 +17,71 @@ import RegistrationChoice from "./pages/RegistrationForm/RegistrationChoice";
 import TwoFactorAuthentication from "./pages/LoginForm/TwoFactorAuthentication";
 import CreatePanelForm from "./components/RacHeadComponents/CreatePanelForm";
 import GeneratedExpertsPage from "./pages/RacHeadPages/GeneratedExpertsPage";
-import CandidateQuizRedirect from "./pages/RegistrationForm/CanidateQuizRedirect"
-import ExpertQuizRedirect from "./pages/RegistrationForm/ExpertQuizRedirect"
+import CandidateQuizRedirect from "./pages/RegistrationForm/CanidateQuizRedirect";
+import ExpertQuizRedirect from "./pages/RegistrationForm/ExpertQuizRedirect";
 import CandidateDashboard from "./pages/CandidatePages/Candidatedashboard";
 import ExpertDashboard from "./pages/ExpertPages/ExpertDashboard";
+import {
+  CandidateRoleContext,
+  ExpertRoleContext,
+  RequiredAuth,
+} from "./routes/Layout";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
 
 const routes = createBrowserRouter([
+  // Open Routes
   { path: "/", element: <LoginForm /> },
   { path: "/forgotPassword", element: <ForgotPassword /> },
   { path: "/verifyOtp", element: <VerifyOTP /> },
-  // { path: "/twofactorauthentication", element: <TwoFactorAuthentication /> },
+  { path: "/twofactorauthentication", element: <TwoFactorAuthentication /> },
   { path: "/registrationchoice", element: <RegistrationChoice /> },
   { path: "/register/candidateregister", element: <CandidateRegistration /> },
   { path: "/register/expertregister", element: <ExpertRegistration /> },
   { path: "/register/expert", element: <ExpertRegistrationForm /> },
-  {
-    path: "/register/candidatecompletedetail",
-    element: <CandidateCompleteDetail />,
-  },
-  { path: "/register/expertcompletedetail", element: <ExpertCompleteDetail /> },
   { path: "/resetpassword", element: <ResetPassword /> },
-  { path: "/rachead/", element: <RacHeadDashboard /> },
-  { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
-  { path: "/rachead/pannels", element: <RacHeadPannels /> },
-  { path: "/rachead/createPanel", element: <CreatePanelForm /> },
-  { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
+
+  // Expert Authorized Routes
+  {
+    path: "/",
+    element: <ExpertRoleContext />,
+    children: [
+      { path: "/register/expert/quiz", element: <ExpertQuizRedirect /> },
+      { path: "/expert/dashboard", element: <ExpertDashboard /> },
+      {
+        path: "/register/expertcompletedetail/:userId",
+        element: <ExpertCompleteDetail />,
+      },
+    ],
+  },
+
+  // Candiate Authorized Routes
+  {
+    path: "/",
+    element: <CandidateRoleContext />,
+    children: [
+      { path: "/register/candidate/quiz", element: <CandidateQuizRedirect /> },
+      { path: "/candidate/dashboard", element: <CandidateDashboard /> },
+      {
+        path: "/register/candidatecompletedetail",
+        element: <CandidateCompleteDetail />,
+      },
+    ],
+  },
+
+  // Login Authorized Routes
+  {
+    path: "/",
+    element: <RequiredAuth />,
+    children: [
+      { path: "/rachead/", element: <RacHeadDashboard /> },
+      { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
+      { path: "/rachead/pannels", element: <RacHeadPannels /> },
+      { path: "/rachead/createPanel", element: <CreatePanelForm /> },
+      { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
+    ],
+  },
 ]);
 
 const App = () => {

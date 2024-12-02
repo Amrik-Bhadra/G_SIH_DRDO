@@ -16,16 +16,18 @@ const SideNavbar = () => {
 
   return (
     <aside
-      className={`relative flex flex-col items-center pt-8 top-0 left-0 bg-white transition-all duration-300 ${
-        isSidebarCollapsed ? "max-w-[8%] w-full" : "max-w-[18%] w-full"
-      } h-full px-8 gap-y-10`}
+      className={`no-scrollbar relative flex flex-col items-center pt-8 bg-white transition-all duration-300 ${isSidebarCollapsed ? "max-w-[8%] w-full" : "max-w-[18%] w-full"
+        } h-full px-[1.6vw] gap-y-10 overflow-y-auto`}
       style={{
         boxShadow: "rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px",
       }}
     >
       <button
         onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-        className="absolute top-2 -right-6 text-[#0E8CCA] text-3xl px-2 py-1 rounded"
+        className="absolute top-2 -right-4 text-[#0E8CCA] text-3xl px-2 py-1 rounded"
+        style={{
+          zIndex: 10, // Ensure it appears on top of overlapping elements
+        }}
       >
         {isSidebarCollapsed ? (
           <IoIosArrowDroprightCircle />
@@ -34,8 +36,8 @@ const SideNavbar = () => {
         )}
       </button>
 
-      <div className="sidebarheader flex justify-center items-center gap-x-3 w-full">
-        <img src={logo} alt="drdo-logo" className={isSidebarCollapsed ? "w-[4rem]" : "w-[4.2rem]"} />
+      <div className="sidebarheader flex justify-center items-center w-full">
+        <img src={logo} alt="drdo-logo" className={isSidebarCollapsed ? "w-4rem" : "w-[4.2rem]"} />
         {!isSidebarCollapsed && (
           <h1 className="text-3xl font-bold text-[#0E8CCA]">E.B.R.S.</h1>
         )}
@@ -91,12 +93,16 @@ const SideNavbar = () => {
         <div className="sidenavbar-g2 w-full flex flex-col gap-y-2">
           <span className="group-header text-[#bbb] text-sm">TOOLS</span>
           <ul className="group-menu-box flex flex-col gap-y-2">
-            <NavItems
-              link="/rachead/settings"
-              title="Settings"
-              icon={IoSettingsSharp}
-              isCollapsed={isSidebarCollapsed}
-            />
+
+            <li className="group-menu-items flex">
+              <NavItems
+                link="/rachead/settings"
+                title="Settings"
+                icon={IoSettingsSharp}
+                isCollapsed={isSidebarCollapsed}
+              />
+            </li>
+
             <li className="group-menu-items flex">
               <NavItems
                 link="/rachead/help"

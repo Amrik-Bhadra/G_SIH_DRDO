@@ -26,12 +26,12 @@ const RacHeadAnalytics = () => {
   };
 
   return (
-    <section className="h-screen w-screen flex bg-[#f4f4f4] gap-4 overflow-y-auto">
+    <section className="h-screen w-screen flex bg-[#f4f4f4] overflow-x-hidden ">
       {/* Sidebar */}
       <SideNavbar />
 
       {/* Main Content */}
-      <main className="relative flex flex-col flex-grow gap-y-8 px-8 py-6 overflow-y-auto mb-4">
+      <main className="relative flex flex-col flex-grow gap-y-8 px-8 py-6 overflow-y-auto mb-4 -z-0">
         <RacHeader />
         <div className="pannels-container flex flex-grow flex-wrap gap-y-5 gap-x-5 w-full">
           <Grid

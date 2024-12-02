@@ -29,6 +29,7 @@ import QuestionnareResultPage from "./pages/Questionnaire/QuestionnareResultPage
 import PanelDetails from "./pages/ExpertPages/PanelDetails";
 import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 import ExpertDetailsPage from "./pages/RacHeadPages/ExpertDetailsPage";
+import PanelDetailsPage from "./pages/RacHeadPages/PanelDetailsPage";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -74,6 +75,7 @@ const App = () => {
 
     { path:"/expert/panneldetails", element: <PanelDetails/> },
     { path:"/expert/candidateevaluation", element: <CandidateEvaluation/> },
+    {path:"/rachead/paneldetails",element:<PanelDetailsPage /> },
   ]);
 
   return (

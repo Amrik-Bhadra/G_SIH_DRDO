@@ -81,7 +81,7 @@
               </li>
               <li className="group-menu-items flex">
                 <NavItems
-                  link="/rachead/candidatesData"
+                  link="/rachead/candidateData"
                   title="Candidates"
                   icon={IoPerson}
                   isCollapsed={isSidebarCollapsed}

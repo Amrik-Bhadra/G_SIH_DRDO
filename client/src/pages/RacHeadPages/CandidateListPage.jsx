@@ -134,7 +134,7 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const ExpertDetailsPage = () => {
+const CandidateListPage = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -333,4 +333,4 @@ const ExpertDetailsPage = () => {
   );
 };
 
-export default ExpertDetailsPage;
+export default CandidateListPage;

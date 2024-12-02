@@ -55,10 +55,10 @@ const RacHeadDashboard = () => {
       <main className="relative flex flex-col flex-grow gap-y-8 px-8 py-6 overflow-y-auto">
         <RacHeader />
         <div className="pannels-container flex flex-grow gap-y-5 gap-x-5">
-          <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2} >
             <Grid size={5}>
               {/* Number cards */}
-              <Grid container rowSpacing={2} columnSpacing={2}>
+              <Grid container rowSpacing={2} columnSpacing={2} sx={{border:"2px solid red"}}>
                 <DashboardNumberCards
                   numberCardsStyle={numberCardsStyle}
                   title="Total Experts"
@@ -94,52 +94,10 @@ const RacHeadDashboard = () => {
                 background: "#fff",
               }}
             >
-              {/* <div className="flex justify-between items-center w-full mb-6">
-                <h1 className="font-semibold text-xl text-[#333]">
-                  Relevancy Percentage
-                </h1>
-                <FormControl
-                  sx={{
-                    m: 1,
-                    minWidth: 200,
-                    background: "rgba(227, 227, 227, 0.25)",
-                  }}
-                  size="small"
-                >
-                  <InputLabel
-                    id="demo-select-small-label"
-                    sx={{ color: "#646464" }}
-                  >
-                    Select Department
-                  </InputLabel>
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    label="Select Department"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": { border: "none" },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#646464",
-                        },
-                      },
-                      color: "#646464",
-                    }}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-              <BarChartComponent /> */}
 
               <div
                 className="p-1 rounded-[10px]"
-                style={{ height: "95%", background: "white", width: "fit" }}
+                style={{ background: "white", width: "fit" }}
               >
                 <BarChart />
               </div>

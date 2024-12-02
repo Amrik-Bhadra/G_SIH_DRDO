@@ -7,6 +7,7 @@ import { FaUser } from "react-icons/fa";
 import { MdGroups } from "react-icons/md";
 import { RiCalendarScheduleFill } from "react-icons/ri";
 import { IoDocumentText } from "react-icons/io5";
+<<<<<<< HEAD
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -17,6 +18,9 @@ import BarChart from "../../components/RacHeadComponents/Barchart";
 // import DoughnutChatComponent from "../../components/ChartsComponents/DoughnutChartComponent";
 import DoughnutChartComponent from "../../components/RacHeadComponents/DoughnutChartComponent";
 import Slider from "react-slick";
+=======
+import AreaChartComponent from "../../components/ChartsComponents/AreaChartComponent";
+>>>>>>> 43f5b9778bb6ef8880c0bf77ef7688a35836173d
 
 const RacHeadDashboard = () => {
   const numberCardsStyle = {
@@ -57,6 +61,7 @@ const RacHeadDashboard = () => {
         <div className="pannels-container flex flex-grow gap-y-5 gap-x-5">
           <Grid container spacing={2} >
             <Grid size={5}>
+<<<<<<< HEAD
               {/* Number cards */}
               <Grid container rowSpacing={2} columnSpacing={2} sx={{border:"2px solid red"}}>
                 <DashboardNumberCards
@@ -180,6 +185,21 @@ const RacHeadDashboard = () => {
                 </Slider>
               </div>
             </Grid>
+=======
+              {/* number cards */}
+              <Grid container rowSpacing={2} columnSpacing={2}>
+                <DashboardNumberCards numberCardsStyle={numberCardsStyle} title="Total Experts" para="56" Icon={FaUser} />
+                <DashboardNumberCards numberCardsStyle={numberCardsStyle} title="Total Experts" para="56" Icon={FaUser} />
+                <DashboardNumberCards numberCardsStyle={numberCardsStyle} title="Total Experts" para="56" Icon={FaUser} />
+                <DashboardNumberCards numberCardsStyle={numberCardsStyle} title="Total Experts" para="56" Icon={FaUser} />
+              </Grid>
+            </Grid>
+            <Grid size={7} sx={{border:"2px solid red", borderRadius:"10px", background:"#fff"}}>
+              {/* <AreaChartComponent/> */}
+            </Grid>
+            <Grid size={4}></Grid>
+            <Grid size={8}></Grid>
+>>>>>>> 43f5b9778bb6ef8880c0bf77ef7688a35836173d
           </Grid>
         </div>
       </main>

@@ -11,30 +11,22 @@ import axios from "axios";
 const ExpertCompleteDetail = () => {
   const [stepNo, setStepNo] = useState(1);
   const [userData, setUserData] = useState({
-    personalDetails: {
-      name: {
-        firstName: "",
-        middleName: "",
-        lastName: "",
-      },
+    personalInfo: {
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      phoneNo: "",
+      govtIdType: "",
+      govtIdNo: "",
       gender: "",
       age: "",
-      contact: {
-        email: "",
-        phoneNo: "",
-        recoveryEmail: "",
-      },
-      password: "",
-      idProof: {
-        type: "",
-        number: "",
-      },
+      recoveryEmail: "",
+      designation: "",
+      domain: "",
+      yearsOfExperience: "",
     },
     fieldOfExpertise: {
-      domain: "",
-      designation: "",
       skills: [],
-      yearsOfExperience: "",
       qualifications: [
         {
           degree: "",
@@ -167,7 +159,7 @@ const ExpertCompleteDetail = () => {
   };
 
   const handleNext = () => {
-    if (validateStep()) {
+    if (!validateStep()) {
       setStepNo(stepNo + 1);
     }
   };

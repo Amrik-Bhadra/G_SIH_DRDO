@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import {
   Select,
@@ -13,8 +13,15 @@ import {
 import axios from "axios";
 
 const CandidatePersonalInformation = ({ userData, setUserData }) => {
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
+  const [city, setCity] = useState(userData.personalInfo.city || "");
+  const [state, setState] = useState(userData.personalInfo.state || "");
+
+  // Retaining data on component mount if userData exists
+  useEffect(() => {
+    if (userData.personalInfo.pincode) {
+      handlePincodeChange({ target: { value: userData.personalInfo.pincode } });
+    }
+  }, [userData.personalInfo.pincode]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -113,7 +120,10 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             id="outlined-password-input"
             label="Phone No"
             type="number"
+            name="phoneNo"
             required
+            value={userData.personalInfo.phoneNo}
+            onChange={handleInputChange}
           />
           <FormControl variant="outlined" sx={{ minWidth: 200 }}>
             <InputLabel id="demo-simple-select-label">Govt. ID Type</InputLabel>
@@ -124,6 +134,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
               required
               name="govtIdType"
               onChange={handleInputChange}
+              value={userData.personalInfo.govtIdType}
             >
               <MenuItem value="" disabled>
                 Select Govt. ID Type
@@ -141,6 +152,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             className="w-[50%]"
             name="govtIdNo"
             onChange={handleInputChange}
+            value={userData.personalInfo.govtIdNo}
           />
         </div>
 
@@ -154,6 +166,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="gender"
               onChange={handleInputChange}
+              value={userData.personalInfo.gender}
             >
               <FormControlLabel value="male" control={<Radio />} label="Male" />
               <FormControlLabel
@@ -182,8 +195,11 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             id="outlined-password-input"
             label="Recovery Email"
             type="email"
+            name="recoveryEmail"
             required
             fullWidth
+            value={userData.personalInfo.recoveryEmail}
+            onChange={handleInputChange}
           />
         </div>
 
@@ -201,6 +217,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
           }}
           name="address"
           onChange={handleInputChange}
+          value={userData.personalInfo.address}
         />
 
         {/* country state zipcode group */}
@@ -213,6 +230,7 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             name="pincode"
             onChange={handlePincodeChange}
             fullWidth
+            value={userData.personalInfo.pincode}
           />
           <TextField
             id="outlined-password-input"

@@ -33,6 +33,36 @@ import ExpertDetailsPage from "./pages/RacHeadPages/ExpertDetailsPage";
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
 
+<<<<<<< HEAD
+=======
+const routes = createBrowserRouter([
+  { path: "/", element: <LoginForm /> },
+  { path: "/forgotPassword", element: <ForgotPassword /> },
+  { path: "/verifyOtp", element: <VerifyOTP /> },
+  { path: "/twofactorauthentication", element: <TwoFactorAuthentication /> },
+  { path: "/registrationchoice", element: <RegistrationChoice /> },
+  { path: "/register/candidateregister", element: <CandidateRegistration /> },
+  { path: "/register/expertregister", element: <ExpertRegistration /> },
+  { path: "/register/expert", element: <ExpertRegistrationForm /> },
+  {
+    path: "/register/candidatecompletedetail",
+    element: <CandidateCompleteDetail />,
+  },
+  { path: "/register/expertcompletedetail/:userId", element: <ExpertCompleteDetail /> },
+  { path: "/resetpassword", element: <ResetPassword /> },
+  { path: "/rachead/", element: <RacHeadDashboard /> },
+  { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
+  { path: "/rachead/pannels", element: <RacHeadPannels /> },
+  { path: "/rachead/createPanel", element: <CreatePanelForm /> },
+  { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
+
+  { path: "/register/candidate/quiz", element: <CandidateQuizRedirect /> },
+  { path: "/register/expert/quiz", element: <ExpertQuizRedirect /> },
+  { path: "/candidate/dashboard", element: <CandidateDashboard /> },
+  { path: "/expert/dashboard", element: <ExpertDashboard /> },
+]);
+
+>>>>>>> 43f5b9778bb6ef8880c0bf77ef7688a35836173d
 const App = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [totalScore, setTotalScore] = useState({
@@ -77,7 +107,9 @@ const App = () => {
   ]);
 
   return (
-    <SidebarContext.Provider value={{ isSidebarCollapsed, setIsSidebarCollapsed }}>
+    <SidebarContext.Provider
+      value={{ isSidebarCollapsed, setIsSidebarCollapsed }}
+    >
       <Toaster position="top-center" />
       <RouterProvider router={routes} />
     </SidebarContext.Provider>

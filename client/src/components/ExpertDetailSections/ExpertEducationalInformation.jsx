@@ -17,6 +17,7 @@ const ExpertEducationalInformation = ({ userData, setUserData }) => {
   const [educationEntry, setEducationEntry] = useState({
     degree: "",
     institution: "",
+    yearOfAdmission: "",
     yearOfCompletion: "",
   });
 
@@ -32,6 +33,7 @@ const ExpertEducationalInformation = ({ userData, setUserData }) => {
     if (
       !educationEntry.degree ||
       !educationEntry.institution ||
+      !educationEntry.yearOfAdmission ||
       !educationEntry.yearOfCompletion
     ) {
       toast.error("Please fill in all fields before adding education details.");
@@ -50,6 +52,7 @@ const ExpertEducationalInformation = ({ userData, setUserData }) => {
     setEducationEntry({
       degree: "",
       institution: "",
+      yearOfAdmission: "",
       yearOfCompletion: "",
     });
 
@@ -97,6 +100,31 @@ const ExpertEducationalInformation = ({ userData, setUserData }) => {
             onChange={handleInputChange}
             fullWidth
           />
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel id="year-of-admission-label">
+              Year of Admission
+            </InputLabel>
+            <Select
+              labelId="year-of-admission-label"
+              label="Year of Admission"
+              id="year-of-admission"
+              name="yearOfAdmission"
+              value={educationEntry.yearOfAdmission}
+              onChange={handleInputChange}
+            >
+              <MenuItem value="" disabled>
+                Select Year
+              </MenuItem>
+              {Array.from({ length: 2030 - 1970 + 1 }, (_, i) => {
+                const year = 1970 + i; // Start from 1970 and go to 2030
+                return (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
           <FormControl variant="outlined" fullWidth>
             <InputLabel id="year-of-completion-label">
               Year of Completion
@@ -151,19 +179,25 @@ const ExpertEducationalInformation = ({ userData, setUserData }) => {
                   <div className="flex flex-1 items-center gap-3">
                     <Typography
                       variant="body1"
-                      className="font-medium w-1/3 truncate"
+                      className="font-medium w-1/4 truncate"
                     >
                       {item.degree}
                     </Typography>
                     <Typography
                       variant="body1"
-                      className="font-medium w-1/3 truncate"
+                      className="font-medium w-1/4 truncate"
                     >
                       {item.institution}
                     </Typography>
                     <Typography
                       variant="body2"
-                      className="text-gray-500 w-1/3 truncate"
+                      className="text-gray-500 w-1/4 truncate"
+                    >
+                      {item.yearOfAdmission}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      className="text-gray-500 w-1/4 truncate"
                     >
                       {item.yearOfCompletion}
                     </Typography>

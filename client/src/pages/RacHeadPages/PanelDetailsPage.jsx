@@ -6,6 +6,8 @@ import { IoMdPeople } from "react-icons/io";
 import BarChartWithoutDropdown from '../../components/RacHeadComponents/BarChartWithoutDropdown';
 import { IoArrowUndoCircle } from "react-icons/io5";
 import { color } from '@mui/system';
+import CandidateCard from '../../components/RacHeadComponents/CandidateCard';
+import '../../styles/RacHeadStyle.css'
 
 const PanelDetailsPage = () => {
     const panelDetails = [
@@ -20,6 +22,51 @@ const PanelDetailsPage = () => {
             status: "Completed"
         }
     ];
+
+    const candidateData = [
+        {
+            "name": "Arjun Verma",
+            "status": "Interviewed",
+            "role": "Software Engineer",
+            "degree": "B.Tech in Computer Science",
+            "experience": "3 years",
+            "specialization": "Full Stack Development"
+        },
+        {
+            "name": "Priya Nair",
+            "status": "Absent",
+            "role": "Data Scientist",
+            "degree": "M.Sc in Data Science",
+            "experience": "5 years",
+            "specialization": "Machine Learning"
+        },
+        {
+            "name": "Rohit Singh",
+            "status": "Interviewed",
+            "role": "DevOps Engineer",
+            "degree": "B.E in Information Technology",
+            "experience": "4 years",
+            "specialization": "Cloud Infrastructure"
+        },
+        {
+            "name": "Meera Joshi",
+            "status": "Interviewed",
+            "role": "UI/UX Designer",
+            "degree": "B.Des in Design",
+            "experience": "2 years",
+            "specialization": "User Experience Design"
+        },
+        {
+            "name": "Karan Patel",
+            "status": "Absent",
+            "role": "Project Manager",
+            "degree": "MBA in Project Management",
+            "experience": "8 years",
+            "specialization": "Agile Methodologies"
+        }
+    ]
+
+
     return (
         <>
             <div className='h-screen w-screen flex overflow-x-hidden'>
@@ -109,10 +156,25 @@ const PanelDetailsPage = () => {
                                     <BarChartWithoutDropdown />
                                 </div>
 
+                                {/*Candidates cards */}
+
+                                <div className='flex flex-col gap-4'>
+                                    <h2 style={{ color: "#333333" }} className='from-neutral-600 font-bold text-2xl'>Candidates</h2>
+                                    <div className="flex overflow-x-auto whitespace-nowrap gap-4 no-scrollbar items-stretch">
+                                        {candidateData.map((candidate, index) => (
+                                            <div key={index} className="inline-block flex-1">
+                                                <CandidateCard candidate={candidate} />
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                </div>
 
                             </div>
+
                         </>
                     ))}
+
                 </div>
             </div>
         </>

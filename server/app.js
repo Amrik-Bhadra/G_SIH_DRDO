@@ -43,7 +43,7 @@ const connection = async () => {
       "> Server Status\t\t\t { OK } :-:\n> DB Status\t\t\t { OK } :-:\n> Middlewares(5/5) Status\t { OK } :-:"
     );
   });
-  // await flaskFlag(flaskURI);
+  await flaskFlag(flaskURI);
 };
 
 connection();

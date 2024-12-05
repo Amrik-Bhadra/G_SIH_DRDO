@@ -60,9 +60,9 @@ const addCandidate = asyncHandler(async (req, res) => {
     const newCandidate = new Candidate({
       personalDetails: {
         name: {
-          firstname: "Default",
-          middlename: "",
-          lastname: "User",
+          firstName: "Default",
+          middleName: "",
+          lastName: "User",
         },
         gender: "Unknown",
         age: 0,

@@ -12,10 +12,10 @@ const router = express.Router();
 
 //  protected..Routes>
 router.post(
-  "/create",
+  "/add",
   apiLimiter,
   //   multiRoleAccess(["Admin"]),
-  authenticate,
+  // authenticate,
   createPanel
 );
 router.get("/all", apiLimiter, authenticate, getAllPanel);
@@ -27,10 +27,10 @@ router.delete(
   authenticate,
   deletePanel
 );
-router.post(
-  "/update/:id",
+router.put(
+  "/update",
   apiLimiter,
-  authenticate,
+  // authenticate,
   //   multiRoleAccess(["Admin"]),
   updatePanel
 );

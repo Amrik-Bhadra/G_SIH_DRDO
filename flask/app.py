@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+import subprocess
 
 app = Flask(__name__)
 CORS(app)
@@ -45,6 +46,19 @@ def get_jobs():  # Renamed function
             return {'error': 'Failed to fetch data from Node.js server'}, 500
     except Exception as e:
         return {'error': str(e)}, 500
+
+def run_both_scripts():
+    try:
+        # Run candidateScore.py script
+        subprocess.run(["python", "candidateScore.py"], check=True)
+
+        # Run expertSelectionAndScore.py script
+        subprocess.run(["python", "expertSelectionAndScore.py"], check=True)
+
+    except subprocess.CalledProcessError as e:
+        print(f"Error running script: {e}")
+
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5001, debug=True)

@@ -26,11 +26,11 @@ const upload = require("../db/uploadconfig");
 
 router.get("/all", apiLimiter, allCandidates);
 router.get("/find/:id", apiLimiter, authenticate, findCandidate);
-router.post(
+router.put(
     "/update/:id",
     apiLimiter,
-    authenticate,
-    multiRoleAccess(["Candidate", "Admin"]),
+    // authenticate,
+    // multiRoleAccess(["Candidate", "Admin"]),
     updateCandidate
 );
 

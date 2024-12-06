@@ -70,7 +70,7 @@ const candidateSchema = new mongoose.Schema({
     qualification: { type: Number, required: false },
     researchPapers: { type: Number, required: false },
     projects: { type: Number, required: false },
-    total: { type: Number, required: false },
+    totalSkillRelevancyScore: { type: Number, required: false },
   },
   approachRelevancyScore: {
     problemSolving: { type: Number, required: false },
@@ -78,7 +78,7 @@ const candidateSchema = new mongoose.Schema({
     decisionMaking: { type: Number, required: false },
     creativity: { type: Number, required: false },
     analyticalDepth: { type: Number, required: false },
-    total: { type: Number, required: false },
+    totalApproachRelevancyScore: { type: Number, required: false },
   },
   finalScore: { type: Number, required: false },
 });

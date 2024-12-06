@@ -1,89 +1,124 @@
 const asyncHandler = require("express-async-handler");
-const panel = require("../../model/panel");
+const Panel = require("../../model/panel");
+const candidate = require("../../model/candidate");
+const expert = require("../../model/expert");
 
+// PRIVATE ROUTE
+// http://localhost:8000/api/panel/create
 // PRIVATE ROUTE
 // http://localhost:8000/api/panel/create
 const createPanel = asyncHandler(async (req, res) => {
   const {
-    name,
-    deptName,
-    noOfExperts,
-    noOfCandidates,
-    description,
-    interviewDate,
-    startTime,
-    endTime,
+    panelID,
+    panelInfo,
+    finalSkillScore,
+    finalApproachScore,
+    finalScore,
   } = req.body;
-
+  console.log("Panel model loaded:", Panel); // Debug panel model
+  console.log(panelID);
   try {
-    const newPanel = await panel.create({
-      name,
-      deptName,
-      description,
-      noOfExperts,
-      noOfCandidates,
-      candidateId: [],
-      expertIds: [],
-      status: "Pending",
-      interviewDateAndTime: {
-        date: interviewDate,
-        startTime,
-        endTime,
+    // if (
+    //   !panelInfo ||
+    //   !Array.isArray(panelInfo.panelExperts) ||
+    //   panelInfo.panelExperts.length === 0
+    // ) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Invalid or missing panelExperts array" });
+    // }
+    // Validate panelExperts structure
+    for (const expert of panelInfo.panelExperts) {
+      if (!expert.expertID || !expert.expertName) {
+        return res.status(400).json({
+          message: "Each panel expert must have an expertID and expertName",
+        });
+      }
+    }
+
+    // Check if panelID already exists
+    const existingPanel = await Panel.findOne({ panelID });
+    if (existingPanel) {
+      return res
+        .status(200)
+        .json({ message: `Panel with ID ${panelID} already Created.` });
+    }
+
+    // Create a new panel
+    const newPanel = new Panel({
+      panelID,
+      panelInfo: {
+        panelExperts: panelInfo.panelExperts,
       },
-      location: {
-        state: "NA",
-        address: "NA",
-        pincode: "123456",
-      },
+      finalSkillScore: finalSkillScore,
+      finalApproachScore: finalApproachScore,
+      finalScore: finalScore,
     });
 
-    res.status(201).json({
-      message: "Panel created successfully",
-      success: true,
-      data: newPanel,
-    });
+    // Save the new panel
+    const savedPanel = await newPanel.save();
+    return res.status(201).json(savedPanel);
   } catch (error) {
-    console.log("Error Creating The Panel", error);
-    res.status(500).json({ message: "Error creating the panel" });
+    console.error("Error adding panel:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/panel/update/:id
 const updatePanel = asyncHandler(async (req, res) => {
-  const panelId = req.params.id;
-  const panelData = req.body;
-
+  const {
+    panelID,
+    panelInfo,
+    finalSkillScore,
+    finalApproachScore,
+    finalScore,
+    candidates,
+  } = req.body;
   try {
-    const updatedPanel = await panel.findByIdAndUpdate(
-      panelId,
-      { $set: panelData },
-      { new: true }
-    );
-    if (!updatedPanel) {
-      return res.status(404).json({
-        message: "Panel not found",
-        success: false,
-      });
+    console.log(candidates);
+    if (!panelID) {
+      return res.status(400).json({ message: "Panel ID is required." });
     }
 
-    res.status(200).json({
-      message: "Panel updated successfully",
-      success: true,
-      data: updatedPanel,
-    });
+    const panel = await Panel.findOne({ panelID });
+
+    if (!panel) {
+      return res
+        .status(404)
+        .json({ message: `Panel with ID ${panelID} not found.` });
+    }
+
+    // Update panel information
+    panel.panelInfo = panelInfo;
+    panel.finalSkillScore = finalSkillScore;
+    panel.finalApproachScore = finalApproachScore;
+    panel.finalScore = finalScore;
+
+    if (candidates) {
+      panel.candidates = candidates;
+    }
+
+    await panel.save();
+
+    res.status(200).json({ message: "Panel updated successfully.", panel });
   } catch (error) {
-    console.log("Error Updating The Panel", error);
-    res.status(500).json({ message: "Error updating the panel" });
+    console.error("Error updating panel:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
+
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/panel/del/:id
 const deletePanel = asyncHandler(async (req, res) => {
   const panelId = req.params.id;
   try {
-    const deletedPanel = await panel.findByIdAndDelete(panelId);
+    const deletedPanel = await Panel.findByIdAndDelete(panelId);
     if (!deletedPanel) {
       return res.status(404).json({
         message: "Panel not found",
@@ -105,7 +140,7 @@ const deletePanel = asyncHandler(async (req, res) => {
 const getPanel = asyncHandler(async (req, res) => {
   const panelId = req.params.id;
   try {
-    const foundPanel = await panel.findById(panelId);
+    const foundPanel = await Panel.findById(panelId);
     if (!foundPanel) {
       return res.status(404).json({
         message: "Panel not found",
@@ -127,7 +162,7 @@ const getPanel = asyncHandler(async (req, res) => {
 // http://localhost:8000/api/panel/all
 const getAllPanel = asyncHandler(async (req, res) => {
   try {
-    const allPanels = await panel.find();
+    const allPanels = await Panel.find();
     if (!allPanels.length) {
       return res.status(404).json({
         message: "No Panel data is available",

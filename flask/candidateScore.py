@@ -81,16 +81,15 @@ def calculate_candidate_scores(job, candidates):
         research_score = aggregate_similarity(job_skills, candidate_publications)
         project_score = aggregate_similarity(job_skills, candidate_projects)
 
-        total_skill_relevancy = round(
+        final_skill_score = round(
             (skills_score * SKILL_WEIGHT) +
             (experience_score * EXPERIENCE_WEIGHT) +
             (qualification_score * QUALIFICATION_WEIGHT) +
             (research_score * RESEARCH_WEIGHT) +
             (project_score * PROJECT_WEIGHT),
             2
-        )
+        ) * 7
 
-        final_skill_score = total_skill_relevancy * 7
         total_approach_relevancy = calculate_approach_relevancy(approach_scores)
         final_combined_score = round(final_skill_score + total_approach_relevancy, 2)
 
@@ -102,7 +101,7 @@ def calculate_candidate_scores(job, candidates):
                 "qualifications": qualification_score,
                 "researchPapers": research_score,
                 "projects": project_score,
-                "totalSkillRelevancyScore": total_skill_relevancy
+                "totalSkillRelevancyScore": final_skill_score
             },
             "approachRelevancyScore": {
                 "problemSolving": approach_scores.get("problemSolving", 0),
@@ -143,7 +142,15 @@ def main():
 
     # Fetch candidate data
     candidates_response = requests.get(candidates_url)
-    candidates = candidates_response.json()['data']
+    # print("Candidates Response:", candidates_response.json())  # Debugging
+    
+    if isinstance(candidates_response.json(), list):
+        candidates = candidates_response.json()
+    elif 'data' in candidates_response.json():
+        candidates = candidates_response.json()['data']
+    else:
+        print("Unexpected response format:", candidates_response.json())
+        return
 
     # Calculate scores
     scores = calculate_candidate_scores(job, candidates)

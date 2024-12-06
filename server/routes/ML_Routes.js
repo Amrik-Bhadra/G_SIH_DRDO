@@ -4,6 +4,10 @@ const {
   insertManyExperts,
   insertManyCandidates,
 } = require("../controllers/ML_Controller/manyExperts");
+const {
+  flaskOperations,
+  expertSelectionRoute,
+} = require("../controllers/ML_Controller/flaskOperations");
 const router = express.Router();
 
 (async () => {
@@ -18,5 +22,10 @@ const router = express.Router();
 // for mass Inserting of the experts
 router.post("/e_bulk", insertManyExperts);
 router.post("/c_bulk", insertManyCandidates);
+
+// calling the candidate and expert score calculating api from flask
+// run_expert_candidate_score_updator
+router.get("/recsu", flaskOperations);
+router.post("/expertSelection", expertSelectionRoute);
 
 module.exports = router;

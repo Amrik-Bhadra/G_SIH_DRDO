@@ -122,7 +122,7 @@ const rows = [
 
 const getRandomColor = () => {
   const colors = [
-    "#0fa3b1",
+    "#0fa3b1",  
     "#9d4edd",
     "#f85e00",
     "#588157",

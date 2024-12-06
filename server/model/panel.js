@@ -43,6 +43,10 @@ const panelSchema = new mongoose.Schema({
   expertIds: {
     type: [String],
   },
+  jobId:{
+    type:String,
+    required:true
+  },
   status: {
     type: String,
     enum: ["Pending", "Scheduled", "Completed", "Cancelled"],

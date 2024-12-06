@@ -20,6 +20,8 @@ const {
     newPasswordMaking,
 } = require("../controllers/localController/forgotPassword");
 
+const {dashboardDetails,jobData} = require("../controllers/candidateController/getData");
+
 const authenticate = require("../middleware/authenticate");
 const apiLimiter = require("../middleware/apiLimiter");
 const multiRoleAccess = require("../middleware/roleBasedAccess");
@@ -45,5 +47,8 @@ router.post("/forgotpass", forgotPassword_email_sender);
 router.post("/otpVerify/:email", otpVerification);
 router.post("/newPassword/:email", newPasswordMaking);
 router.post("/completeDetails", upload.single("resume"), completeDetails);
+
+router.get("/dashboard",dashboardDetails);
+router.get("/jobs",jobData);
 
 module.exports = router;

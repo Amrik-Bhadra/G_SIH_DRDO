@@ -26,33 +26,35 @@ const completeDetails = async (req, res) => {
     if (typeof educationalInfo === "string") educationalInfo = JSON.parse(educationalInfo);
 
     // Update personal information
-    if (personalInfo) {
-      candidate.personalDetails = {
-        ...candidate.personalDetails,
-        name: {
-          firstname: personalInfo.firstName || candidate.personalDetails?.name?.firstname,
-          middlename: personalInfo.middleName || candidate.personalDetails?.name?.middlename,
-          lastname: personalInfo.lastName || candidate.personalDetails?.name?.lastname,
-        },
-        gender: personalInfo.gender || candidate.personalDetails?.gender,
-        age: personalInfo.age || candidate.personalDetails?.age,
-        contact: {
-          email: personalInfo.email || candidate.personalDetails?.contact?.email,
-          recoveryEmail: personalInfo.recoveryEmail || candidate.personalDetails?.contact?.recoveryEmail,
-          phoneNo: personalInfo.phoneNo || candidate.personalDetails?.contact?.phoneNo,
-        },
-        permanentAddress: {
-          addressLine: personalInfo.address || candidate.personalDetails?.permanentAddress?.addressLine,
-          city: personalInfo.city || candidate.personalDetails?.permanentAddress?.city,
-          state: personalInfo.state || candidate.personalDetails?.permanentAddress?.state,
-          pinCode: personalInfo.pincode || candidate.personalDetails?.permanentAddress?.pinCode,
-        },
-        idProof: {
-          type: personalInfo.govtIdType || candidate.personalDetails?.idProof?.type,
-          number: personalInfo.govtIdNo || candidate.personalDetails?.idProof?.number,
-        },
-      };
-    }
+// Update personal information
+if (personalInfo) {
+  candidate.personalDetails = {
+    ...candidate.personalDetails,
+    name: {
+      firstName: personalInfo.firstName || candidate.personalDetails?.name?.firstName,
+      middleName: personalInfo.middleName || candidate.personalDetails?.name?.middleName,
+      lastName: personalInfo.lastName || candidate.personalDetails?.name?.lastName,
+    },
+    gender: personalInfo.gender || candidate.personalDetails?.gender,
+    age: personalInfo.age || candidate.personalDetails?.age,
+    contact: {
+      email: personalInfo.email || candidate.personalDetails?.contact?.email,
+      recoveryEmail: personalInfo.recoveryEmail || candidate.personalDetails?.contact?.recoveryEmail,
+      phoneNo: personalInfo.phoneNo || candidate.personalDetails?.contact?.phoneNo,
+    },
+    permanentAddress: {
+      addressLine: personalInfo.address || candidate.personalDetails?.permanentAddress?.addressLine,
+      city: personalInfo.city || candidate.personalDetails?.permanentAddress?.city,
+      state: personalInfo.state || candidate.personalDetails?.permanentAddress?.state,
+      pinCode: personalInfo.pincode || candidate.personalDetails?.permanentAddress?.pinCode,
+    },
+    idProof: {
+      type: personalInfo.govtIdType || candidate.personalDetails?.idProof?.type,
+      number: personalInfo.govtIdNo || candidate.personalDetails?.idProof?.number,
+    },
+  };
+}
+
 
     // Update educational information
     if (Array.isArray(educationalInfo)) {

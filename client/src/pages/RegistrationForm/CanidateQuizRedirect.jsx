@@ -12,7 +12,7 @@ const CandidateQuizRedirect = () => {
 
   const handleSkip = () => {
     // Redirect to dashboard or another page
-    navigate("/expert/dashboard");
+    navigate("/candidate/dashboard");
   };
 
   return (

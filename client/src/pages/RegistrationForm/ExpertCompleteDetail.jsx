@@ -3,54 +3,105 @@ import { Button } from "@mui/material";
 import ExpertPersonalInformation from "../../components/ExpertDetailSections/ExpertPersonalInformation";
 import ExpertEducationalInformation from "../../components/ExpertDetailSections/ExpertEducationalInformation";
 import ExpertCriticalSection from "../../components/ExpertDetailSections/ExpertCriticalSection";
-import ExpertAdditionalInputs from "../../components/ExpertDetailSections/ExpertAdditionalInputs"; 
+import ExpertAdditionalInputs from "../../components/ExpertDetailSections/ExpertAdditionalInputs";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const ExpertCompleteDetail = () => {
-  const mini = 1;
-  const maxi = 4;
-  const navigate = useNavigate();
   const [stepNo, setStepNo] = useState(1);
   const [userData, setUserData] = useState({
-    personalInfo: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      phoneNo: "",
+    personalDetails: {
+      name: {
+        firstName: "",
+        middleName: "",
+        lastName: "",
+      },
       gender: "",
-      govtIdType: "",
-      govtIdNo: "",
-      recoveryEmail: "",
       age: "",
+      contact: {
+        email: "",
+        phoneNo: "",
+        recoveryEmail: "",
+      },
+      password: "",
+      idProof: {
+        type: "",
+        number: "",
+      },
+    },
+    fieldOfExpertise: {
+      domain: "",
       designation: "",
-      field: "",
-      yearOfExperience: "",
-    },
-    educationalInfo: [],
-    criticalInputs: {
-      resume: "",
       skills: [],
-      expertise: [],
+      yearsOfExperience: "",
+      qualifications: [
+        {
+          degree: "",
+          institution: "",
+          yearOfCompletion: "",
+        },
+      ],
+      projects: [
+        {
+          title: "",
+          description: "",
+          skillsGained: [],
+        },
+      ],
+      publications: [
+        {
+          title: "",
+          link: "",
+          year: "",
+          skills: [],
+        },
+      ],
+      resume: {
+        filename: "",
+        fileType: "",
+        data: "",
+      },
     },
-    additionalInputs: {
-      projects: [],
-      publications: [],
+    availability: true,
+    skillRelevancyScore: {
+      skills: 0,
+      yearsOfExperience: 0,
+      qualifications: 0,
+      researchPapers: 0,
+      projects: 0,
+      totalSkillRelevancyScore: 0,
+    },
+    approachRelevancyScore: {
+      problemSolving: 0,
+      collaboration: 0,
+      decisionMaking: 0,
+      creativity: 0,
+      analyticalDepth: 0,
+      totalApproachRelevancyScore: 0,
+    },
+    finalScore: 0,
+    twoFactorAuthentication: {
+      twoFacAuth: false,
+      code: "",
     },
   });
 
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const validateStep = () => {
+    // Step 1 validation (Personal details)
     if (stepNo === 1) {
       const {
         firstName,
         lastName,
         phoneNo,
         gender,
-        govtIdType,
-        govtIdNo,
+        idProof: { type: govtIdType, number: govtIdNo },
         recoveryEmail,
         age,
-      } = userData.personalInfo;
+      } = userData.personalDetails;
 
       if (
         !firstName ||
@@ -65,35 +116,37 @@ const ExpertCompleteDetail = () => {
         toast.error("Please complete all personal information fields.");
         return false;
       }
-      // Check if age is valid
-      if (userData.personalInfo.age < 18 || userData.personalInfo.age > 100) {
-        toast.error("Age must be greater than 18 years.");
+
+      // Additional validation for age and phone number
+      if (age < 18 || age > 100) {
+        toast.error("Age must be between 18 and 100 years.");
         return false;
       }
-      // Check if phone number is valid
-      if (userData.personalInfo.phoneNo.length !== 10) {
+
+      if (phoneNo.length !== 10) {
         toast.error("Phone number must be 10 digits.");
         return false;
       }
-      
-      // Check if email is valid
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-      if (!emailRegex.test(userData.personalInfo.recoveryEmail)) {
-        toast.error("Please provide a valid email address.");
+
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      if (!emailRegex.test(recoveryEmail)) {
+        toast.error("Please provide a valid recovery email address.");
         return false;
       }
-  }
+    }
 
+    // Step 2 validation (Educational Information)
     if (stepNo === 2) {
-      if (userData.educationalInfo.length === 0) {
+      if (userData.fieldOfExpertise.qualifications.length === 0) {
         toast.error("Please add at least one educational detail.");
         return false;
       }
     }
 
+    // Step 3 validation (Resume, Skills, Expertise)
     if (stepNo === 3) {
-      const { resume, skills, expertise } = userData.criticalInputs;
-      if (!resume || skills.length === 0 || expertise.length === 0) {
+      const { resume, skills, domain } = userData.fieldOfExpertise;
+      if (!resume || skills.length === 0 || !domain) {
         toast.error(
           "Please upload your resume, add at least one skill, and specify an area of expertise."
         );
@@ -101,18 +154,11 @@ const ExpertCompleteDetail = () => {
       }
     }
 
+    // Step 4 validation (Projects and Publications)
     if (stepNo === 4) {
-      const {
-        projects,
-        publications,
-      } = userData.additionalInputs;
-      if (
-        projects.length === 0 ||
-        publications.length === 0
-      ) {
-        toast.error(
-          "Please add at least one certification, publication, or language."
-        );
+      const { projects, publications } = userData.fieldOfExpertise;
+      if (projects.length === 0 && publications.length === 0) {
+        toast.error("Please add at least one project or publication.");
         return false;
       }
     }
@@ -130,17 +176,25 @@ const ExpertCompleteDetail = () => {
     setStepNo(stepNo - 1);
   };
 
-  const handleSubmit = (e) => {
+  const base_url = import.meta.env.VITE_BASE_URL;
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateStep()) {
       return;
     }
-
-    toast.success("Details submitted successfully!");
-    console.log("Submitted Data:", userData);
-
-    // Redirect to the QuizPage
-    navigate("/register/expert/quiz");
+    try {
+      const res = await axios.post(
+        `${base_url}/api/expert/update/${id}`,
+        { userData },
+        { withCredentials: true }
+      );
+      if (res) {
+        toast.success("Details submitted successfully!");
+        navigate("/register/expert/quiz");
+      }
+    } catch (error) {
+      toast.error(`Error submitting the expert detail form: ${error.message}`);
+    }
   };
 
   return (
@@ -184,7 +238,7 @@ const ExpertCompleteDetail = () => {
 
         {/* Navigation Buttons */}
         <div className="flex gap-3">
-          {stepNo > mini && (
+          {stepNo > 1 && (
             <Button
               variant="outlined"
               sx={{ width: "6rem", padding: "0.5rem" }}
@@ -193,7 +247,7 @@ const ExpertCompleteDetail = () => {
               Previous
             </Button>
           )}
-          {stepNo < maxi && (
+          {stepNo < 4 && (
             <Button
               variant="contained"
               sx={{ width: "6rem", padding: "0.5rem" }}
@@ -202,7 +256,7 @@ const ExpertCompleteDetail = () => {
               Next
             </Button>
           )}
-          {stepNo === maxi && (
+          {stepNo === 4 && (
             <Button
               variant="contained"
               type="submit"

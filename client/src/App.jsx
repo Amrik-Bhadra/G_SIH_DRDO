@@ -33,8 +33,6 @@ import ExpertDetailsPage from "./pages/RacHeadPages/ExpertDetailsPage";
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
 
-<<<<<<< HEAD
-=======
 const routes = createBrowserRouter([
   { path: "/", element: <LoginForm /> },
   { path: "/forgotPassword", element: <ForgotPassword /> },
@@ -62,7 +60,6 @@ const routes = createBrowserRouter([
   { path: "/expert/dashboard", element: <ExpertDashboard /> },
 ]);
 
->>>>>>> 43f5b9778bb6ef8880c0bf77ef7688a35836173d
 const App = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [totalScore, setTotalScore] = useState({

@@ -7,7 +7,6 @@ import { FaUser } from "react-icons/fa";
 import { MdGroups } from "react-icons/md";
 import { RiCalendarScheduleFill } from "react-icons/ri";
 import { IoDocumentText } from "react-icons/io5";
-<<<<<<< HEAD
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -18,9 +17,6 @@ import BarChart from "../../components/RacHeadComponents/Barchart";
 // import DoughnutChatComponent from "../../components/ChartsComponents/DoughnutChartComponent";
 import DoughnutChartComponent from "../../components/RacHeadComponents/DoughnutChartComponent";
 import Slider from "react-slick";
-=======
-import AreaChartComponent from "../../components/ChartsComponents/AreaChartComponent";
->>>>>>> 43f5b9778bb6ef8880c0bf77ef7688a35836173d
 
 const RacHeadDashboard = () => {
   const numberCardsStyle = {
@@ -61,131 +57,6 @@ const RacHeadDashboard = () => {
         <div className="pannels-container flex flex-grow gap-y-5 gap-x-5">
           <Grid container spacing={2} >
             <Grid size={5}>
-<<<<<<< HEAD
-              {/* Number cards */}
-              <Grid container rowSpacing={2} columnSpacing={2} sx={{border:"2px solid red"}}>
-                <DashboardNumberCards
-                  numberCardsStyle={numberCardsStyle}
-                  title="Total Experts"
-                  para="56"
-                  Icon={FaUser}
-                />
-                <DashboardNumberCards
-                  numberCardsStyle={numberCardsStyle}
-                  title="Total Experts"
-                  para="56"
-                  Icon={MdGroups}
-                />
-                <DashboardNumberCards
-                  numberCardsStyle={numberCardsStyle}
-                  title="Total Experts"
-                  para="56"
-                  Icon={RiCalendarScheduleFill}
-                />
-                <DashboardNumberCards
-                  numberCardsStyle={numberCardsStyle}
-                  title="Total Experts"
-                  para="56"
-                  Icon={IoDocumentText}
-                />
-              </Grid>
-            </Grid>
-
-            {/* Grid for bar chart */}
-            <Grid
-              size={7}
-              sx={{
-                borderRadius: "10px",
-                background: "#fff",
-              }}
-            >
-
-              <div
-                className="p-1 rounded-[10px]"
-                style={{ background: "white", width: "fit" }}
-              >
-                <BarChart />
-              </div>
-            </Grid>
-
-            {/* Doughnut chart */}
-            <Grid
-              size={5}
-              sx={{
-                borderRadius: "10px",
-                background: "#fff",
-                maxHeight: "fit-content",
-              }}
-            >
-              <div
-                className="rounded-lg p-1"
-                style={{ height: "90%", background: "white", width: "fit" }}
-              >
-                <DoughnutChartComponent />
-              </div>
-            </Grid>
-
-            {/* Upcoming interviews */}
-            <Grid
-              size={7}
-              sx={{
-                borderRadius: "10px",
-                background: "#fff",
-                padding: "1.2rem",
-              }}
-            >
-              <div className="flex justify-between items-center w-full mb-6">
-                <h1 className="font-semibold text-xl text-[#333]">
-                  Upcoming Interviews
-                </h1>
-                <FormControl
-                  sx={{
-                    m: 1,
-                    minWidth: 160,
-                    background: "rgba(227, 227, 227, 0.25)",
-                  }}
-                  size="small"
-                >
-                  <InputLabel
-                    id="demo-select-small-label"
-                    sx={{ color: "#646464" }}
-                  >
-                    Select Month
-                  </InputLabel>
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    label="Select Month"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": { border: "none" },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#646464",
-                        },
-                      },
-                      color: "#646464",
-                    }}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="md:h-[80%] h-[70%] w-full p-2">
-                <Slider {...settings}>
-                  <InterviewCardComponent />
-                  <InterviewCardComponent />
-                  <InterviewCardComponent />
-                  <InterviewCardComponent />
-                  <InterviewCardComponent />
-                </Slider>
-              </div>
-            </Grid>
-=======
               {/* number cards */}
               <Grid container rowSpacing={2} columnSpacing={2}>
                 <DashboardNumberCards numberCardsStyle={numberCardsStyle} title="Total Experts" para="56" Icon={FaUser} />
@@ -199,7 +70,6 @@ const RacHeadDashboard = () => {
             </Grid>
             <Grid size={4}></Grid>
             <Grid size={8}></Grid>
->>>>>>> 43f5b9778bb6ef8880c0bf77ef7688a35836173d
           </Grid>
         </div>
       </main>

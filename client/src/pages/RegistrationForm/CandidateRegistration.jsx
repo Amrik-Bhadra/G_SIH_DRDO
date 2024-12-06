@@ -8,6 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -73,9 +74,9 @@ const CandidateRegistration = () => {
     else setPasswordStrength("Weak");
   };
 
-  const handleRegister = (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
-
+  
     // Validate email
     if (!email) {
       toast.error("Email is required!");
@@ -86,7 +87,7 @@ const CandidateRegistration = () => {
       toast.error("Invalid email format!");
       return;
     }
-
+  
     // Validate password fields
     if (!password || !confirmPassword) {
       toast.error("All fields are required!");
@@ -100,11 +101,43 @@ const CandidateRegistration = () => {
       toast.error("Password is not strong enough!");
       return;
     }
-
+  
     // If all validations pass
-    toast.success("Registration successful!");
-    navigate("/register/candidatecompletedetail");
+    try {
+      const response = await axios.post("http://localhost:8000/api/candidate/signup", {
+        email,
+        password,
+      });
+  
+      // Assuming response contains a success message or user data
+      if (response.status === 201) {
+        toast.success("Registration successful!");
+        navigate(`/register/candidatecompletedetail?email=${encodeURIComponent(email)}`);
+      } else {
+        toast.error(response.data?.message || "Something went wrong!");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error); // Log the full error object
+  
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        console.error("Error response data:", error.response.data);
+        toast.error(
+          error.response.data?.message || `Error: ${error.response.status} - ${error.response.statusText}`
+        );
+      } else if (error.request) {
+        // Request was made but no response received
+        console.error("Error request data:", error.request);
+        toast.error("No response from server. Please try again later.");
+      } else {
+        // Something else happened
+        console.error("Error message:", error.message);
+        toast.error(`An unexpected error occurred: ${error.message}`);
+      }
+    }
   };
+  
+  
 
   return (
     <main className="h-screen w-screen bg-gray-100 flex justify-center items-center shadow-sm">

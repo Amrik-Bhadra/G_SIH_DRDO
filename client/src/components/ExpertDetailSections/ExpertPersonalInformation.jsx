@@ -57,7 +57,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
 
   const validateEmail = () => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (!emailRegex.test(userData.personalInfo.recoveryEmail)) {
+    if (!emailRegex.test(userData?.personalInfo?.recoveryEmail)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
         email: "Please enter a valid email address",
@@ -102,7 +102,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             type="text"
             required
             name="firstName"
-            value={userData.personalInfo.firstName}
+            value={userData?.personalInfo?.firstName}
             onChange={handleInputChange}
             fullWidth
             error={!!errors.firstName}
@@ -113,7 +113,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             label="Middle Name"
             type="text"
             name="middleName"
-            value={userData.personalInfo.middleName}
+            value={userData?.personalInfo?.middleName}
             onChange={handleInputChange}
             fullWidth
           />
@@ -123,7 +123,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             type="text"
             required
             name="lastName"
-            value={userData.personalInfo.lastName}
+            value={userData?.personalInfo?.lastName}
             onChange={handleInputChange}
             fullWidth
             error={!!errors.lastName}
@@ -139,7 +139,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             type="number"
             required
             name="phoneNo"
-            value={userData.personalInfo.phoneNo}
+            value={userData?.personalInfo?.phoneNo}
             onChange={handleInputChange}
             error={!!errors.phoneNo}
             helperText={errors.phoneNo}
@@ -153,7 +153,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
               label="Govt. ID Type"
               required
               name="govtIdType"
-              value={userData.personalInfo.govtIdType}
+              value={userData?.personalInfo?.govtIdType}
               onChange={handleInputChange}
             >
               <MenuItem value="" disabled>
@@ -172,7 +172,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             required
             className="w-[50%]"
             name="govtIdNo"
-            value={userData.personalInfo.govtIdNo}
+            value={userData?.personalInfo?.govtIdNo}
             onChange={handleInputChange}
           />
         </div>
@@ -185,7 +185,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
               row
               aria-labelledby="gender-label"
               name="gender"
-              value={userData.personalInfo.gender}
+              value={userData?.personalInfo?.gender}
               onChange={handleInputChange}
             >
               <FormControlLabel value="male" control={<Radio />} label="Male" />
@@ -200,7 +200,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             type="number"
             required
             name="age"
-            value={userData.personalInfo.age}
+            value={userData?.personalInfo?.age}
             onChange={handleInputChange}
             error={!!errors.age}
             helperText={errors.age}
@@ -212,7 +212,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             type="email"
             required
             name="recoveryEmail"
-            value={userData.personalInfo.recoveryEmail}
+            value={userData?.personalInfo?.recoveryEmail}
             onChange={handleInputChange}
             error={!!errors.email}
             helperText={errors.email}
@@ -227,7 +227,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             type="text"
             required
             name="designation"
-            value={userData.personalInfo.designation}
+            value={userData?.personalInfo?.designation}
             onChange={handleInputChange}
             sx={{ flex: 1 }}
           />
@@ -237,7 +237,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
             type="text"
             required
             name="field"
-            value={userData.personalInfo.field}
+            value={userData?.personalInfo?.field}
             onChange={handleInputChange}
             sx={{ flex: 1 }}
           />
@@ -248,7 +248,7 @@ const ExpertPersonalInformation = ({ userData, setUserData }) => {
               label="Years of Experience"
               id="experience"
               name="yearsOfExperience"
-              value={userData.personalInfo.yearsOfExperience}
+              value={userData?.personalInfo?.yearsOfExperience}
               onChange={handleInputChange}
               required
             >

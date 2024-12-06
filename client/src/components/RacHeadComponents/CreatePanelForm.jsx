@@ -17,8 +17,8 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { GrCircleInformation } from "react-icons/gr";
-import Tooltip from '@mui/material/Tooltip';
+// import { GrCircleInformation } from "react-icons/gr";
+// import Tooltip from '@mui/material/Tooltip';
 
 const CreatePanelForm = () => {
   const navigate = useNavigate();
@@ -196,12 +196,12 @@ const CreatePanelForm = () => {
                 </p>
 
                 
-                <Tooltip title="Delete"/>
+                {/* <Tooltip title="Delete"/>
                   <GrCircleInformation style={{
                       color:"#464646",
                       fontSize: "1.1rem"
                     }}/>
-                <Tooltip/>
+                <Tooltip/> */}
                 
               </div>
 

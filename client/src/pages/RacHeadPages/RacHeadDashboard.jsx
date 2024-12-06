@@ -17,8 +17,12 @@ import BarChart from "../../components/RacHeadComponents/Barchart";
 // import DoughnutChatComponent from "../../components/ChartsComponents/DoughnutChartComponent";
 import DoughnutChartComponent from "../../components/RacHeadComponents/DoughnutChartComponent";
 import Slider from "react-slick";
+// import { AuthContext } from "../../context/AuthenticationContext"; 
 
 const RacHeadDashboard = () => {
+  // const { currentUser } = useContext(AuthContext);
+  // console.log('Curent user data: ', currentUser);
+
   const numberCardsStyle = {
     backgroundColor: "#fff",
     borderRadius: "8px",

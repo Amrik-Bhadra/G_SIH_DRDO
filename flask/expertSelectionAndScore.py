@@ -1,5 +1,6 @@
 import json
 import requests
+import argparse
 from sentence_transformers import SentenceTransformer, util
 import re
 from nltk.stem import WordNetLemmatizer
@@ -192,7 +193,8 @@ def update_panels_in_db(api_url, panels):
         try:
             # print("Sending payload:", json.dumps(panel, indent=4))
             response = requests.post(api_url, json=panel)
-            print("Raw Payload Sent:", response.request.body)
+            # print(response.request.body)
+            print(panel)
             response = requests.post(api_url, json=panel)
             if response.status_code == 200 or response.status_code == 201:
                 print(f"Panel {panel['panelID']} added to the database.")
@@ -273,7 +275,8 @@ def update_candidates_in_panels(api_url, panels):
     for panel in panels:
         try:
             response = requests.put(api_url, json=panel)
-            print("Raw Payload Sent:", json.dumps(panel, indent=4))
+            # print("Raw Payload Sent:", json.dumps(panel, indent=4))
+            print(panel)
             if response.status_code == 200 or response.status_code == 201:
                 print(f"Panel {panel['panelID']} updated successfully.")
             else:
@@ -282,12 +285,22 @@ def update_candidates_in_panels(api_url, panels):
             print(f"Error updating panel {panel['panelID']}: {e}")
 
 # Main function
+
 def main():
-    job_url = "http://localhost:8000/api/job/all"  # Job API URL
-    experts_url = "http://localhost:8000/api/expert/all"  # Experts API URL
-    candidates_url = "http://localhost:8000/api/candidate/all"  # Candidates API URL
+    parser = argparse.ArgumentParser(description="Expert Selection and Panel Creation")
+    parser.add_argument('--num_panels', type=int, required=True, help='Number of panels to create')
+    parser.add_argument('--experts_per_panel', type=int, required=True, help='Number of experts per panel')
+
+    args = parser.parse_args()
+
+    num_panels = args.num_panels
+    experts_per_panel = args.experts_per_panel
+
+    job_url = "http://localhost:8000/api/job/all"
+    experts_url = "http://localhost:8000/api/expert/all"
+    candidates_url = "http://localhost:8000/api/candidate/all"
     add_panels_url = "http://localhost:8000/api/panel/add"
-    update_panel_url = "http://localhost:8000/api/panel/update"  # Panel update API URL
+    update_panel_url = "http://localhost:8000/api/panel/update"
 
     # Fetch job data
     job_response = requests.get(job_url)
@@ -300,8 +313,7 @@ def main():
     # Fetch all candidates
     candidates_response = requests.get(candidates_url)
     candidates = candidates_response.json()
-    print(candidates[0])
-    
+
     # Select experts based on domain and availability
     selected_experts = select_experts_by_domain(job, experts)
 
@@ -309,21 +321,17 @@ def main():
     scores = calculate_expert_scores(job, selected_experts)
 
     # Create balanced panels
-    num_panels = int(input("Enter the number of panels: "))
-    experts_per_panel = int(input("Enter the number of experts required per panel: "))
-
     panels = create_balanced_panels(scores, num_panels, experts_per_panel)
 
     # Update panels in the database
     update_panels_in_db(add_panels_url, panels)
-    
+
     # Assign candidates to panels
-    max_candidates_per_panel = len(candidates) // num_panels
+    max_candidates_per_panel = len(candidates) 
     panels_with_candidates = assign_candidates_to_panels(panels, candidates, max_candidates_per_panel)
 
     # Update panels in the database
     update_candidates_in_panels(update_panel_url, panels_with_candidates)
-
 
 if __name__ == "__main__":
     main()

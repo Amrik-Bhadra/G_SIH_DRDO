@@ -50,10 +50,11 @@ const flaskOperations = asyncHandler(async (req, res) => {
 
 // Route handler for expertSelectionAndScore.py
 const expertSelectionRoute = asyncHandler(async (req, res) => {
+  const { num_panels, experts_per_panel } = req.body;
   console.log(`Executing: python ${route}\\expertSelectionAndScore.py`);
   try {
     exec(
-      `python ${route}\\expertSelectionAndScore.py`,
+      `python ${route}\\expertSelectionAndScore.py --num_panels ${num_panels} --experts_per_panel ${experts_per_panel}`,
       (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);

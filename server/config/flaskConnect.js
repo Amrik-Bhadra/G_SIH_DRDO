@@ -8,7 +8,7 @@ const flaskFlag = async (FLASK_PORT) => {
     return response.data.message;
   } catch (error) {
     console.log("Flask ML-Server:\t { NOT-OK } :-:");
-    console.error("Error calling Flask API:", error);
+    // console.error("Error calling Flask API:", error);
     throw error;
   }
 };

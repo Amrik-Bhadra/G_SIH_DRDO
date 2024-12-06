@@ -112,6 +112,7 @@ const updatePanel = asyncHandler(async (req, res) => {
   }
 });
 
+
 // PRIVATE ROUTE
 // http://localhost:8000/api/panel/del/:id
 const deletePanel = asyncHandler(async (req, res) => {

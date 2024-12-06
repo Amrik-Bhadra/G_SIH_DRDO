@@ -26,6 +26,6 @@ router.post("/c_bulk", insertManyCandidates);
 // calling the candidate and expert score calculating api from flask
 // run_expert_candidate_score_updator
 router.get("/recsu", flaskOperations);
-router.get("/expertSelection", expertSelectionRoute);
+router.post("/expertSelection", expertSelectionRoute);
 
 module.exports = router;

@@ -40,7 +40,6 @@ import {
 } from "./routes/Layout";
 import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 import PanelDetails from "./pages/ExpertPages/PanelDetails";
-import ExpertDashboard2 from "./pages/ExpertPages/ExpertDashboard2";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -74,7 +73,7 @@ const App = () => {
     { path: "/rachead/expertsData", element: <ExpertDetailsPage /> },
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
     { path: "/performanceReport", element: <PerformanceReport/>},
-    { path: "/expertdashboard", element: <ExpertDashboard2/>},
+    
 
     // Expert Authorized Routes
     {

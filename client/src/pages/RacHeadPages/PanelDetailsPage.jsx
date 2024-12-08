@@ -156,6 +156,19 @@ const PanelDetailsPage = () => {
                                     <BarChartWithoutDropdown />
                                 </div>
 
+                                {/*Expert Cards*/}
+                                <div className='flex flex-col gap-4'>
+                                    <h2 style={{ color: "#333333" }} className='from-neutral-600 font-bold text-2xl'>Candidates</h2>
+                                    <div className="flex overflow-x-auto whitespace-nowrap gap-4 no-scrollbar items-stretch">
+                                        {candidateData.map((candidate, index) => (
+                                            <div key={index} className="inline-block flex-1">
+                                                <CandidateCard candidate={candidate} />
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                </div>
+
                                 {/*Candidates cards */}
 
                                 <div className='flex flex-col gap-4'>
@@ -169,6 +182,8 @@ const PanelDetailsPage = () => {
                                     </div>
 
                                 </div>
+
+
 
                             </div>
 

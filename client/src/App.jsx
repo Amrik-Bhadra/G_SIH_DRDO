@@ -30,6 +30,8 @@ import PanelDetails from "./pages/ExpertPages/PanelDetails";
 import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 import ExpertDetailsPage from "./pages/RacHeadPages/ExpertDetailsPage";
 import PanelDetailsPage from "./pages/RacHeadPages/PanelDetailsPage";
+import ViewExpertPage from "./pages/RacHeadPages/ViewExpertPage";
+import Candidatedashboard2 from "./pages/CandidatePages/Candidatedashboard2";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -66,6 +68,7 @@ const App = () => {
     { path: "/register/candidate/quiz", element: <CandidateQuizRedirect /> },
     { path: "/register/expert/quiz", element: <ExpertQuizRedirect /> },
     { path: "/candidate/dashboard", element: <CandidateDashboard /> },
+    { path: "/candidate/dashboard2", element: <Candidatedashboard2 /> },
     { path: "/expert/dashboard", element: <ExpertDashboard /> },
     { path: "/questionnaire/", element: <QuestionnareHome /> },
 
@@ -76,6 +79,7 @@ const App = () => {
     { path:"/expert/panneldetails", element: <PanelDetails/> },
     { path:"/expert/candidateevaluation", element: <CandidateEvaluation/> },
     {path:"/rachead/paneldetails",element:<PanelDetailsPage /> },
+    {path:"/rachead/viewexpertpage",element:<ViewExpertPage />},
   ]);
 
   return (

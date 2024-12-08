@@ -9,7 +9,7 @@ const NavItems = ({ link, title, icon: Icon, isCollapsed }) => {
       
       className={
         isCollapsed
-          ? "flex items-center rounded-full gap-x-3 pl-4 py-4 w-full"
+          ? "flex items-center justify-center rounded-full w-[3.2vw] h-[3.2vw]"
           : "flex items-center rounded-md gap-x-3 pl-4 py-4 w-full"
       }
 
@@ -22,7 +22,7 @@ const NavItems = ({ link, title, icon: Icon, isCollapsed }) => {
       {({ isActive }) => (
         <>
           <Icon
-            size={"1.6rem"}
+            size={"3.4vh"}
             style={{
               color: isActive ? "white" : "#464646",
             }}

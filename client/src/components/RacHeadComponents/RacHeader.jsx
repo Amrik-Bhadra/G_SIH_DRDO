@@ -6,22 +6,30 @@ import { Badge } from "@mui/material";
 
 const RacHeader = () => {
   const currentDate = new Date();
+  const hours = currentDate.getHours();
   const formattedDate = currentDate.toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+
+  // Determine the time of day and set the appropriate greeting
+  const getGreeting = () => {
+    if (hours < 12) {
+      return "Good Morning";
+    } else if (hours < 17) {
+      return "Good Afternoon";
+    } else {
+      return "Good Evening";
+    }
+  };
+
   return (
     <header className="flex justify-between items-center">
       <span className="greetings flex items-center gap-x-3">
-        {/* <span className="greetings-left">
-          <Avatar name="Amrik Bhadra" size="50" round />
-        </span> */}
         <span className="greetings-right flex flex-col">
-          <h1 className="font-semibold text-2xl text-[#181818]">
-            Good Morning
-          </h1>
+          <h1 className="font-semibold text-2xl text-[#181818]">{getGreeting()}</h1>
           <h3 className="text-[#585858] font-medium">{formattedDate}</h3>
         </span>
       </span>

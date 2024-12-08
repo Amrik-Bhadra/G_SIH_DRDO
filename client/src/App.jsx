@@ -31,6 +31,8 @@ import QuestionnareResultPage from "./pages/Questionnaire/QuestionnareResultPage
 // import PanelDetailsPage from "./pages/RacHeadPages/PanelDetailsPage";
 // import ViewExpertPage from "./pages/RacHeadPages/ViewExpertPage";
 
+import PerformanceReport from './components/ReportLayout/PeformanceReport'
+
 import {
   CandidateRoleContext,
   ExpertRoleContext,
@@ -38,6 +40,7 @@ import {
 } from "./routes/Layout";
 import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 import PanelDetails from "./pages/ExpertPages/PanelDetails";
+import ExpertDashboard2 from "./pages/ExpertPages/ExpertDashboard2";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -70,6 +73,8 @@ const App = () => {
     { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
     { path: "/rachead/expertsData", element: <ExpertDetailsPage /> },
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
+    { path: "/performanceReport", element: <PerformanceReport/>},
+    { path: "/expertdashboard", element: <ExpertDashboard2/>},
 
     // Expert Authorized Routes
     {

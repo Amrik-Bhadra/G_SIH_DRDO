@@ -115,7 +115,7 @@ const RadarChartComponent = ({data}) => {
   };
 
   return (
-    <div className="relative w-full h-[350px]">
+    <div className="relative h-[50%]">
       <Radar data={chartData} options={chartOptions} />
     </div>
   );

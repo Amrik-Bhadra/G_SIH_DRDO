@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Job = require("../../model/jobRole");
-const upload = require("../../db/uploadconfig")
+const upload = require("../../config/uploadconfig")
 const asyncHandler = require("express-async-handler");
 
 // PRIVATE ROUTE

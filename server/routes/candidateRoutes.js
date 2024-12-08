@@ -25,7 +25,7 @@ const {dashboardDetails,jobData} = require("../controllers/candidateController/g
 const authenticate = require("../middleware/authenticate");
 const apiLimiter = require("../middleware/apiLimiter");
 const multiRoleAccess = require("../middleware/roleBasedAccess");
-const upload = require("../db/uploadconfig"); 
+const upload = require("../config/uploadconfig"); 
 
 router.get("/all", apiLimiter, allCandidates);
 router.get("/find/:id", apiLimiter, authenticate, findCandidate);

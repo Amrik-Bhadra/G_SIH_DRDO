@@ -104,10 +104,11 @@ const ExpertRegistration = () => {
         { email, password },
         { withCredentials: true }
       );
-
+      console.log(response?.data?.success);
+      console.log(response?.data?.data?._id);
       // Check if the registration was successful
-      if (response.data?.success) {
-        const userId = response.data?.data?._id; // Assuming response.data.data contains the user object
+      if (response?.data?.success) {
+        const userId = response.data?.data?._id;
         if (userId) {
           console.log("User ID: ", userId); // Log the user ID
           toast.success("Expert registration successful!");

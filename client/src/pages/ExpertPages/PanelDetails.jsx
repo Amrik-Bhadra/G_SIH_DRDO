@@ -2,7 +2,7 @@ import React from "react";
 import ai_image from "../../assets/images/ai_in_defence_image.jpg";
 import { IoArrowUndoCircle } from "react-icons/io5";
 import ExpertHeader from "../../components/ExpertDashboardSections/ExpertHeader";
-import PanelCandidateCard from "../../components/ExpertDashboardSections/PanelCandidateCard";
+import PanelCandidateCard from "../../components/ExpertDashboardSections/PanelCandidateCard.jsx";
 
 const PanelDetails = () => {
   const testPanelists = [

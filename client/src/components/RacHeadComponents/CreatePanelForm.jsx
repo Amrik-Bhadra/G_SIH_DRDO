@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { InputAdornment, Tooltip } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -14,6 +15,10 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import { IoMdArrowDropdown } from "react-icons/io";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+// import { GrCircleInformation } from "react-icons/gr";
+// import Tooltip from '@mui/material/Tooltip';
 
 const CreatePanelForm = () => {
   const navigate = useNavigate();
@@ -66,6 +71,12 @@ const CreatePanelForm = () => {
   const [selectedJobRole, setSelectedJobRole] = useState("");
   const [jobRoles, setJobRoles] = useState([]);
   const [description, setDescription] = useState("");
+  const [criteriaData, setCriteriaData] = useState({
+    "Problem Solving": { isSelected: false, detail: "" },
+    Collaboration: { isSelected: false, detail: "" },
+    "Decision Making": { isSelected: false, detail: "" },
+    "Analytical Depth": { isSelected: false, detail: "" },
+  });
 
   const handleDepartmentChange = (event) => {
     const department = event.target.value;
@@ -83,11 +94,21 @@ const CreatePanelForm = () => {
     );
   };
 
+  const handleCriteriaChange = (key, field, value) => {
+    setCriteriaData((prev) => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        [field]: value,
+      },
+    }));
+  };
+
   return (
-    <main className="screen-bg min-h-screen w-screen bg-[#eee] flex items-center justify-center relative top-0 left-0">
+    <main className="min-h-screen w-screen bg-[#eee] flex items-center justify-center py-8">
       <div className="form-page bg-white w-[80%] rounded-xl z-10 flex justify-center items-center py-8 px-12 md:w-2/4">
         <div className="box-content w-full">
-          <h1 className="text-4xl text-[#333] font-semibold mb-8">
+          <h1 className="text-4xl text-[#333] font-semibold mb-12">
             Create New Panel
           </h1>
           <form>
@@ -169,10 +190,19 @@ const CreatePanelForm = () => {
                 />
               </Grid>
 
-              <div>
+              <div className="flex items-center gap-x-4">
                 <p className="text-[#1c89c0] font-medium">
                   Available experts: 32
                 </p>
+
+                
+                {/* <Tooltip title="Delete"/>
+                  <GrCircleInformation style={{
+                      color:"#464646",
+                      fontSize: "1.1rem"
+                    }}/>
+                <Tooltip/> */}
+                
               </div>
 
               {/* Row 4 */}
@@ -252,14 +282,63 @@ const CreatePanelForm = () => {
                   aria-controls="panel1-content"
                   id="panel1-header"
                 >
-                  <h1 className="font-semibold text-[#1c89c0] text-lg">Advance Settings</h1>
+                  <h1 className="font-semibold text-[#1c89c0] text-lg">
+                    Advance Settings
+                  </h1>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                  </p>
+                  {Object.entries(criteriaData).map(([key, value]) => (
+                    <div
+                      key={key}
+                      style={{
+                        marginBottom: "1rem",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        paddingRight: "5rem",
+                      }}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={value.isSelected}
+                            onChange={(e) =>
+                              handleCriteriaChange(
+                                key,
+                                "isSelected",
+                                e.target.checked
+                              )
+                            }
+                          />
+                        }
+                        label={key}
+                      />
+                      {value.isSelected && (
+                        <TextField
+                          id="standard-number"
+                          type="number"
+                          variant="standard"
+                          value={value.detail}
+                          onChange={(e) =>
+                            handleCriteriaChange(key, "detail", e.target.value)
+                          }
+                          slotProps={{
+                            inputLabel: {
+                              shrink: true,
+                            },
+                          }}
+                          style={{
+                            width: "5rem",
+                            marginLeft: "3rem",
+                          }}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">%</InputAdornment>
+                            ),
+                          }}
+                        />
+                      )}
+                    </div>
+                  ))}
                 </AccordionDetails>
               </Accordion>
             </Grid>

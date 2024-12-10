@@ -5,17 +5,20 @@ import { CloudUpload } from "@mui/icons-material";
 const ExpertCriticalSection = ({ userData, setUserData }) => {
   const [skillInput, setSkillInput] = useState("");
   const [expertiseInput, setExpertiseInput] = useState("");
-
+  const [formData, setFormData] = useState(false);
+  
   const handleResumeUpload = (e) => {
-    const file = e.target.files[0];
+    console.log("aa rha hu mai");
+    const file = e.target["resume"].files[0]; // Retrieve the file directly
     if (file) {
       setUserData((prev) => ({
         ...prev,
         criticalInputs: {
           ...prev.criticalInputs,
-          resume: file.name, // Or use file.path for more details in Node environments
+          resume: file, // Store the File object instead of the file name
         },
       }));
+      console.log("Uploaded Resume: ", file);
     }
   };
 
@@ -37,7 +40,10 @@ const ExpertCriticalSection = ({ userData, setUserData }) => {
       ...prev,
       criticalInputs: {
         ...prev.criticalInputs,
-        expertise: [...(prev.criticalInputs.expertise || []), expertiseInput.trim()],
+        expertise: [
+          ...(prev.criticalInputs.expertise || []),
+          expertiseInput.trim(),
+        ],
       },
     }));
     setExpertiseInput("");
@@ -55,7 +61,9 @@ const ExpertCriticalSection = ({ userData, setUserData }) => {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold text-[#0077b6]">3. Critical Inputs</h1>
+      <h1 className="text-2xl font-semibold text-[#0077b6]">
+        3. Critical Inputs
+      </h1>
       <div className="flex flex-col gap-5">
         {/* Resume Upload */}
         <div className="w-full">
@@ -67,11 +75,12 @@ const ExpertCriticalSection = ({ userData, setUserData }) => {
             component="label"
             startIcon={<CloudUpload />}
           >
-            {userData.criticalInputs?.resume || "Upload Resume"}
+            {userData.criticalInputs?.resume?.name || "Upload Resume"}
             <input
               type="file"
               hidden
               accept=".pdf,.doc,.docx"
+              name="resume"
               onChange={handleResumeUpload}
             />
           </Button>

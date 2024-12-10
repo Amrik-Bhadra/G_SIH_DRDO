@@ -32,7 +32,7 @@ def select_experts_by_domain(job, experts):
         if job_domain.lower() in expert["fieldOfExpertise"]["domain"].lower() and expert["availability"]
     ]
     if not selected_experts:
-        print("No experts found matching the domain and availability criteria.")
+        print("")
     return selected_experts
 
 

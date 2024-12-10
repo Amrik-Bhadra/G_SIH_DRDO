@@ -1,87 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "../../styles/Loader";
 
 const CreatePanelForm = () => {
   const base_url = import.meta.env.VITE_BASE_URL;
-  const [fetchDepartment, setFetchDepartment] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [selectedJobRole, setSelectedJobRole] = useState("");
-  const [jobRoles, setJobRoles] = useState([]);
+  const [preSet, setPreSet] = useState({});
   const [description, setDescription] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [jobID, setJobID] = useState("");
 
   const navigate = useNavigate();
+  const params = useParams();
+  const jobId = params.jobId;
 
-  // Fetching departments data from API
-  const fetchJobsData = async () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch job details using jobId
+  const fetchPreDetails = async () => {
     try {
-      const response = await axios.get(`${base_url}/api/job/domainDepartment`, {
+      const response = await axios.get(`${base_url}/api/job/get/${jobId}`, {
         withCredentials: true,
       });
-      console.log("API Response:", response?.data?.data); // Debugging log
-      setFetchDepartment(response?.data?.data || []);
+      const jobData = response?.data?.data || {};
+      setPreSet(jobData);
+      setJobTitle(jobData.jobTitle || "");
+      setDescription(jobData.jobDescription || "");
+      setJobID(jobData._id || "");
     } catch (error) {
       console.error("Error fetching job data:", error);
     }
   };
 
-  const fetchRoleData = async (domain = "Department A") => {
-    try {
-      const response = await axios.get(
-        `${base_url}/api/job/jobRole/${encodeURIComponent(domain)}`,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("Job roles fetched:", response?.data?.data);
-      setJobRoles(response?.data?.data || []);
-    } catch (error) {
-      console.error("Error fetching Roles data:", error);
-    }
-  };
-
   useEffect(() => {
-    fetchJobsData();
-  }, []);
-
-  // Handle department selection
-  const handleDepartmentChange = async (event) => {
-    const department = event.target.value;
-    setSelectedDepartment(department);
-    setSelectedJobRole(""); // Reset job role selection
-    setDescription(""); // Reset description
-    console.log(department);
-    await fetchRoleData(department);
-  };
-
-  // Handle job role selection
-  const handleJobRoleChange = (event) => {
-    const jobRole = event.target.value;
-    console.log("Selected Job Role:", jobRole);
-    console.log("Available Job Roles:", jobRoles);
-    const selectedRole = jobRoles.find((role) => role?.jobRole === jobRole);
-    const jobDescription = selectedRole ? selectedRole.jobDescription : "";
-    const jobTitle = selectedRole ? selectedRole.jobTitle : "";
-    const job_id = selectedRole ? selectedRole._id : "";
-    console.log("Job Description:", jobDescription);
-    setSelectedJobRole(jobRole);
-    setDescription(jobDescription);
-    setJobTitle(jobTitle);
-    setJobID(job_id);
-  };
+    fetchPreDetails();
+  }, [jobId]);
 
   // Navigate to the next page
-  const [isLoading, setIsLoading] = useState(false);
   const handleNextPage = () => {
     setIsLoading(true);
     setTimeout(() => {
@@ -102,51 +60,35 @@ const CreatePanelForm = () => {
             <Grid
               sx={{ display: "flex", flexDirection: "column", gap: "1.5rem 0" }}
             >
-              {/* Row 1 */}
-              <Grid container spacing={2}>
-                {/* Department */}
-                <Grid item xs={12} md={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="department-label">Department</InputLabel>
-                    <Select
-                      labelId="department-label"
-                      id="department"
-                      label="Department"
-                      value={selectedDepartment}
-                      onChange={handleDepartmentChange}
-                    >
-                      {fetchDepartment.map((department, index) => (
-                        <MenuItem key={index} value={department}>
-                          {department}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                {/* Job Role */}
-                <Grid item xs={12} md={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id="job-role-label">Job Role</InputLabel>
-                    <Select
-                      labelId="job-role-label"
-                      id="job-role"
-                      label="Job Role"
-                      value={selectedJobRole}
-                      onChange={handleJobRoleChange}
-                      disabled={!selectedDepartment}
-                    >
-                      {jobRoles.map((jr, index) => (
-                        <MenuItem key={index} value={jr?.jobRole}>
-                          {jr?.jobRole}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
+              {/* Department */}
+              <Grid item>
+                <TextField
+                  id="department"
+                  label="Department"
+                  variant="outlined"
+                  fullWidth
+                  value={preSet.domainDepartment || ""}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
               </Grid>
 
-              {/* Selected Department */}
+              {/* Job Role */}
+              <Grid item>
+                <TextField
+                  id="job-role"
+                  label="Job Role"
+                  variant="outlined"
+                  fullWidth
+                  value={preSet.jobRole || ""}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+
+              {/* Job Title */}
               <Grid item>
                 <TextField
                   id="jobTitle"
@@ -173,6 +115,9 @@ const CreatePanelForm = () => {
                     "& textarea": {
                       resize: "none", // Disable resizing
                     },
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                 />
               </Grid>

@@ -103,7 +103,7 @@ const RacHeadPannels = () => {
                 },
               }}
               onClick={() => {
-                navigate(`/expert/pannelAdvancedSettings/${jobID}`);
+                navigate(`/rachead/createPanel/${jobID}`);
               }}
             >
               Create Panel

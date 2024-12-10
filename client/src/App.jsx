@@ -57,7 +57,7 @@ const App = () => {
   const routes = createBrowserRouter([
     // Open Routes
 
-    { path: "/rachead/createPanel", element: <CreatePanelForm /> },
+    { path: "/rachead/createPanel/:jobId", element: <CreatePanelForm /> },
     { path: "/expert/panneldetails", element: <PanelDetails /> },
     {
       path: "/expert/pannelAdvancedSettings/:jobId",

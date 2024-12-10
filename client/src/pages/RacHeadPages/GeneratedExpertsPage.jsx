@@ -106,8 +106,8 @@ const GeneratedExpertsPage = () => {
               {activeTab === 0 && (
                 <TabPanel value={0} sx={tabPanelStyles}>
                   <div style={scrollContainerStyles} className="no-scrollbar">
-                    {experts.map((expert) => (
-                      <ExpertsCard key={expert} info={expert} />
+                    {experts.map((expert, index) => (
+                      <ExpertsCard key={expert} info={expert} index={index} />
                     ))}
                   </div>
                 </TabPanel>

@@ -16,9 +16,14 @@ import {
   CircularProgress,
 } from "@mui/joy";
 import axios from "axios";
-const ExpertsCard = ({ info }) => {
+const ExpertsCard = ({ info, index }) => {
   const [otherInfo, setOtherInfo] = useState([]);
-  console.log(info);
+  const getRandomDomain = () => {
+    const domains = ["Academia", "Industry"];
+    return domains[Math.floor(Math.random() * domains.length)];
+  };
+  console.log(index);
+  const [drdo, setDrdo] = useState("DRDO");
   const base_url = import.meta.env.VITE_BASE_URL;
   const otherExpertInfo = async () => {
     try {
@@ -76,10 +81,10 @@ const ExpertsCard = ({ info }) => {
           level="title-md"
           sx={{ color: "#676767", fontWeight: "500" }}
         >
-          Head of Department
+          {index === 0 ? "DRDO" : getRandomDomain()}
         </Typography>
         <Typography level="body2" sx={{ color: "#ACABAB" }}>
-          10years Experience
+          {otherInfo?.fieldOfExpertise?.yearsOfExperience} Years of Experience
         </Typography>
         <Box sx={{ display: "flex", gap: "0 2rem", marginTop: "1rem" }}>
           <Stack spacing={1} sx={{ alignItems: "center" }}>

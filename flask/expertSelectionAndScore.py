@@ -191,13 +191,16 @@ def select_experts_by_domain(job, experts):
     return selected_experts
 
 # Calculate scores for selected experts
-def calculate_expert_scores(job, selected_experts):
+def calculate_expert_scores(job, selected_experts, maxi):
     job_skills = job['preferredSkills']
     job_qualification = job['minimumQualifications']
     max_experience = max(expert['fieldOfExpertise']['yearsOfExperience'] for expert in selected_experts)
 
+    # Limit selected experts to the first 'maxi' elements
+    limited_experts = selected_experts[:maxi]
+
     scores = []
-    for expert in selected_experts:
+    for expert in limited_experts:
         expert_skills = expert['fieldOfExpertise']['skills']
         expert_experience = expert['fieldOfExpertise']['yearsOfExperience']
         expert_qualification = expert['fieldOfExpertise']['qualifications']
@@ -250,8 +253,9 @@ def calculate_expert_scores(job, selected_experts):
             },
             "finalScore": final_combined_score
         })
-
     return scores
+
+    
 def create_balanced_panels(scores, num_panels, experts_per_panel, job_id):
     print("this is the scores :\n\n")
     print(scores)
@@ -490,10 +494,10 @@ def main():
     if not selected_experts:
         print("No experts available for panel creation. Exiting.")
         return
-
+    maxi = num_panels*experts_per_panel
     # Calculate scores for selected experts
-    scores = calculate_expert_scores(job, selected_experts)
-    scores1 = calculate_expert_scores(job, selected_experts)
+    scores = calculate_expert_scores(job, selected_experts,maxi)
+    scores1 = calculate_expert_scores(job, selected_experts,maxi)
 
     # Update scores in the database
     update_expert_scores(expert_score_url, scores)

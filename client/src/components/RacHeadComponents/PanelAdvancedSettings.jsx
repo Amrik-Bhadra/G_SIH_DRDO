@@ -95,7 +95,7 @@ const PanelAdvancedSettings = () => {
         if (mlPanelCreationResponse) {
           toast.success("Panel Created successfully!");
           setLoading(false);
-          navigate("/rachead/pannels");
+          navigate(`/rachead/getPannels/${jobId}`);
         } else {
           toast.error("Unable to Create Panel!");
           navigate("/rachead/createPanel");

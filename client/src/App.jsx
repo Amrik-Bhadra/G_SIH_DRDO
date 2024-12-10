@@ -38,6 +38,8 @@ import {
 } from "./routes/Layout";
 import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 import PanelDetails from "./pages/ExpertPages/PanelDetails";
+import PanelAdvancedSettings from "./components/RacHeadComponents/PanelAdvancedSettings";
+import PanelsPage from "./components/RacHeadComponents/PanelsPage";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -54,6 +56,14 @@ const App = () => {
 
   const routes = createBrowserRouter([
     // Open Routes
+
+    { path: "/rachead/createPanel", element: <CreatePanelForm /> },
+    { path: "/expert/panneldetails", element: <PanelDetails /> },
+    {
+      path: "/expert/pannelAdvancedSettings/:jobId",
+      element: <PanelAdvancedSettings />,
+    },
+
     { path: "/", element: <LoginForm /> },
     { path: "/forgotPassword", element: <ForgotPassword /> },
     { path: "/verifyOtp", element: <VerifyOTP /> },
@@ -66,8 +76,12 @@ const App = () => {
     { path: "/rachead/", element: <RacHeadDashboard /> },
     { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
     { path: "/rachead/pannels", element: <RacHeadPannels /> },
+    { path: "/rachead/getPannels/:jobId", element: <PanelsPage /> },
     { path: "/rachead/createPanel", element: <CreatePanelForm /> },
-    { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
+    {
+      path: "/rachead/generatedExperts/:panelID",
+      element: <GeneratedExpertsPage />,
+    },
     { path: "/rachead/expertsData", element: <ExpertDetailsPage /> },
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
 
@@ -82,7 +96,7 @@ const App = () => {
           path: "/register/expertcompletedetail/:userId",
           element: <ExpertCompleteDetail />,
         },
-        { path: "/expert/panneldetails", element: <PanelDetails /> },
+        // { path: "/expert/panneldetails", element: <PanelDetails /> },
         {
           path: "/expert/candidateevaluation",
           element: <CandidateEvaluation />,

@@ -50,11 +50,11 @@ const flaskOperations = asyncHandler(async (req, res) => {
 
 // Route handler for expertSelectionAndScore.py
 const expertSelectionRoute = asyncHandler(async (req, res) => {
-  const { num_panels, experts_per_panel } = req.body;
+  const { job_id } = req.body;
   console.log(`Executing: python ${route}\\expertSelectionAndScore.py`);
   try {
     exec(
-      `python ${route}\\expertSelectionAndScore.py --num_panels ${num_panels} --experts_per_panel ${experts_per_panel}`,
+      `python ${route}\\expertSelectionAndScore.py --job_id ${job_id}`,
       (error, stdout, stderr) => {
         if (error) {
           console.error(`exec error: ${error}`);
@@ -83,4 +83,41 @@ const expertSelectionRoute = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { flaskOperations, expertSelectionRoute };
+const totalSelectedExperts = asyncHandler(async (req, res) => {
+  const { job_id } = req.body;
+  try {
+    exec(
+      `python ${route}\\totalSelectedExperts.py --job_id ${job_id}`,
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          return res.status(500).json({
+            message: "Error running expertSelectionAndScore.py",
+            success: false,
+            error: stderr || error.message,
+          });
+        }
+        console.log("expertSelectionAndScore.py output:", stdout);
+        return res.status(200).json({
+          message: "expertSelectionAndScore.py executed successfully!",
+          success: true,
+          output: stdout.trim(),
+        });
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message:
+        "Unexpected error occurred while running totalSelectedExperts.py",
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+module.exports = {
+  flaskOperations,
+  expertSelectionRoute,
+  totalSelectedExperts,
+};

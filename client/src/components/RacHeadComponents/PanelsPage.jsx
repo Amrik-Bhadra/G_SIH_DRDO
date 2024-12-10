@@ -16,19 +16,19 @@ import JobsCards from "../../components/RacHeadComponents/JobsCards";
 const RacHeadPannels = () => {
   const base_url = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
-  const {
-    jobs,
-    setJobs,
-    loading,
-    setLoading,
-    role,
-    title,
-    department,
-    description,
-  } = useContext(FetchListedJobs);
-  console.log(jobs);
   const params = useParams();
-  const jobId = params.jobId;
+  const jobID = params.jobId;
+  const [panels, setPanels] = useState([]);
+  const fetchPanels = async () => {
+    const panels = await axios.get(`${base_url}/api/panel/job/${jobID}`, {
+      withCredentials: true,
+    });
+    console.log(panels?.data?.data);
+    setPanels(panels?.data?.data);
+  };
+  useEffect(() => {
+    fetchPanels();
+  }, [jobID]);
   return (
     <section className="h-screen w-screen flex bg-[#f6f6f6]">
       {/* Sidebar */}
@@ -102,6 +102,9 @@ const RacHeadPannels = () => {
                   backgroundColor: "#333",
                 },
               }}
+              onClick={() => {
+                navigate(`/expert/pannelAdvancedSettings/${jobID}`);
+              }}
             >
               Create Panel
             </Button>
@@ -118,8 +121,8 @@ const RacHeadPannels = () => {
             msOverflowStyle: "none", // For Internet Explorer and Edge
           }}
         >
-          {jobs?.map((job, index) => (
-            <JobsCards job={job} key={job} />
+          {panels?.map((panel, index) => (
+            <PanelCards panel={panel} />
           ))}
         </div>
       </main>

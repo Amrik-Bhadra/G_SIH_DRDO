@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const candidateSchema = new mongoose.Schema({
+  jobId: {
+    type: String,
+  },
   personalDetails: {
     name: {
       firstName: { type: String, required: true },

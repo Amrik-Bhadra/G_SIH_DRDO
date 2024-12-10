@@ -13,22 +13,23 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import pannelWallpaper from "../../assets/pannel_images/i2.jpg";
+import pannelWallpaper from "../../assets/pannel_images/i1.jpg";
 import { useNavigate } from "react-router-dom";
 
-const PanelCards = ({ panel }) => {
+const JobsCards = ({ job }) => {
+  //   console.log(job.jobDescription.length);
   const navigate = useNavigate();
   return (
     <Card sx={{ width: 320, maxHeight: "fit-content", borderRadius: "0.4rem" }}>
-      <CardMedia sx={{ height: 180 }} image={pannelWallpaper} />
+      <CardMedia sx={{ height: 120 }} image={pannelWallpaper} />
       <CardContent className="flex flex-col gap-y-3">
         <div className="content-header flex items-center justify-between">
           <div className="left flex flex-col gap-y-2">
-            <h1 className="text-2xl font-semibold text-[#333]">
-              {panel?.panelID}
+            <h1 className="text-xl font-semibold text-[#333]">
+              {job?.jobRole}
             </h1>
             <p className="text-xs font-medium text-[#797979]">
-              Dept. of AI & ML
+              {job?.domainDepartment}
             </p>
           </div>
           <div className="right">
@@ -43,32 +44,15 @@ const PanelCards = ({ panel }) => {
           </div>
         </div>
 
-        <div className="details-div flex items-center justify-between text-sm text-[#BBBBBB]">
-          <span className="flex items-center gap-x-1">
-            <LuClock />
-            <p>
-              <span className="text-[#464646] font-semibold">3</span> to{" "}
-              <span className="text-[#464646] font-semibold">5</span> pm
-            </p>
-          </span>
-          <span className="flex items-center gap-x-1">
-            <MdGroups size={"1.4rem"} />
-            <p>
-              <span className="text-[#464646] font-semibold">
-                {panel?.panelInfo?.panelExperts?.length}
-              </span>{" "}
-              experts
-            </p>
-          </span>
-          <span className="flex items-center gap-x-1">
-            <FaUser />
-            <p>
-              <span className="text-[#464646] font-semibold">
-                {panel?.candidates?.length}
-              </span>{" "}
-              candidates
-            </p>
-          </span>
+        <div className="content-para text-sm text-[#646464] text-justify">
+          <p>
+            {job?.jobDescription}
+            {job?.jobDescription?.length > 0 && (
+              <span className="font-semibold text-[#3C8CE7] cursor-pointer">
+                Read more
+              </span>
+            )}
+          </p>
         </div>
       </CardContent>
       <CardActions
@@ -82,13 +66,13 @@ const PanelCards = ({ panel }) => {
       >
         <Button
           variant="contained"
-          onClick={() => navigate(`/rachead/generatedExperts/${panel?._id}`)}
           sx={{
             background: "#464646",
             textTransform: "capitalize",
             boxShadow: "none",
             padding: "0.6rem 1.4rem",
           }}
+          onClick={() => navigate(`/rachead/getPannels/${job?._id}`)}
           className="hover:bg-[#333]"
         >
           View Details
@@ -115,4 +99,4 @@ const PanelCards = ({ panel }) => {
   );
 };
 
-export default PanelCards;
+export default JobsCards;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -15,34 +15,9 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/joy";
-import axios from "axios";
-const ExpertsCard = ({ info, index }) => {
-  const [otherInfo, setOtherInfo] = useState([]);
-  const getRandomDomain = () => {
-    const domains = ["Academia", "Industry"];
-    return domains[Math.floor(Math.random() * domains.length)];
-  };
-  console.log(index);
-  const [drdo, setDrdo] = useState("DRDO");
-  const base_url = import.meta.env.VITE_BASE_URL;
-  const otherExpertInfo = async () => {
-    try {
-      const otherInformation = await axios.get(
-        `${base_url}/api/expert/get/${info?.expertID}`,
-        { withCredentials: true }
-      );
-      if (otherInformation) {
-        setOtherInfo(otherInformation?.data?.data);
-        console.log(otherInformation?.data?.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  useEffect(() => {
-    otherExpertInfo();
-  }, [info]);
+const CandyCard = ({ info }) => {
+  console.log(info);
   return (
     <Card
       sx={{
@@ -75,48 +50,44 @@ const ExpertsCard = ({ info, index }) => {
         </Chip>
 
         <Typography level="title-lg" sx={{ color: "#36CFEA" }}>
-          {info?.expertName}
+          {info?.candidateName}
         </Typography>
         <Typography
           level="title-md"
           sx={{ color: "#676767", fontWeight: "500" }}
         >
-          {index === 0 ? "DRDO" : getRandomDomain()}
+          Head of Department
         </Typography>
         <Typography level="body2" sx={{ color: "#ACABAB" }}>
-          {otherInfo?.fieldOfExpertise?.yearsOfExperience} Years of Experience
+          10years Experience
         </Typography>
         <Box sx={{ display: "flex", gap: "0 2rem", marginTop: "1rem" }}>
           <Stack spacing={1} sx={{ alignItems: "center" }}>
             <CircularProgress size="lg" determinate value={65}>
-              <Typography>
-                {parseInt(
-                  otherInfo?.skillRelevancyScore?.totalSkillRelevancyScore
-                )}
-              </Typography>
+              <Typography>{parseInt(info?.finalSkillScoreOutOf70)}</Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
-              Score 1
+              Skill
             </Typography>
           </Stack>
           <Stack spacing={1}>
             <CircularProgress size="lg" determinate value={89}>
               <Typography>
-                {parseInt(
-                  otherInfo?.approachRelevancyScore?.totalApproachRelevancyScore
-                )}
+                {parseInt(info?.approachRelevancyScoreOutOf30)}
               </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
-              Score 2
+              Approach
             </Typography>
           </Stack>
-          <Stack spacing={1}>
-            <CircularProgress size="lg" determinate value={89}>
-              <Typography>{parseInt(otherInfo?.finalScore)}</Typography>
+          <Stack spacing={1} sx={{ alignItems: "center" }}>
+            <CircularProgress size="lg" determinate value={65}>
+              <Typography>
+                {parseInt(info?.finalCombinedScoreOutOf100)}
+              </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
-              Score 3
+              Total
             </Typography>
           </Stack>
         </Box>
@@ -125,4 +96,4 @@ const ExpertsCard = ({ info, index }) => {
   );
 };
 
-export default ExpertsCard;
+export default CandyCard;

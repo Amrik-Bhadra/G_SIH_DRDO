@@ -2,11 +2,16 @@ const mongoose = require("mongoose");
 const Candidate = require("../../model/candidate");
 const asyncHandler = require("express-async-handler");
 
-
 //http://localhost:8000/api/candidate/completeDetails
 const completeDetails = async (req, res) => {
   try {
-    var { email, personalInfo, educationalInfo, criticalInputs, additionalInputs } = req.body;
+    var {
+      email,
+      personalInfo,
+      educationalInfo,
+      criticalInputs,
+      additionalInputs,
+    } = req.body;
     const resume = req.file;
 
     if (!email) {
@@ -14,47 +19,71 @@ const completeDetails = async (req, res) => {
     }
 
     // Find candidate by email
-    const candidate = await Candidate.findOne({ 'personalDetails.contact.email': email });
+    const candidate = await Candidate.findOne({
+      "personalDetails.contact.email": email,
+    });
     if (!candidate) {
       return res.status(404).json({ error: "Candidate not found." });
     }
 
     // Parse inputs if they are strings
-    if (typeof personalInfo === "string") personalInfo = JSON.parse(personalInfo);
-    if (typeof criticalInputs === "string") criticalInputs = JSON.parse(criticalInputs);
-    if (typeof additionalInputs === "string") additionalInputs = JSON.parse(additionalInputs);
-    if (typeof educationalInfo === "string") educationalInfo = JSON.parse(educationalInfo);
+    if (typeof personalInfo === "string")
+      personalInfo = JSON.parse(personalInfo);
+    if (typeof criticalInputs === "string")
+      criticalInputs = JSON.parse(criticalInputs);
+    if (typeof additionalInputs === "string")
+      additionalInputs = JSON.parse(additionalInputs);
+    if (typeof educationalInfo === "string")
+      educationalInfo = JSON.parse(educationalInfo);
 
     // Update personal information
-// Update personal information
-if (personalInfo) {
-  candidate.personalDetails = {
-    ...candidate.personalDetails,
-    name: {
-      firstName: personalInfo.firstName || candidate.personalDetails?.name?.firstName,
-      middleName: personalInfo.middleName || candidate.personalDetails?.name?.middleName,
-      lastName: personalInfo.lastName || candidate.personalDetails?.name?.lastName,
-    },
-    gender: personalInfo.gender || candidate.personalDetails?.gender,
-    age: personalInfo.age || candidate.personalDetails?.age,
-    contact: {
-      email: personalInfo.email || candidate.personalDetails?.contact?.email,
-      recoveryEmail: personalInfo.recoveryEmail || candidate.personalDetails?.contact?.recoveryEmail,
-      phoneNo: personalInfo.phoneNo || candidate.personalDetails?.contact?.phoneNo,
-    },
-    permanentAddress: {
-      addressLine: personalInfo.address || candidate.personalDetails?.permanentAddress?.addressLine,
-      city: personalInfo.city || candidate.personalDetails?.permanentAddress?.city,
-      state: personalInfo.state || candidate.personalDetails?.permanentAddress?.state,
-      pinCode: personalInfo.pincode || candidate.personalDetails?.permanentAddress?.pinCode,
-    },
-    idProof: {
-      type: personalInfo.govtIdType || candidate.personalDetails?.idProof?.type,
-      number: personalInfo.govtIdNo || candidate.personalDetails?.idProof?.number,
-    },
-  };
-}
-
+    // Update personal information
+    if (personalInfo) {
+      candidate.personalDetails = {
+        ...candidate.personalDetails,
+        name: {
+          firstName:
+            personalInfo.firstName ||
+            candidate.personalDetails?.name?.firstName,
+          middleName:
+            personalInfo.middleName ||
+            candidate.personalDetails?.name?.middleName,
+          lastName:
+            personalInfo.lastName || candidate.personalDetails?.name?.lastName,
+        },
+        gender: personalInfo.gender || candidate.personalDetails?.gender,
+        age: personalInfo.age || candidate.personalDetails?.age,
+        contact: {
+          email:
+            personalInfo.email || candidate.personalDetails?.contact?.email,
+          recoveryEmail:
+            personalInfo.recoveryEmail ||
+            candidate.personalDetails?.contact?.recoveryEmail,
+          phoneNo:
+            personalInfo.phoneNo || candidate.personalDetails?.contact?.phoneNo,
+        },
+        permanentAddress: {
+          addressLine:
+            personalInfo.address ||
+            candidate.personalDetails?.permanentAddress?.addressLine,
+          city:
+            personalInfo.city ||
+            candidate.personalDetails?.permanentAddress?.city,
+          state:
+            personalInfo.state ||
+            candidate.personalDetails?.permanentAddress?.state,
+          pinCode:
+            personalInfo.pincode ||
+            candidate.personalDetails?.permanentAddress?.pinCode,
+        },
+        idProof: {
+          type:
+            personalInfo.govtIdType || candidate.personalDetails?.idProof?.type,
+          number:
+            personalInfo.govtIdNo || candidate.personalDetails?.idProof?.number,
+        },
+      };
+    }
 
     // Update educational information
     if (Array.isArray(educationalInfo)) {
@@ -65,13 +94,16 @@ if (personalInfo) {
         yearOfCompletion: qualification.yearOfCompletion,
       }));
     } else if (educationalInfo) {
-      return res.status(400).json({ error: "educationalInfo must be an array." });
+      return res
+        .status(400)
+        .json({ error: "educationalInfo must be an array." });
     }
 
     // Update critical inputs
     if (criticalInputs) {
       candidate.skills = criticalInputs.skills || candidate.skills;
-      candidate.areaOfExpertise = criticalInputs.expertise || candidate.areaOfExpertise;
+      candidate.areaOfExpertise =
+        criticalInputs.expertise || candidate.areaOfExpertise;
       candidate.yearsOfExperience = criticalInputs.yearsOfExperience;
     }
 
@@ -88,13 +120,15 @@ if (personalInfo) {
 
       // Process publications
       if (Array.isArray(additionalInputs.publications)) {
-        candidate.researchPapers = additionalInputs.publications.map((paper) => ({
-          title: paper.title,
-          description: paper.description || "", // Ensure non-mandatory fields are handled
-          skills: paper.skills, 
-          link: paper.link || "", // Default empty string if no link is provided
-          year: paper.year, // Map the publication year if needed
-        }));
+        candidate.researchPapers = additionalInputs.publications.map(
+          (paper) => ({
+            title: paper.title,
+            description: paper.description || "", // Ensure non-mandatory fields are handled
+            skills: paper.skills,
+            link: paper.link || "", // Default empty string if no link is provided
+            year: paper.year, // Map the publication year if needed
+          })
+        );
       }
     }
 
@@ -119,11 +153,6 @@ if (personalInfo) {
     res.status(500).json({ error: "Internal Server Error." });
   }
 };
-
-
-
-
-
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/candidate/all
@@ -159,10 +188,7 @@ const allCandidates = asyncHandler(async (req, res) => {
 const updateCandidate = asyncHandler(async (req, res) => {
   const candidateId = req.params.id;
   const candidateData = req.body;
-
-  console.log("Candidate ID to update:", candidateId);
-  console.log("Data received for update:", candidateData);
-
+  
   // Validate the candidateId
   if (!mongoose.Types.ObjectId.isValid(candidateId)) {
     return res.status(400).json({
@@ -189,9 +215,6 @@ const updateCandidate = asyncHandler(async (req, res) => {
         success: false,
       });
     }
-
-    console.log("Updated candidate data:", candidate);
-
     res.status(200).json({
       message: "Candidate updated successfully",
       success: true,
@@ -199,10 +222,11 @@ const updateCandidate = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     console.error(`Error updating candidate with ID ${candidateId}:`, error);
-    res.status(500).json({ message: "Error updating candidate", success: false });
+    res
+      .status(500)
+      .json({ message: "Error updating candidate", success: false });
   }
 });
-
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/candidate/find/:id

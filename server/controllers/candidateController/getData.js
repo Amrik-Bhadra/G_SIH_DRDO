@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Candidate = require("../../model/candidate");
 const Application = require("../../model/application");
 const Jobs = require("../../model/jobRole");
+const Panel = require("../../model/panel");
 const asyncHandler = require("express-async-handler");
 
 //http://localhost:8000/api/candidate/dashboard
@@ -16,7 +17,7 @@ const dashboardDetails = asyncHandler(async (req, res) => {
                 message: "Invalid candidate ID format",
             });
         }
-
+        console.log("CandID: ", id);
         // Fetch the candidate details
         const candidate = await Candidate.findById(id);
         if (!candidate) {
@@ -25,26 +26,38 @@ const dashboardDetails = asyncHandler(async (req, res) => {
                 message: "Candidate not found",
             });
         }
-        console.log(typeof id);
-        const candId = "674aaf2e7976acc877362715";
-        // Fetch applications for the candidate using find
+
+        // Fetch all panels where this candidate exists
+        const panels = await Panel.find(
+            { "candidates.candidateID": id },  // Find panels where this candidate exists
+            { jobID: 1, _id: 0 }  // Only return the jobID field (exclude _id)
+        );
+
+        // Check if the panels array is empty
+        // if (panels.length === 0) {
+        //     return res.status(404).json({
+        //         success: false,
+        //         message: "No panels found for the candidate",
+        //     });
+        // }
+        const plainPanels = panels.map(panel => panel.toObject());
+        const jobIDs = plainPanels.map(panel => panel.jobID);
+        const selectedJobs = await Jobs.find({ _id: { $in: jobIDs } });
         const applications = await Application.find({
-            "applicationStatus.candidateId": "674aaf2e7976acc877362715", 
-        });
-
-        // Ensure the applications array is not empty
-        if (applications.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "No applications found for the candidate",
-            });
-        }
-
-        // Send the response
+            "applicationStatus.candidateId": id,
+          });
+        const plainApplications = applications.map(application=>application.toObject());
+        const appliedJobIDs = plainApplications.map(application=>application.jobId);
+        const appliedJobs = await Jobs.find({ _id: { $in: appliedJobIDs } });
+        
+          
+        // Send the response with candidate, jobIDs, and job details
         res.status(200).json({
             success: true,
             candidate,
             applications,
+            selectedJobs,
+            appliedJobs,
         });
     } catch (error) {
         // Handle server errors

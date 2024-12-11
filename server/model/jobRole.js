@@ -5,6 +5,12 @@ const JobSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  jobId: {
+    type: String, // Fixed typo here (changed string to String)
+  },
+  jobRole: {
+    type: String, // Fixed typo here (changed string to String)
+  },
   domainDepartment: {
     type: String,
     required: true,
@@ -30,6 +36,38 @@ const JobSchema = new mongoose.Schema({
   },
   preferredSkills: {
     type: [String], // Array of skills
+  },
+  noOfPanels: {
+    type: Number,
+    required: false, // Optional field
+  },
+  noOfExperts: {
+    type: Number,
+    required: false, // Optional field
+  },
+  interviewDate: {
+    type: Date,
+    required: false, // Optional field
+  },
+  SKILL_WEIGHT: {
+    type: Number,
+    required: false, // Optional field
+  },
+  EXPERIENCE_WEIGHT: {
+    type: Number,
+    required: false, // Optional field
+  },
+  QUALIFICATION_WEIGHT: {
+    type: Number,
+    required: false, // Optional field
+  },
+  RESEARCH_WEIGHT: {
+    type: Number,
+    required: false, // Optional field
+  },
+  PROJECT_WEIGHT: {
+    type: Number,
+    required: false, // Optional field
   },
 });
 

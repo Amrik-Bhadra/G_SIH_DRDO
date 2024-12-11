@@ -16,6 +16,7 @@ const candidateSchema = new mongoose.Schema({
 
 const panelSchema = new mongoose.Schema({
   panelID: { type: String, required: true, unique: true },
+  jobID: { type: String, required: true },
   panelInfo: {
     panelExperts: [
       {

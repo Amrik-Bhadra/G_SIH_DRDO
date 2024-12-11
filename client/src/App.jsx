@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginForm from "./pages/LoginForm/LoginForm";
 import { Toaster } from "react-hot-toast";
+import LoginForm from "./pages/LoginForm/LoginForm";
 import ForgotPassword from "./pages/LoginForm/ForgotPassword";
 import VerifyOTP from "./pages/LoginForm/VerifyOTP";
 import ResetPassword from "./pages/LoginForm/ResetPassword";
@@ -19,7 +19,7 @@ import CreatePanelForm from "./components/RacHeadComponents/CreatePanelForm";
 import GeneratedExpertsPage from "./pages/RacHeadPages/GeneratedExpertsPage";
 import CandidateQuizRedirect from "./pages/RegistrationForm/CanidateQuizRedirect";
 import ExpertQuizRedirect from "./pages/RegistrationForm/ExpertQuizRedirect";
-import CandidateDashboard from "./pages/CandidatePages/Candidatedashboard";
+import CandidateDashboard2 from "./pages/CandidatePages/CandidateDashboard2";
 import ExpertDashboard from "./pages/ExpertPages/ExpertDashboard";
 import ExpertDetailsPage from "./pages/RacHeadPages/ExpertDetailsPage";
 import CandidateListPage from "./pages/RacHeadPages/CandidateListPage";
@@ -40,6 +40,8 @@ import {
 } from "./routes/Layout";
 import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 import PanelDetails from "./pages/ExpertPages/PanelDetails";
+import PanelAdvancedSettings from "./components/RacHeadComponents/PanelAdvancedSettings";
+import PanelsPage from "./components/RacHeadComponents/RacHeadPannels";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -56,6 +58,14 @@ const App = () => {
 
   const routes = createBrowserRouter([
     // Open Routes
+
+    { path: "/rachead/createPanel/:jobId", element: <CreatePanelForm /> },
+    { path: "/expert/panneldetails", element: <PanelDetails /> },
+    {
+      path: "/expert/pannelAdvancedSettings/:jobId",
+      element: <PanelAdvancedSettings />,
+    },
+
     { path: "/", element: <LoginForm /> },
     { path: "/forgotPassword", element: <ForgotPassword /> },
     { path: "/verifyOtp", element: <VerifyOTP /> },
@@ -68,11 +78,16 @@ const App = () => {
     { path: "/rachead/", element: <RacHeadDashboard /> },
     { path: "/rachead/analytics", element: <RacHeadAnalytics /> },
     { path: "/rachead/pannels", element: <RacHeadPannels /> },
+    { path: "/rachead/getPannels/:jobId", element: <PanelsPage /> },
     { path: "/rachead/createPanel", element: <CreatePanelForm /> },
-    { path: "/rachead/generatedExperts", element: <GeneratedExpertsPage /> },
+    {
+      path: "/rachead/generatedExperts/:panelID",
+      element: <GeneratedExpertsPage />,
+    },
     { path: "/rachead/expertsData", element: <ExpertDetailsPage /> },
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
     { path: "/performanceReport", element: <PerformanceReport/>},
+    
     
 
     // Expert Authorized Routes
@@ -81,12 +96,12 @@ const App = () => {
       element: <ExpertRoleContext />,
       children: [
         { path: "/register/expert/quiz", element: <ExpertQuizRedirect /> },
-        { path: "/expert/dashboard", element: <ExpertDashboard /> },
+        // { path: "/expert/dashboard", element: <ExpertDashboard /> },
         {
           path: "/register/expertcompletedetail/:userId",
           element: <ExpertCompleteDetail />,
         },
-        { path: "/expert/panneldetails", element: <PanelDetails /> },
+        // { path: "/expert/panneldetails", element: <PanelDetails /> },
         {
           path: "/expert/candidateevaluation",
           element: <CandidateEvaluation />,
@@ -103,7 +118,7 @@ const App = () => {
           path: "/register/candidate/quiz",
           element: <CandidateQuizRedirect />,
         },
-        { path: "/candidate/dashboard", element: <CandidateDashboard /> },
+        { path: "/candidate/dashboard", element: <CandidateDashboard2 /> },
         {
           path: "/register/candidatecompletedetail",
           element: <CandidateCompleteDetail />,

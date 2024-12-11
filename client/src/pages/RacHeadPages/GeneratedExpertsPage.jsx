@@ -1,19 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, TabList, Tab, tabClasses, TabPanel } from "@mui/joy";
 import "../../styles/RacHeadStyle.css";
 import ExpertsCard from "../../components/RacHeadComponents/ExpertsCard";
 import { border, display, width } from "@mui/system";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import CandyCard from "../../components/RacHeadComponents/CandyCard";
 
 const GeneratedExpertsPage = () => {
+  const base_url = import.meta.env.VITE_BASE_URL;
   const [activeTab, setActiveTab] = useState(0); // Track active tab index
-
+  const params = useParams();
+  const panelID = params.panelID;
   const tabPanelStyles = {
-    overflow: "hidden", // Prevent scrollbars
-    height: "530px", // Fixed height
+    overflow: "hidden",
+    height: "530px",
     position: "relative",
-    // border: "2px solid red"
   };
 
+  const [panels, setPanels] = useState([]);
+  const [candidate, setCandidates] = useState([]);
+  const [experts, setExperts] = useState([]);
+  const fetchPanelsInfo = async () => {
+    const panels = await axios.get(`${base_url}/api/panel/get/${panelID}`, {
+      withCredentials: true,
+    });
+    console.log(panels?.data?.data);
+    setPanels(panels?.data?.data);
+    setCandidates(panels?.data?.data?.candidates);
+    setExperts(panels?.data?.data?.panelInfo?.panelExperts);
+  };
+  useEffect(() => {
+    fetchPanelsInfo();
+  }, [panelID]);
   const scrollContainerStyles = {
     overflowY: "scroll", // Enable scrolling
     height: "100%",
@@ -70,16 +89,10 @@ const GeneratedExpertsPage = () => {
               }}
             >
               <Tab disableIndicator sx={{ padding: "1rem 1.8rem" }}>
-                AID_Panel_1
+                Experts
               </Tab>
               <Tab disableIndicator sx={{ padding: "1rem 1.8rem" }}>
-                AID_Panel_2
-              </Tab>
-              <Tab disableIndicator sx={{ padding: "1rem 1.8rem" }}>
-                AID_Panel_3
-              </Tab>
-              <Tab disableIndicator sx={{ padding: "1rem 1.8rem" }}>
-                AID_Panel_4
+                Candidates
               </Tab>
             </TabList>
 
@@ -93,37 +106,18 @@ const GeneratedExpertsPage = () => {
               {activeTab === 0 && (
                 <TabPanel value={0} sx={tabPanelStyles}>
                   <div style={scrollContainerStyles} className="no-scrollbar">
-                    <ExpertsCard />
-                    <ExpertsCard />
-                    <ExpertsCard />
-                    <ExpertsCard />
+                    {experts.map((expert, index) => (
+                      <ExpertsCard key={expert} info={expert} index={index} />
+                    ))}
                   </div>
                 </TabPanel>
               )}
               {activeTab === 1 && (
                 <TabPanel value={1} sx={tabPanelStyles}>
                   <div style={scrollContainerStyles} className="no-scrollbar">
-                    <ExpertsCard />
-                    <ExpertsCard />
-                    <ExpertsCard />
-                  </div>
-                </TabPanel>
-              )}
-              {activeTab === 2 && (
-                <TabPanel value={2} sx={tabPanelStyles}>
-                  <div style={scrollContainerStyles} className="no-scrollbar">
-                    <ExpertsCard />
-                    <ExpertsCard />
-                    <ExpertsCard />
-                    <ExpertsCard />
-                    <ExpertsCard />
-                  </div>
-                </TabPanel>
-              )}
-              {activeTab === 3 && (
-                <TabPanel value={3} sx={tabPanelStyles}>
-                  <div style={scrollContainerStyles} className="no-scrollbar">
-                    <b>Fourth</b> tab panel content here
+                    {candidate.map((candi) => (
+                      <CandyCard key={candi} info={candi} />
+                    ))}
                   </div>
                 </TabPanel>
               )}

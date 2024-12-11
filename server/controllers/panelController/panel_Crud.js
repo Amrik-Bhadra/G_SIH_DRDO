@@ -10,6 +10,7 @@ const expert = require("../../model/expert");
 const createPanel = asyncHandler(async (req, res) => {
   const {
     panelID,
+    jobID,
     panelInfo,
     finalSkillScore,
     finalApproachScore,
@@ -47,6 +48,7 @@ const createPanel = asyncHandler(async (req, res) => {
     // Create a new panel
     const newPanel = new Panel({
       panelID,
+      jobID,
       panelInfo: {
         panelExperts: panelInfo.panelExperts,
       },
@@ -71,6 +73,7 @@ const createPanel = asyncHandler(async (req, res) => {
 const updatePanel = asyncHandler(async (req, res) => {
   const {
     panelID,
+    jobID,
     panelInfo,
     finalSkillScore,
     finalApproachScore,
@@ -94,6 +97,7 @@ const updatePanel = asyncHandler(async (req, res) => {
     // Update panel information
     panel.panelInfo = panelInfo;
     panel.finalSkillScore = finalSkillScore;
+    panel.jobID = jobID;
     panel.finalApproachScore = finalApproachScore;
     panel.finalScore = finalScore;
 
@@ -111,7 +115,6 @@ const updatePanel = asyncHandler(async (req, res) => {
       .json({ message: "Internal server error", error: error.message });
   }
 });
-
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/panel/del/:id

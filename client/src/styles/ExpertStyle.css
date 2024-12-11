@@ -33,5 +33,6 @@ main::-webkit-scrollbar {
   .d {
     grid-column: 2;
     grid-row: 1;
+    padding: 15px;
   }
   

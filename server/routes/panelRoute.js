@@ -22,7 +22,7 @@ router.post(
   createPanel
 );
 router.get("/all", apiLimiter, authenticate, getAllPanel);
-router.get("/get/:id", apiLimiter, getPanel);
+router.get("/get/:id", getPanel); 
 router.delete(
   "/del/:id",
   apiLimiter,

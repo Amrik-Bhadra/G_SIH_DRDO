@@ -12,6 +12,7 @@ import "../../styles/RacHeadStyle.css";
 import axios from "axios";
 import { FetchListedJobs } from "../../context/RacHeadContexts/FetchListedJobs";
 import JobsCards from "./JobsCards";
+import no_panels_found from '../../assets/images/drdo-logo.svg'
 
 const RacHeadPannels = () => {
   const base_url = import.meta.env.VITE_BASE_URL;
@@ -42,29 +43,7 @@ const RacHeadPannels = () => {
             Interview Panels
           </h2>
           <div className="button-grp flex gap-x-3 items-center">
-            {/* Select Department Filter */}
-            <FormControl
-              sx={{
-                background: "#fff",
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                borderRadius: "6px",
-                minWidth: "180px", // Ensures enough space for content
-              }}
-            >
-              <InputLabel id="role-select-label">Select Department</InputLabel>
-              <Select
-                labelId="department-select-label"
-                id="department-select"
-                label="Select Department"
-                sx={{
-                  textAlign: "left",
-                }}
-              >
-                <MenuItem value="applicant">Applicant</MenuItem>
-                <MenuItem value="expert">Expert</MenuItem>
-              </Select>
-            </FormControl>
-
+        
             {/* Select Interview Status Filter */}
             <FormControl
               sx={{
@@ -92,6 +71,7 @@ const RacHeadPannels = () => {
             </FormControl>
 
             {/* Button */}
+
             <Button
               variant="contained"
               sx={{
@@ -101,6 +81,25 @@ const RacHeadPannels = () => {
                 "&:hover": {
                   backgroundColor: "#333",
                 },
+                textTransform: "capitalize"
+              }}
+              onClick={() => {
+                navigate(`/rachead/externalPanelList`);
+              }}
+            >
+              Find External Experts
+            </Button>
+
+            <Button
+              variant="contained"
+              sx={{
+                padding: "14px 16px", // Adjust padding for better sizing
+                fontSize: "0.875rem", // Match MUI typography
+                backgroundColor: "#464646",
+                "&:hover": {
+                  backgroundColor: "#333",
+                },
+                textTransform: "capitalize"
               }}
               onClick={() => {
                 navigate(`/rachead/createPanel/${jobID}`);
@@ -121,9 +120,20 @@ const RacHeadPannels = () => {
             msOverflowStyle: "none", // For Internet Explorer and Edge
           }}
         >
-          {panels?.map((panel, index) => (
-            <PanelCards panel={panel} />
-          ))}
+          {
+            panels.length > 0 ? (
+              panels.map((panel, index) => (
+                <PanelCards key={index} panel={panel} />
+              ))
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <span className="flex flex-col gap-y-3 h-[30%] items-center">
+                  <img src={no_panels_found} alt="drdo logo" className="h-[100%]"/>
+                  <h1 className="font-semibold text-xl">No Pannels formed yet</h1>
+                </span>
+              </div>
+            )
+          }
         </div>
       </main>
     </section>

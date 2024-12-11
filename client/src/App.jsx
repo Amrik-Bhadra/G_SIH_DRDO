@@ -42,11 +42,15 @@ import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 import PanelDetails from "./pages/ExpertPages/PanelDetails";
 import PanelAdvancedSettings from "./components/RacHeadComponents/PanelAdvancedSettings";
 import PanelsPage from "./components/RacHeadComponents/RacHeadPannels";
+import ExternalPanelsList from "./components/RacHeadComponents/ExternalPanelsList";
+
+import { useSetDefaultLang } from "./hooks/UseSpeechToText";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
 
 const App = () => {
+  useSetDefaultLang('en-US');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [totalScore, setTotalScore] = useState({
     "Problem Solving": 0,
@@ -80,6 +84,7 @@ const App = () => {
     { path: "/rachead/pannels", element: <RacHeadPannels /> },
     { path: "/rachead/getPannels/:jobId", element: <PanelsPage /> },
     { path: "/rachead/createPanel", element: <CreatePanelForm /> },
+    { path: "/rachead/externalPanelList", element: <ExternalPanelsList />},
     {
       path: "/rachead/generatedExperts/:panelID",
       element: <GeneratedExpertsPage />,
@@ -87,6 +92,7 @@ const App = () => {
     { path: "/rachead/expertsData", element: <ExpertDetailsPage /> },
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
     { path: "/performanceReport", element: <PerformanceReport/>},
+    { path: "/expert/dashboard/", element: <ExpertDashboard /> },
     
     
 

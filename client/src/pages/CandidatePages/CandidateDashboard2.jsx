@@ -186,9 +186,9 @@ const CandidateDashboard2 = () => {
 
   return (
     <div>
-      <span className="flex justify-center w-screen py-3 bg-[#464646] text-center text-white">
+      {/* <span className="flex justify-center w-screen py-3 bg-[#464646] text-center text-white">
           Give the Approach Relevancy Test. <span className="pl-4 font-semibold underline">Go to Test</span>
-      </span>
+      </span> */}
       <div className="w-full min-h-screen bg-[#f8f9fa] flex justify-center items-start">
         <div className="w-[85%] h-[95%] flex flex-col justify-start items-center">
 

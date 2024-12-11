@@ -1,21 +1,92 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import logo from "../../assets/images/drdo-logo.svg";
 import { TbArrowBadgeRightFilled } from "react-icons/tb";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthenticationContext";  
 import Grid from "@mui/material/Grid2";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const QuestionnareHome = () => {
-  const user = {
-    name: "Amrik Bhadra", // Static name
-    email: "amrik.bhadra@mitaoe.ac.in", // Static email
-    avatar: "AB", // Static avatar initials
-  };
 
+const QuestionnareHome = () => {
   const navigate = useNavigate();
+
+  const { currentUser } = useContext(AuthContext);
+  // const userInformation = currentUser?.response;
+  const [expertData, setExpertData] = useState({
+    name: "",
+    email: "",
+    avatar:"",
+    user_id:"",
+  });
+  console.log("Userdata: ", currentUser.id);
+
+  useEffect(() => {
+    if (!currentUser?.id) {
+      console.error("User ID is not available in AuthContext.");
+      return;
+    }
+    console.log(currentUser);
+    if (currentUser.role=="Expert") {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:8000/api/expert/dashboard",
+            {
+              params: { id: currentUser.id },
+            }
+          );
+          console.log("Expert: ", response.data.expert);
+    
+          // Destructure and set expert data
+          const expert = response.data.expert;
+          const exp = {
+            name: expert.personalDetails?.name?.firstName + " " + expert.personalDetails?.name?.lastName,
+            email: expert.personalDetails?.contact?.email,
+            avatar: expert.personalDetails?.name?.firstName[0] + expert.personalDetails?.name?.lastName[0],
+            user_id:expert._id
+          }
+          setExpertData(exp);
+          console.log(exp);
+        } catch (err) {
+          console.error("Error fetching data:", err.message || err);
+          toast.error("Failed to fetch expert data.");
+        }
+      };
+    fetchData();
+    } else {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:8000/api/candidate/dashboard",
+            {
+              params: { id: currentUser.id },
+            }
+          );
+          console.log("Candidate: ", response);
+        
+          // Destructure and set expert data
+          const expert = response.data.expert;
+          const exp = {
+            name: expert.personalDetails?.name?.firstName + " " + expert.personalDetails?.name?.lastName,
+            email: expert.personalDetails?.contact?.email,
+            avatar: expert.personalDetails?.name?.firstName[0] + expert.personalDetails?.name?.lastName[0],
+            user_id:expert._id
+          }
+          setExpertData(exp);
+          console.log(exp);
+        } catch (err) {
+          console.error("Error fetching data:", err.message || err);
+          toast.error("Failed to fetch expert data.");
+        }
+    fetchData();
+      };
+    }
+  }, [currentUser?.id]);
 
   const [checked, setChecked] = React.useState(false) ;
 
@@ -24,11 +95,13 @@ const QuestionnareHome = () => {
   };
 
   const startTest = () => {
-    if (checked) navigate("/questionnaire/questionsections");
-    else{
-      toast.error('First check the checkbox');
+    if (checked) {
+      navigate("/questionnaire/questionsections", { state: { expertData } });
+    } else {
+      toast.error("First check the checkbox");
     }
   };
+  
 
   return (
     <div className="w-full min-h-screen bg-[#f8f9fa] flex justify-center items-start pt-5">
@@ -42,11 +115,11 @@ const QuestionnareHome = () => {
           <div className="w-52 bg-white shadow-md border-t border-white h-12 flex justify-end items-center rounded-3xl">
             <div className="w-full h-full flex justify-start items-center gap-2 pr-1">
               <div className="border-2 border-slate-400 w-10 ml-1 text-sm h-10 flex justify-center items-center rounded-full">
-                {user.avatar}
+                {expertData.avatar}
               </div>
               <div>
-                <p className="font-semibold">{user.name}</p>
-                <p className="text-[9px]">{user.email}</p>
+                <p className="font-semibold">{expertData.name}</p>
+                <p className="text-[9px]">{expertData.email}</p>
               </div>
               <div className="hover:text-slate-600">
                 <FaAngleDown />

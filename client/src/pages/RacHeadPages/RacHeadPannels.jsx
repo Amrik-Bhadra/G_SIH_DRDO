@@ -38,7 +38,7 @@ const RacHeadPannels = () => {
       <main className="flex px-8 py-4 flex-col w-full gap-y-12 pt-6">
         <RacHeader />
         <div className="main-content flex justify-between items-center">
-          <h2 className="font-semibold text-[#464646] text-xl">
+          <h2 className="font-semibold text-[#464646] text-2xl">
             Interview Panels
           </h2>
           <div className="button-grp flex gap-x-3 items-center">
@@ -65,31 +65,6 @@ const RacHeadPannels = () => {
               </Select>
             </FormControl>
 
-            {/* Select Interview Status Filter */}
-            <FormControl
-              sx={{
-                background: "#fff",
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                borderRadius: "6px",
-                minWidth: "220px", // Adjust as per content
-              }}
-            >
-              <InputLabel id="interview-status-select-label">
-                Select Interview Status
-              </InputLabel>
-              <Select
-                labelId="interview-status-select-label"
-                id="interview-status-select"
-                label="Select Interview Status"
-                sx={{
-                  textAlign: "left",
-                }}
-              >
-                <MenuItem value="applicant">Upcoming</MenuItem>
-                <MenuItem value="expert">Inprogress</MenuItem>
-                <MenuItem value="expert">Completed</MenuItem>
-              </Select>
-            </FormControl>
 
             {/* Button */}
             <Button
@@ -101,9 +76,10 @@ const RacHeadPannels = () => {
                 "&:hover": {
                   backgroundColor: "#333",
                 },
+                textTransform:"capitalize"
               }}
             >
-              Create Panel
+              Create Job
             </Button>
           </div>
         </div>

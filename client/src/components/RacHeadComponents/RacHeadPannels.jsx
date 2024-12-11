@@ -5,13 +5,13 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import SideNavbar from "../../components/RacHeadComponents/SideNavbar";
-import RacHeader from "../../components/RacHeadComponents/RacHeader";
-import PanelCards from "../../components/RacHeadComponents/PanelCards";
+import SideNavbar from "./SideNavbar";
+import RacHeader from "./RacHeader";
+import PanelCards from "./PanelCards";
 import "../../styles/RacHeadStyle.css";
 import axios from "axios";
 import { FetchListedJobs } from "../../context/RacHeadContexts/FetchListedJobs";
-import JobsCards from "../../components/RacHeadComponents/JobsCards";
+import JobsCards from "./JobsCards";
 
 const RacHeadPannels = () => {
   const base_url = import.meta.env.VITE_BASE_URL;

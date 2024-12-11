@@ -39,7 +39,7 @@ import {
 import CandidateEvaluation from "./pages/ExpertPages/CandidateEvaluation";
 import PanelDetails from "./pages/ExpertPages/PanelDetails";
 import PanelAdvancedSettings from "./components/RacHeadComponents/PanelAdvancedSettings";
-import PanelsPage from "./components/RacHeadComponents/PanelsPage";
+import PanelsPage from "./components/RacHeadComponents/RacHeadPannels";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,8 +15,34 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/joy";
+import axios from "axios";
+const ExpertsCard = ({ info, index }) => {
+  const [otherInfo, setOtherInfo] = useState([]);
+  const getRandomDomain = () => {
+    const domains = ["Academia", "Industry"];
+    return domains[Math.floor(Math.random() * domains.length)];
+  };
+  console.log(index);
+  const [drdo, setDrdo] = useState("DRDO");
+  const base_url = import.meta.env.VITE_BASE_URL;
+  const otherExpertInfo = async () => {
+    try {
+      const otherInformation = await axios.get(
+        `${base_url}/api/expert/get/${info?.expertID}`,
+        { withCredentials: true }
+      );
+      if (otherInformation) {
+        setOtherInfo(otherInformation?.data?.data);
+        console.log(otherInformation?.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-const ExpertsCard = () => {
+  useEffect(() => {
+    otherExpertInfo();
+  }, [info]);
   return (
     <Card
       sx={{
@@ -49,21 +75,25 @@ const ExpertsCard = () => {
         </Chip>
 
         <Typography level="title-lg" sx={{ color: "#36CFEA" }}>
-          Josephine Blanton
+          {info?.expertName}
         </Typography>
         <Typography
           level="title-md"
           sx={{ color: "#676767", fontWeight: "500" }}
         >
-          Head of Department
+          {index === 0 ? "DRDO" : getRandomDomain()}
         </Typography>
         <Typography level="body2" sx={{ color: "#ACABAB" }}>
-          10years Experience
+          {otherInfo?.fieldOfExpertise?.yearsOfExperience} Years of Experience
         </Typography>
         <Box sx={{ display: "flex", gap: "0 2rem", marginTop: "1rem" }}>
-          <Stack spacing={1} sx={{alignItems:"center"}}>
+          <Stack spacing={1} sx={{ alignItems: "center" }}>
             <CircularProgress size="lg" determinate value={65}>
-              <Typography>65%</Typography>
+              <Typography>
+                {parseInt(
+                  otherInfo?.skillRelevancyScore?.totalSkillRelevancyScore
+                )}
+              </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
               Score 1
@@ -71,10 +101,22 @@ const ExpertsCard = () => {
           </Stack>
           <Stack spacing={1}>
             <CircularProgress size="lg" determinate value={89}>
-              <Typography>89%</Typography>
+              <Typography>
+                {parseInt(
+                  otherInfo?.approachRelevancyScore?.totalApproachRelevancyScore
+                )}
+              </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
               Score 2
+            </Typography>
+          </Stack>
+          <Stack spacing={1}>
+            <CircularProgress size="lg" determinate value={89}>
+              <Typography>{parseInt(otherInfo?.finalScore)}</Typography>
+            </CircularProgress>
+            <Typography level="body-xs" sx={{ color: "#333" }}>
+              Score 3
             </Typography>
           </Stack>
         </Box>

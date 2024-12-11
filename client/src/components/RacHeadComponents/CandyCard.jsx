@@ -64,7 +64,7 @@ const CandyCard = ({ info }) => {
         <Box sx={{ display: "flex", gap: "0 2rem", marginTop: "1rem" }}>
           <Stack spacing={1} sx={{ alignItems: "center" }}>
             <CircularProgress size="lg" determinate value={65}>
-              <Typography>{parseInt(info?.skillsScore)}%</Typography>
+              <Typography>{parseInt(info?.finalSkillScoreOutOf70)}</Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
               Skill
@@ -73,7 +73,7 @@ const CandyCard = ({ info }) => {
           <Stack spacing={1}>
             <CircularProgress size="lg" determinate value={89}>
               <Typography>
-                {parseInt(info?.approachRelevancyScoreOutOf30)}%
+                {parseInt(info?.approachRelevancyScoreOutOf30)}
               </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
@@ -83,7 +83,7 @@ const CandyCard = ({ info }) => {
           <Stack spacing={1} sx={{ alignItems: "center" }}>
             <CircularProgress size="lg" determinate value={65}>
               <Typography>
-                {parseInt(info?.finalCombinedScoreOutOf100)}%
+                {parseInt(info?.finalCombinedScoreOutOf100)}
               </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>

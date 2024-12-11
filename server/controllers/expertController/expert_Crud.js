@@ -80,12 +80,6 @@ const findExpert = asyncHandler(async (req, res) => {
     }
     const expert = await Expert.findById(id, {
       password: 0,
-      expertProfile: {
-        additionalInputs: {
-          // removed the publications {as per shivam suggestions}
-          publications: 0,
-        },
-      },
     });
 
     if (!expert) {

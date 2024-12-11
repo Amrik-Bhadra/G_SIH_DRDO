@@ -78,6 +78,7 @@ const createExpert = asyncHandler(async (req, res) => {
           type: "NA",
           number: "NA",
         },
+        domain: "DRDO",
         role: "Expert",
         ips: [],
       },

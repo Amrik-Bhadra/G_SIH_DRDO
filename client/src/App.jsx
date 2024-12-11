@@ -23,7 +23,7 @@ import CandidateDashboard2 from "./pages/CandidatePages/CandidateDashboard2";
 import ExpertDashboard from "./pages/ExpertPages/ExpertDashboard";
 import ExpertDetailsPage from "./pages/RacHeadPages/ExpertDetailsPage";
 import CandidateListPage from "./pages/RacHeadPages/CandidateListPage";
-
+import JobCreationForm from "./components/RacHeadComponents/JobCreationForm";
 import QuestionnareHome from "./pages/Questionnaire/QuestionnareHome";
 import QuestionSectionPage from "./pages/Questionnaire/QuestionSectionPage";
 import QuestionAnswerPage from "./pages/Questionnaire/QuestionAnswerPage";
@@ -87,6 +87,7 @@ const App = () => {
     { path: "/rachead/expertsData", element: <ExpertDetailsPage /> },
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
     { path: "/performanceReport", element: <PerformanceReport/>},
+    {path:"/rachead/jobcreationform",element:<JobCreationForm/>},
     
     
 

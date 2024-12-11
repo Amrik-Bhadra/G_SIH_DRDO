@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginForm from "./pages/LoginForm/LoginForm";
 import { Toaster } from "react-hot-toast";
+import LoginForm from "./pages/LoginForm/LoginForm";
 import ForgotPassword from "./pages/LoginForm/ForgotPassword";
 import VerifyOTP from "./pages/LoginForm/VerifyOTP";
 import ResetPassword from "./pages/LoginForm/ResetPassword";
@@ -19,7 +19,7 @@ import CreatePanelForm from "./components/RacHeadComponents/CreatePanelForm";
 import GeneratedExpertsPage from "./pages/RacHeadPages/GeneratedExpertsPage";
 import CandidateQuizRedirect from "./pages/RegistrationForm/CanidateQuizRedirect";
 import ExpertQuizRedirect from "./pages/RegistrationForm/ExpertQuizRedirect";
-import CandidateDashboard from "./pages/CandidatePages/Candidatedashboard";
+import CandidateDashboard2 from "./pages/CandidatePages/CandidateDashboard2";
 import ExpertDashboard from "./pages/ExpertPages/ExpertDashboard";
 import ExpertDetailsPage from "./pages/RacHeadPages/ExpertDetailsPage";
 import CandidateListPage from "./pages/RacHeadPages/CandidateListPage";
@@ -74,6 +74,7 @@ const App = () => {
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
     { path: "/performanceReport", element: <PerformanceReport/>},
     
+    
 
     // Expert Authorized Routes
     {
@@ -81,7 +82,7 @@ const App = () => {
       element: <ExpertRoleContext />,
       children: [
         { path: "/register/expert/quiz", element: <ExpertQuizRedirect /> },
-        { path: "/expert/dashboard", element: <ExpertDashboard /> },
+        // { path: "/expert/dashboard", element: <ExpertDashboard /> },
         {
           path: "/register/expertcompletedetail/:userId",
           element: <ExpertCompleteDetail />,
@@ -103,7 +104,7 @@ const App = () => {
           path: "/register/candidate/quiz",
           element: <CandidateQuizRedirect />,
         },
-        { path: "/candidate/dashboard", element: <CandidateDashboard /> },
+        { path: "/candidate/dashboard", element: <CandidateDashboard2 /> },
         {
           path: "/register/candidatecompletedetail",
           element: <CandidateCompleteDetail />,

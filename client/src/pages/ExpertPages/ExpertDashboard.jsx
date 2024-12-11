@@ -99,22 +99,6 @@ const ExpertDashboard = () => {
     setNormalizedScores(normalized);
   }, [score]);
 
-  const carouselRef = useRef(null); // Reference for the carousel
-
-  const items = [
-    { title: "Card 1", description: "Description for Card 1" },
-    { title: "Card 2", description: "Description for Card 2" },
-    { title: "Card 3", description: "Description for Card 3" },
-  ];
-
-  const handleNext = () => {
-    carouselRef.current?.next(); // Navigate to the next item
-  };
-
-  const handlePrev = () => {
-    carouselRef.current?.prev(); // Navigate to the previous item
-  };
-
   return (
     <div className="w-full min-h-screen bg-[#f8f9fa] flex justify-center items-start">
       <div className="w-[85%] max-h-[95%] h-full flex flex-col justify-start items-center">

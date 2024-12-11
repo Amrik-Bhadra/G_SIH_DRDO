@@ -5,30 +5,30 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import SideNavbar from "../../components/RacHeadComponents/SideNavbar";
-import RacHeader from "../../components/RacHeadComponents/RacHeader";
-import PanelCards from "../../components/RacHeadComponents/PanelCards";
+import SideNavbar from "./SideNavbar";
+import RacHeader from "./RacHeader";
+import PanelCards from "./PanelCards";
 import "../../styles/RacHeadStyle.css";
 import axios from "axios";
 import { FetchListedJobs } from "../../context/RacHeadContexts/FetchListedJobs";
-import JobsCards from "../../components/RacHeadComponents/JobsCards";
+import JobsCards from "./JobsCards";
 
 const RacHeadPannels = () => {
   const base_url = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
-  const {
-    jobs,
-    setJobs,
-    loading,
-    setLoading,
-    role,
-    title,
-    department,
-    description,
-  } = useContext(FetchListedJobs);
-  console.log(jobs);
   const params = useParams();
-  const jobId = params.jobId;
+  const jobID = params.jobId;
+  const [panels, setPanels] = useState([]);
+  const fetchPanels = async () => {
+    const panels = await axios.get(`${base_url}/api/panel/job/${jobID}`, {
+      withCredentials: true,
+    });
+    console.log(panels?.data?.data);
+    setPanels(panels?.data?.data);
+  };
+  useEffect(() => {
+    fetchPanels();
+  }, [jobID]);
   return (
     <section className="h-screen w-screen flex bg-[#f6f6f6]">
       {/* Sidebar */}
@@ -102,6 +102,9 @@ const RacHeadPannels = () => {
                   backgroundColor: "#333",
                 },
               }}
+              onClick={() => {
+                navigate(`/rachead/createPanel/${jobID}`);
+              }}
             >
               Create Panel
             </Button>
@@ -118,8 +121,8 @@ const RacHeadPannels = () => {
             msOverflowStyle: "none", // For Internet Explorer and Edge
           }}
         >
-          {jobs?.map((job, index) => (
-            <JobsCards job={job} key={job} />
+          {panels?.map((panel, index) => (
+            <PanelCards panel={panel} />
           ))}
         </div>
       </main>

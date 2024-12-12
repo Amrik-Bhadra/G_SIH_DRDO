@@ -12,11 +12,12 @@ const ExpertHeader = ({ user }) => {
       <div className="w-52 bg-white shadow-md border-t border-white h-12 flex justify-end items-center rounded-3xl">
         <div className="w-full h-full flex justify-start items-center gap-2 pr-1">
           <div className=" border-2 border-slate-400 w-10 ml-1 text-sm h-10 flex justify-center items-center rounded-full">
-            {user?.avatar}
+          {user.name.firstName[0]}{user.name.lastName[0]}
           </div>
           <div>
-            <p className="font-semibold">Amrik Bhadra</p>
-            <p className="text-[9px]">amrik.bhadra@mitaoe.ac.in</p>
+            <p className="font-semibold">{user.name.firstName} {user.name.lastName}</p>
+            {/* <p className="font-semibold">{user.name}</p> */}
+            <p className="text-[9px]">{user.contact.email}</p>
           </div>
           <div className="hover:text-slate-600">
             <FaAngleDown />

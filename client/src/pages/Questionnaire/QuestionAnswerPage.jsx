@@ -8,13 +8,37 @@ import { LuAlarmClock } from "react-icons/lu";
 import { questions } from "../../utils/QuestionBank";
 import { useNavigate } from "react-router-dom";
 
-const QuestionAnswerPage = ({totalScore, setTotalScore}) => {
+const QuestionAnswerPage = ({ totalScore, setTotalScore }) => {
   const location = useLocation();
   const { state } = location;
-  const { title } = state;
+
+  const { title, expertData } = state || {};
+  if (!title || !expertData) {
+    console.log("Title or expertData is missing");
+  }
+
+  console.log("Yaha: ", expertData);
   const selectedQuestion = questions[state?.title].slice(0, 5);
 
   const navigate = useNavigate();
+
+  const [timeLeft, setTimeLeft] = useState(1500); // 1500 seconds = 25 minutes
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, []);
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
 
   // State for tracking user's responses and current question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -118,7 +142,7 @@ const QuestionAnswerPage = ({totalScore, setTotalScore}) => {
       ...prevScore,
       [title]: prevScore[title] + score,
     }));
-    navigate("/questionnaire/questionsections");
+    navigate("/questionnaire/questionsections",{ state: { expertData } });
   };
 
   const currentQuestion = selectedQuestion[currentQuestionIndex];
@@ -133,7 +157,7 @@ const QuestionAnswerPage = ({totalScore, setTotalScore}) => {
             <h1 className="text-[#0E8CCA] text-xl font-semibold">{title}</h1>
             <div className="flex justify-center items-center gap-x-2 bg-[#f4f4f4] px-3 py-2 rounded-2xl shadow-sm">
               <LuAlarmClock size={"1.2rem"} />
-              <p>24:59</p>
+              <p>{formatTime(timeLeft)}</p>
             </div>
           </div>
 
@@ -190,8 +214,8 @@ const QuestionAnswerPage = ({totalScore, setTotalScore}) => {
           {/* Sidebar Content */}
           <div className="w-full flex justify-between items-center pb-6">
             <span className="flex items-center gap-x-2">
-              <Avatar name="Amrik Bhadra" round="true" size="3rem" />
-              <h1 className="text-lg font-semibold">Amrik Bhadra</h1>
+              <Avatar name={expertData.avatar} round="true" size="3rem" />
+              <h1 className="text-lg font-semibold">{expertData.name}</h1>
             </span>
 
             <div>
@@ -242,7 +266,7 @@ const QuestionAnswerPage = ({totalScore, setTotalScore}) => {
               <span className="rounded-full bg-[#D939CD] h-[28px] w-[28px] p-1 text-white font-normal text-sm flex justify-center items-center">
                 <p>23</p>
               </span>
-              <p className="font-normal text-sm">Not Answered & Marked</p>
+              <p className="font-normal text-sm">Answered & Marked</p>
             </span>
 
             {/* not visited */}

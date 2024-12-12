@@ -1,6 +1,10 @@
 const express = require("express");
 const apiLimiter = require("../middleware/apiLimiter");
 const authenticate = require("../middleware/authenticate");
+const {getExperts} = require("../controllers/panelController/getExperts")
+const {createExpert} = require("../controllers/panelController/getExperts");
+const interviewScores = require("../controllers/panelController/candidateEvalute");
+
 const {
   getAllPanel,
   getPanel,
@@ -34,5 +38,9 @@ router.put(
   //   multiRoleAccess(["Admin"]),
   updatePanel
 );
+
+  router.get("/getExperts",getExperts);
+router.post("/createExpert", createExpert);
+router.post("/interviewScores",interviewScores);
 
 module.exports = router;

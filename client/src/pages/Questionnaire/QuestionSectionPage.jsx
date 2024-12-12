@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { FaAngleDown } from "react-icons/fa";
 import logo from "../../assets/images/drdo-logo.svg";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthenticationContext";
 import Button from "@mui/material/Button";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const sections = [
@@ -33,18 +37,15 @@ const sections = [
 ];
 
 const QuestionSectionPage = ({ totalScore, setTotalScore }) => {
+  const location = useLocation();
+  const { expertData = {} } = location.state || {};
+  console.log(expertData);
   const navigate = useNavigate();
-
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    avatar: "JD",
-  };
-
   const handleNavigation = (section) => {
     navigate("/questionnaire/questionsection/quizpage", {
       state: {
         title: section.title,
+        expertData: expertData
       },
     });
   };
@@ -61,11 +62,11 @@ const QuestionSectionPage = ({ totalScore, setTotalScore }) => {
           <div className="w-52 bg-white shadow-md border-t border-white h-12 flex justify-end items-center rounded-3xl">
             <div className="w-full h-full flex justify-start items-center gap-2 pr-1">
               <div className="border-2 border-slate-400 w-10 ml-1 text-sm h-10 flex justify-center items-center rounded-full">
-                {user.avatar}
+                {expertData.avatar}
               </div>
               <div>
-                <p className="font-semibold">{user.name}</p>
-                <p className="text-[9px]">{user.email}</p>
+                <p className="font-semibold">{expertData.name}</p>
+                <p className="text-[9px]">{expertData.email}</p>
               </div>
               <FaAngleDown className="hover:text-slate-600" />
             </div>
@@ -127,9 +128,11 @@ const QuestionSectionPage = ({ totalScore, setTotalScore }) => {
             sx={{
               width: "fit-content",
               textTransform: "capitalize",
-              padding: "0.7rem 1.2rem"
+              padding: "0.7rem 1.2rem",
             }}
-            onClick={()=>{navigate('/questionnaire/resultpage')}}
+            onClick={() => {
+              navigate("/questionnaire/resultpage",{ state: { expertData } });
+            }}
           >
             Submit Complete Test
           </Button>

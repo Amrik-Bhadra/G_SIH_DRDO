@@ -73,6 +73,8 @@ const App = () => {
     { path: "/rachead/expertsData", element: <ExpertDetailsPage /> },
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
     { path: "/performanceReport", element: <PerformanceReport/>},
+    { path: "/expert/dashboard/", element: <ExpertDashboard /> },
+
     
 
     // Expert Authorized Routes
@@ -81,7 +83,7 @@ const App = () => {
       element: <ExpertRoleContext />,
       children: [
         { path: "/register/expert/quiz", element: <ExpertQuizRedirect /> },
-        { path: "/expert/dashboard", element: <ExpertDashboard /> },
+        // { path: "/expert/dashboard", element: <ExpertDashboard /> },
         {
           path: "/register/expertcompletedetail/:userId",
           element: <ExpertCompleteDetail />,

@@ -11,16 +11,53 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import dayjs from "dayjs";
+import axios from "axios";
 import Avatar from "@mui/joy/Avatar";
 import InterviewPanelCards from "../../components/ExpertDashboardSections/InterviewPanelCards";
+import { toast, Toaster } from "react-hot-toast";
 // import Calendar from "../../components/CommonComponents/Calender";
 
 const ExpertDashboard = () => {
   const { currentUser } = useContext(AuthContext);
   const userInformation = currentUser?.response;
-  console.log(currentUser);
+  // console.log("UserInfo: ",userInformation);
+  const [expertData, setExpertData] = useState({
+    personalDetails: {
+      name: {
+        firstName: "",
+        middleName: "",
+        lastName: "",
+      },
+      contact: {
+        email: "",
+      },
+    },
+    fieldOfExpertise: {
+      resume: {
+        filename: "",
+        fileType: "",
+      },
+      domain: "",
+      designation: "",
+    },
+    approachRelevancyScore: {
+      problemSolving: "",
+      collaboration: "",
+      decisionMaking: "",
+      creativity: "",
+      analyticalDepth: "",
+      totalApproachRelevancyScore: "",
+    },
+    __v: "",
+  });
+  const [upcomingInterview, setUpcomingInterviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  console.log(currentUser?.id);
   const user = {
-    name: userInformation?.personalDetails?.name?.firstName || "NA",
+    name:
+      userInformation?.personalDetails?.name?.firstName +
+        " " +
+        userInformation?.personalDetails?.name?.lastName || "NA",
     email:
       userInformation?.personalDetails?.contact?.email ||
       currentUser?.email ||
@@ -28,6 +65,9 @@ const ExpertDashboard = () => {
     avatar: `${
       userInformation?.personalDetails?.name?.firstName.slice(0, 1) || "N"
     }${userInformation?.personalDetails?.name?.lastName?.slice(0, 1) || "A"}`,
+    domain:
+      userInformation?.fieldOfExpertise?.designation ||
+      currentUser?.designation,
   };
 
   const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -39,87 +79,136 @@ const ExpertDashboard = () => {
     setSelectedDate(date);
   };
 
-  const addEvent = () => {
-    const formattedDate = selectedDate.format("YYYY-MM-DD");
-    const newEvent = prompt(
-      `Enter an event for ${formattedDate}:`,
-      events[formattedDate] || ""
-    );
-    if (newEvent) {
-      setEvents((prevEvents) => ({
-        ...prevEvents,
-        [formattedDate]: newEvent,
-      }));
-    }
-  };
+  // const addEvent = () => {
+  //   const formattedDate = selectedDate.format("YYYY-MM-DD");
+  //   const newEvent = prompt(
+  //     `Enter an event for ${formattedDate}:`,
+  //     events[formattedDate] || ""
+  //   );
+  //   if (newEvent) {
+  //     setEvents((prevEvents) => ({
+  //       ...prevEvents,
+  //       [formattedDate]: newEvent,
+  //     }));
+  //   }
+  // };
 
-  const currentDateEvent =
-    events[selectedDate.format("YYYY-MM-DD")] || "No events for today.";
-
-  const score = {
-    "Problem Solving": 17,
-    "Collaborative Thinking": 17,
-    "Decision Making": 18,
-    "Creative Thinking": 20,
-    "Analytical Depth": 17,
-  };
+  // const currentDateEvent =
+  //   events[selectedDate.format("YYYY-MM-DD")] || "No events for today.";
 
   // Define max values for each category
-  const maxValues = {
-    problemSolving: 9,
-    collaboration: 3,
-    decisionMaking: 7.5,
-    creativity: 4.5,
-    analyticalDepth: 6,
-  };
+  // const maxValues = {
+  //   problemSolving: 9,
+  //   collaboration: 3,
+  //   decisionMaking: 7.5,
+  //   creativity: 4.5,
+  //   analyticalDepth: 6,
+  // };
 
   const [normalizedScores, setNormalizedScores] = useState({
-    problemSolving: 0,
-    decisionMaking: 0,
-    creativity: 0,
-    analyticalDepth: 0,
-    collaboration: 0,
+    "Problem Solving": 0,
+    "Collaborative Thinking": 0,
+    "Decision Making": 0,
+    "Creative Thinking": 0,
+    "Analytical Depth": 0,
   });
 
   useEffect(() => {
-    // Normalize scores when totalScore changes
-    // out of 25 k scale mei percentage
-    const normalized = {
-      problemSolving:
-        (score["Problem Solving"] / 25) * maxValues.problemSolving,
-      collaboration:
-        (score["Collaborative Thinking"] / 25) * maxValues.collaboration,
-      decisionMaking:
-        (score["Decision Making"] / 25) * maxValues.decisionMaking,
-      creativity: (score["Creative Thinking"] / 25) * maxValues.creativity,
-      analyticalDepth:
-        (score["Analytical Depth"] / 25) * maxValues.analyticalDepth,
+    if (!currentUser?.id) {
+      console.error("User ID is not available in AuthContext.");
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // Make API request to fetch expert data
+        const response = await axios.get(
+          "http://localhost:8000/api/expert/dashboard",
+          {
+            params: { id: currentUser.id },
+          }
+        );
+
+        // Extract the expert data from the response
+        const expert = response.data.expert;
+        const panel = response.data.panels;
+        const jobs = response.data.jobs;
+        const upcomingInterview = response.data.responseArray;
+        // console.log("Panel: ",panel);
+        // console.log("Jobs",jobs);
+        console.log("Candidate: ", upcomingInterview);
+        // Ensure the expert data matches the schema structure
+        const expertDataFromAPI = {
+          personalDetails: {
+            name: {
+              firstName: expert.personalDetails?.name?.firstName || "",
+              middleName: expert.personalDetails?.name?.middleName || "",
+              lastName: expert.personalDetails?.name?.lastName || "",
+            },
+            contact: {
+              email: expert.personalDetails?.contact?.email || "",
+            },
+          },
+          fieldOfExpertise: {
+            resume: {
+              filename: expert.fieldOfExpertise?.resume?.filename || "",
+              fileType: expert.fieldOfExpertise?.resume?.fileType || "",
+            },
+            domain: expert.fieldOfExpertise?.domain || "",
+            designation: expert.fieldOfExpertise?.designation || "",
+          },
+          approachRelevancyScore: {
+            problemSolving: expert.approachRelevancyScore?.problemSolving || "",
+            collaboration: expert.approachRelevancyScore?.collaboration || "",
+            decisionMaking: expert.approachRelevancyScore?.decisionMaking || "",
+            creativity: expert.approachRelevancyScore?.creativity || "",
+            analyticalDepth:
+              expert.approachRelevancyScore?.analyticalDepth || "",
+            totalApproachRelevancyScore:
+              expert.approachRelevancyScore?.totalApproachRelevancyScore || "",
+          },
+          __v: expert.__v || "",
+        };
+
+        // Update the expertData state with the fetched data
+        setExpertData(expertDataFromAPI);
+
+        // Normalize the scores assuming the values in the API response are numbers
+        const normalized = {
+          "Problem Solving":
+            expertDataFromAPI.approachRelevancyScore.problemSolving * 2.5,
+          "Collaborative Thinking":
+            expertDataFromAPI.approachRelevancyScore.collaboration * 2.5,
+          "Decision Making":
+            expertDataFromAPI.approachRelevancyScore.decisionMaking * 2.5,
+          "Creative Thinking":
+            expertDataFromAPI.approachRelevancyScore.creativity * 2.5,
+          "Analytical Depth":
+            expertDataFromAPI.approachRelevancyScore.analyticalDepth * 2.5,
+        };
+
+        // Update normalized scores state
+        setNormalizedScores(normalized);
+        setUpcomingInterviews(response.data.responseArray);
+      } catch (err) {
+        console.error("Error fetching data:", err.message || err);
+        // Optional: You can also show an error toast here
+        toast.error("Failed to fetch expert data.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setNormalizedScores(normalized);
-  }, [score]);
-
-  const carouselRef = useRef(null); // Reference for the carousel
-
-  const items = [
-    { title: "Card 1", description: "Description for Card 1" },
-    { title: "Card 2", description: "Description for Card 2" },
-    { title: "Card 3", description: "Description for Card 3" },
-  ];
-
-  const handleNext = () => {
-    carouselRef.current?.next(); // Navigate to the next item
-  };
-
-  const handlePrev = () => {
-    carouselRef.current?.prev(); // Navigate to the previous item
-  };
+    fetchData();
+  }, [currentUser?.id]); // Run this useEffect when currentUser.id changes
 
   return (
     <div className="w-full min-h-screen bg-[#f8f9fa] flex justify-center items-start">
       <div className="w-[85%] max-h-[95%] h-full flex flex-col justify-start items-center">
         {/* Header Section */}
-        <ExpertHeader user={user} />
+        <ExpertHeader user={expertData.personalDetails} />
 
         {/* Main Content Section */}
         <div className="wrapper-box w-full flex-1 gap-2 md:h-[320px]">
@@ -178,10 +267,14 @@ const ExpertDashboard = () => {
                 msOverflowStyle: "none", // For Internet Explorer/Edge
               }}
             >
-              <InterviewPanelCards />
-              <InterviewPanelCards />
-              <InterviewPanelCards />
-              <InterviewPanelCards />
+              {upcomingInterview.map((panelDetails, index) => (
+                <InterviewPanelCards
+                  key={index} // Unique key for each component
+                  panelName={panelDetails.panelName}
+                  departmentName={panelDetails.departmentName}
+                  candidateCount={panelDetails.candidateCount}
+                />
+              ))}
             </main>
           </div>
 
@@ -191,11 +284,11 @@ const ExpertDashboard = () => {
             <h1 className="text-center text-lg font-semibold -mt-2">
               <span className="px-4 py-2 border border-[#eee] rounded-md">
                 <span className="text-[#0E8CCA]">Total Score: </span>
-                {score["Problem Solving"] +
-                  score["Collaborative Thinking"] +
-                  score["Decision Making"] +
-                  score["Creative Thinking"] +
-                  score["Analytical Depth"]}{" "}
+                {normalizedScores["Problem Solving"] +
+                  normalizedScores["Collaborative Thinking"] +
+                  normalizedScores["Decision Making"] +
+                  normalizedScores["Creative Thinking"] +
+                  normalizedScores["Analytical Depth"]}{" "}
                 / {25 * 5}
               </span>
             </h1>
@@ -205,7 +298,7 @@ const ExpertDashboard = () => {
                 Score Breakdown
               </h1>
               <div className="flex flex-col gap-y-3">
-                {Object.entries(score).map(([key, value], index) => (
+                {Object.entries(normalizedScores).map(([key, value], index) => (
                   <span
                     key={index}
                     className="flex items-center justify-between text-base border border-[#eee] p-2 rounded-md"
@@ -227,9 +320,8 @@ const ExpertDashboard = () => {
                   value={selectedDate}
                   onChange={handleDateChange}
                   views={["day"]}
-                  
                   sx={{
-                    border:"1px solid #f1f1f1",
+                    border: "1px solid #f1f1f1",
                     borderRadius: "10px",
                     padding: "none",
                     width: "100%",
@@ -263,7 +355,9 @@ const ExpertDashboard = () => {
                       fontSize: "2rem",
                     }}
                   >
-                    JG
+                    {expertData?.personalDetails?.name?.firstName[0] +
+                      "" +
+                      expertData?.personalDetails?.name?.lastName[0] || ""}
                   </Avatar>
                   <span
                     className="h-[9px] w-[9px] rounded-full absolute -top-[5px] left-12"
@@ -330,14 +424,14 @@ const ExpertDashboard = () => {
 
             <span className="flex flex-col -gap-y-1 items-center">
               <h1 className="text-[#3C3C3C] font-semibold text-xl">
-                Amrik Bhadra
+                {/* {user.name} */}
+                {expertData.personalDetails.name.firstName}{" "}
+                {expertData.personalDetails.name.lastName}
               </h1>
               <h4 className="text-[#3EB2F2] font-medium text-base">
-                @amrik.bhadra@mitaoe.ac.in
+                {user.email}
               </h4>
-              <p className="text-[#333] font-medium text-sm">
-                H.O.D - Dept. of AI & ML
-              </p>
+              <p className="text-[#333] font-medium text-sm">{user.domain}</p>
             </span>
 
             <div className="flex justify-center gap-x-4 mt-2">

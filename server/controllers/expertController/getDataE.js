@@ -10,7 +10,6 @@ const dashboardDetailsForExpert = asyncHandler(async (req, res) => {
     try {
         const { id } = req.query;
 
-        // Validate if id is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({
                 success: false,
@@ -18,37 +17,62 @@ const dashboardDetailsForExpert = asyncHandler(async (req, res) => {
             });
         }
 
-        // Fetch all panels where this expert exists
-        const panels = await Panel.find(
-            { "panelInfo.panelExperts.expertID": id }, // Find panels where this expert exists
-            { candidates: 1, finalSkillScore: 1, finalApproachScore: 1, finalScore: 1, _id: 0 } // Return required fields
-        );
-
-        // Check if panels array is empty
-        if (panels.length === 0) {
+        const expert = await Expert.findById(id);
+        if (!expert) {
             return res.status(404).json({
                 success: false,
-                message: "No panels found for the expert",
+                message: "Expert not found",
             });
         }
 
-        // Extract relevant information for the expert
-        const candidateDetails = panels.flatMap(panel => panel.candidates); // Gather all candidates from panels
-        const scores = panels.map(panel => ({
-            finalSkillScore: panel.finalSkillScore,
-            finalApproachScore: panel.finalApproachScore,
-            finalScore: panel.finalScore,
-        }));
+        const panels = await Panel.find({ "panelInfo.panelExperts.expertID": id });
+        const plainPanels = panels.map(panel => panel.toObject());
 
-        // Send the response with panels, candidate details, and scores
+        // Extract jobIDs from the panels
+        const jobIDs = plainPanels.map(panel => panel.jobID);
+
+        // if (jobIDs.length === 0) {
+        //     return res.status(404).json({
+        //         success: false,
+        //         message: "No valid jobIDs found for the expert",
+        //     });
+        // }
+
+        // Fetch job details for the extracted jobIDs
+        const jobs = await Jobs.find({ _id: { $in: jobIDs } });
+
+        // Group candidates job-wise
+        const jobCandidates = {};
+        plainPanels.forEach(panel => {
+            const jobID = panel.jobID;
+
+            // If this jobID is not already in the result object, initialize it
+            if (!jobCandidates[jobID]) {
+                jobCandidates[jobID] = [];
+            }
+
+            // Add the candidates for this jobID
+            jobCandidates[jobID].push(...panel.candidates);
+        });
+        const responseArray = plainPanels.map(panel => {
+            const job = jobs.find(job => job._id.toString() === panel.jobID);
+
+            return {
+                panelName: panel.panelID, // Panel name
+                departmentName: job ? job.domainDepartment : "Unknown", // Department name
+                candidateCount: panel.candidates.length // Candidate count for the job role
+            };
+        });
+
         res.status(200).json({
             success: true,
+            expert,
             panels,
-            candidateDetails,
-            scores,
+            jobs,
+            jobCandidates,
+            responseArray,
         });
     } catch (error) {
-        // Handle server errors
         res.status(500).json({
             success: false,
             message: "Something went wrong",
@@ -57,5 +81,54 @@ const dashboardDetailsForExpert = asyncHandler(async (req, res) => {
     }
 });
 
+const panelData = asyncHandler(async (req, res) => {
 
-module.exports = dashboardDetailsForExpert;
+    // Controller function to get panel details including experts and candidates
+    exports.getPanelDetails = async (req, res) => {
+        try {
+            // Fetch the panel document using the panelID from the request
+            const panelID = req.query.panelID; // Assuming the panelID is passed as a URL parameter
+
+            const panel = await Panel.findOne({ panelID: panelID }).exec();
+
+            if (!panel) {
+                return res.status(404).json({ message: 'Panel not found' });
+            }
+
+            // Extract panel information
+            const panelData = {
+                panelID: panel.panelID,
+                jobID: panel.jobID,
+                finalScore: panel.finalScore,
+                createdOn: panel.createdOn,
+                lastModified: panel.lastModified,
+                panelExperts: panel.panelInfo.panelExperts.map(expert => ({
+                    expertID: expert.expertID,
+                    expertName: expert.expertName
+                })),
+                candidates: panel.candidates.map(candidate => ({
+                    candidateID: candidate.candidateID,
+                    candidateName: candidate.candidateName,
+                    skillsScore: candidate.skillsScore,
+                    experienceScore: candidate.experienceScore,
+                    qualificationScore: candidate.qualificationScore,
+                    researchScore: candidate.researchScore,
+                    projectScore: candidate.projectScore,
+                    finalSkillScoreOutOf70: candidate.finalSkillScoreOutOf70,
+                    approachRelevancyScoreOutOf30: candidate.approachRelevancyScoreOutOf30,
+                    finalCombinedScoreOutOf100: candidate.finalCombinedScoreOutOf100
+                }))
+            };
+
+            // Send the data to the frontend
+            return res.status(200).json(panelData);
+
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Server error', error: error.message });
+        }
+    };
+})
+
+
+module.exports = { dashboardDetailsForExpert, panelData };

@@ -1,10 +1,61 @@
-import React from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import ai_image from "../../assets/images/ai_in_defence_image.jpg";
 import { IoArrowUndoCircle } from "react-icons/io5";
 import ExpertHeader from "../../components/ExpertDashboardSections/ExpertHeader";
 import PanelCandidateCard from "../../components/ExpertDashboardSections/PanelCandidateCard.jsx";
+import { AuthContext } from "../../context/AuthenticationContext";
 
 const PanelDetails = () => {
+  const { currentUser } = useContext(AuthContext);
+  console.log(currentUser);
+  const [expertData, setExpertData] = useState({
+    name: "",
+    email: "",
+    avatar: "",
+    user_id: "",
+  });
+  console.log("Userdata: ", currentUser.id);
+
+  useEffect(() => {
+    if (!currentUser?.id) {
+      console.error("User ID is not available in AuthContext.");
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/expert/dashboard",
+          {
+            params: { id: currentUser.id },
+          }
+        );
+        console.log("Expert: ", response.data.expert);
+
+        // Destructure and set expert data
+        const expert = response.data.expert;
+        const exp = {
+          name:
+            expert.personalDetails?.name?.firstName +
+            " " +
+            expert.personalDetails?.name?.lastName,
+          email: expert.personalDetails?.contact?.email,
+          avatar:
+            expert.personalDetails?.name?.firstName[0] +
+            expert.personalDetails?.name?.lastName[0],
+          user_id: expert._id,
+        };
+        setExpertData(exp);
+        console.log(exp);
+      } catch (err) {
+        console.error("Error fetching data:", err.message || err);
+        toast.error("Failed to fetch expert data.");
+      }
+    };
+
+    fetchData();
+  }, [currentUser?.id]);
+
   const testPanelists = [
     {
       name: "Sumit Sharma",
@@ -52,7 +103,7 @@ const PanelDetails = () => {
   return (
     <div className="bg-gray-100 min-h-screen pb-5">
       <div className="container mx-auto px-4 max-w-[1260px] flex flex-col gap-y-5">
-        <ExpertHeader/>
+        <ExpertHeader user={expertData.personalDetails} />
         <main className="flex h-screen flex-col md:flex-row p-6 space-y-4 md:space-y-0 md:space-x-6 bg-white rounded-xl drop-shadow-md max-w-[84vw] mx-auto">
           {/* Left Section */}
           <div className="flex-1 relative max-w-[30vw]">
@@ -62,10 +113,8 @@ const PanelDetails = () => {
                 alt="AI in Defence"
                 className="rounded-lg w-full h-auto mb-4 drop-shadow-md"
               />
-              <div
-                className="absolute top-4 left-4 w-8 h-8 cursor-pointer bg-white rounded-full p-2"
-              >
-                <IoArrowUndoCircle onClick={() => window.history.back()}/>
+              <div className="absolute top-4 left-4 w-8 h-8 cursor-pointer bg-white rounded-full p-2">
+                <IoArrowUndoCircle onClick={() => window.history.back()} />
               </div>
             </div>
 

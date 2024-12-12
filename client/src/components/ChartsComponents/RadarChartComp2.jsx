@@ -20,7 +20,7 @@ ChartJS.register(
   Legend
 );
 
-const RadarChartComponent = ({data}) => {
+const RadarChartComponent2 = ({data}) => {
   // Maximum values for each category
   const maxValues = {
     problemSolving: 25,
@@ -32,11 +32,11 @@ const RadarChartComponent = ({data}) => {
 
   // Normalize data (convert to percentage)
   const normalizedData = {
-    problemSolving: (data["Problem Solving"] / maxValues.problemSolving) * 100,
-    collaboration: (data["Collaborative Thinking"] / maxValues.collaboration) * 100,
-    decisionMaking: (data["Decision Making"] / maxValues.decisionMaking) * 100,
-    creativity: (data["Creative Thinking"] / maxValues.creativity) * 100,
-    analyticalDepth: (data["Analytical Depth"] / maxValues.analyticalDepth) * 100,
+    problemSolving: (data["problemSolving"] / maxValues.problemSolving) * 100,
+    collaboration: (data["collaboration"] / maxValues.collaboration) * 100,
+    decisionMaking: (data["decisionMaking"] / maxValues.decisionMaking) * 100,
+    creativity: (data["creativity"] / maxValues.creativity) * 100,
+    analyticalDepth: (data["analyticalDepth"] / maxValues.analyticalDepth) * 100,
   };
 
   // Chart data configuration
@@ -121,4 +121,4 @@ const RadarChartComponent = ({data}) => {
   );
 }
 
-export default RadarChartComponent
+export default RadarChartComponent2;

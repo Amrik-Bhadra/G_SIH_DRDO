@@ -37,11 +37,11 @@ const RacHeadPannels = () => {
       {/* Main Content */}
       <main className="flex px-8 py-4 flex-col w-full gap-y-12 pt-6">
         <RacHeader />
-        <div className="main-content flex justify-between items-center">
-          <h2 className="font-semibold text-[#464646] text-xl">
+        <div className="main-content md:flex justify-between items-center">
+          <h2 className="font-semibold mb-5 md:mb-0 text-[#464646] text-xl">
             Interview Panels
           </h2>
-          <div className="button-grp flex gap-x-3 items-center">
+          <div className="button-grp md:flex md:gap-x-3 items-center">
             {/* Select Department Filter */}
             <FormControl
               sx={{
@@ -53,6 +53,7 @@ const RacHeadPannels = () => {
             >
               <InputLabel id="role-select-label">Select Department</InputLabel>
               <Select
+                className="w-full"
                 labelId="department-select-label"
                 id="department-select"
                 label="Select Department"

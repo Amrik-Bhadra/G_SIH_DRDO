@@ -29,9 +29,9 @@ router.put(
 );
 router.delete(
   "/del/:id",
-  apiLimiter,
-  authenticate,
-  multiRoleAccess(["Expert", "Admin"]),
+  // apiLimiter,
+  // authenticate,
+  // multiRoleAccess(["Expert", "Admin"]),
   delExpert
 );
 

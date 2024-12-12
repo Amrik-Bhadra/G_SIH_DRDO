@@ -54,5 +54,31 @@ const insertManyCandidates = asyncHandler(async (req, res) => {
     });
   }
 });
+const insertOtherManyExperts = asyncHandler(async (req, res) => {
+  try {
+    const { experts } = req.body;
+
+    if (!experts || !Array.isArray(experts) || experts.length === 0) {
+      return res.status(400).json({
+        message: "No experts data provided or the data is not an array",
+        success: false,
+      });
+    }
+
+    const manyOtherExperts = await candidate.insertMany(experts);
+
+    return res.status(200).json({
+      message: "Candidates Created Successfully",
+      success: true,
+      data: manyOtherExperts,
+    });
+  } catch (error) {
+    console.log("Error Inserting Many manyCandidates: ", error);
+    res.status(500).json({
+      message: `Error Inserting Many manyCandidates: ${error.message}`,
+      success: false,
+    });
+  }
+});
 
 module.exports = { insertManyExperts, insertManyCandidates };

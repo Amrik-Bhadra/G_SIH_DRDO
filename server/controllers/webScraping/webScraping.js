@@ -1,8 +1,6 @@
 const { LambdaClient, InvokeCommand } = require("@aws-sdk/client-lambda");
-const axios = require("axios");
 
-const invokeLambde = async (req, res) => {
-  const { url } = req.body;
+const invokeLambda = async function invokeLambda() {
   // Create a Lambda client
   const client = new LambdaClient({
     region: "us-east-1",
@@ -12,54 +10,73 @@ const invokeLambde = async (req, res) => {
     },
   });
 
+  // Define the query
   const query = `
-      Give me the list of all the faculties in the following format ...
-  `;
+        Give me the list of all the faculties in the following format:
 
+        {
+          "personalDetails": {
+            "name": {
+              "firstName": "",
+              "middleName": "",
+              "lastName": ""
+            }
+          },
+          "fieldOfExpertise": {
+            "domain": "",
+            "designation": "",
+            "skills": [],
+            "yearsOfExperience": "",
+            "qualifications": [
+              {
+                "degree": "",
+                "institution": "",
+                "yearOfCompletion": ""
+              }
+            ],
+            "projects": [
+              {
+                "title": "",
+                "description": "",
+                "skillsGained": []
+              }
+            ],
+            "publications": [
+              {
+                "title": "",
+                "link": "",
+                "year": "",
+                "skills": []
+              }
+            ]
+          }
+        }
+
+        Make sure to follow this exact format with the exact key names. If some data is not present, you have to assume it properly. The assumed data should be precise and to the point.
+    `;
+
+  // Prepare the InvokeCommand
   const command = new InvokeCommand({
     FunctionName: "bedrock-scrapper",
     Payload: JSON.stringify({
-      url,
-      query,
+      url: "https://nitdelhi.irins.org/searchc/search",
+      query: query,
     }),
   });
 
   try {
+    // Invoke the Lambda function
     const response = await client.send(command);
+
+    // Parse and pretty-print the response payload
     const responsePayload = Buffer.from(response.Payload).toString();
     const parsedPayload = JSON.parse(responsePayload);
 
     console.log("Lambda response (pretty-printed):");
-    const dt = parsedPayload.body; // Adjust if needed
-    const wholeData = dt;
-    console.log("this is the wholedata: ", parsedPayload);
-    try {
-      const sendDataToExpertsDB = await axios.post(
-        "http://127.0.0.1:8000/api/mlr/e_bulk",
-        { data: wholeData },
-        { withCredentials: true }
-      );
-
-      if (sendDataToExpertsDB.status === 200) {
-        console.log("Data successfully scraped and sent to the database.");
-        return {
-          message: "Successfully scraped and inserted into the database",
-          success: true,
-        };
-      }
-    } catch (err) {
-      console.error("Error posting data to the database:", err);
-      return {
-        message: "Unable to make a scrapping request",
-        success: false,
-      };
-    }
+    console.log(JSON.stringify(parsedPayload, null, 2)); // Pretty-print with 2 spaces indentation
   } catch (error) {
     console.error("Error invoking Lambda:", error);
-    throw new Error("Lambda invocation failed");
   }
 };
 
-module.exports = {
-  invokeLambde,
-};
+module.exports = { invokeLambda };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SideNavbar from "../../components/RacHeadComponents/SideNavbar";
 import RacHeader from "../../components/RacHeadComponents/RacHeader";
 import Paper from "@mui/material/Paper";
@@ -14,6 +14,7 @@ import { BiFilterAlt } from "react-icons/bi";
 import { Avatar, Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
+import axios from "axios";
 
 const columns = [
   { id: "serial", label: "#", minWidth: 20 },
@@ -27,102 +28,9 @@ const columns = [
   { id: "delete", label: "", minWidth: 50 },
 ];
 
-const rows = [
-  {
-    serial: 1,
-    profilePic: "John Doe",
-    fullName: "John Doe",
-    email: "john.doe@example.com",
-    domain: "DRDO",
-    department: "IT",
-    status: "Active",
-  },
-  {
-    serial: 2,
-    profilePic: "Jane Smith",
-    fullName: "Jane Smith",
-    email: "jane.smith@example.com",
-    domain: "Academia",
-    department: "AI",
-    status: "Blocked",
-  },
-  {
-    serial: 3,
-    profilePic: "Alex Brown",
-    fullName: "Alex Brown",
-    email: "alex.brown@example.com",
-    domain: "Industry",
-    department: "Cybersecurity",
-    status: "Active",
-  },
-  {
-    serial: 4,
-    profilePic: "Michael Johnson",
-    fullName: "Michael Johnson",
-    email: "michael.johnson@example.com",
-    domain: "DRDO",
-    department: "Mechanical",
-    status: "Active",
-  },
-  {
-    serial: 5,
-    profilePic: "Emily Davis",
-    fullName: "Emily Davis",
-    email: "emily.davis@example.com",
-    domain: "Academia",
-    department: "Civil",
-    status: "Blocked",
-  },
-  {
-    serial: 6,
-    profilePic: "William Harris",
-    fullName: "William Harris",
-    email: "william.harris@example.com",
-    domain: "Industry",
-    department: "IT",
-    status: "Active",
-  },
-  {
-    serial: 7,
-    profilePic: "Sophia Martinez",
-    fullName: "Sophia Martinez",
-    email: "sophia.martinez@example.com",
-    domain: "DRDO",
-    department: "Chemical",
-    status: "Blocked",
-  },
-  {
-    serial: 8,
-    profilePic: "Oliver Thompson",
-    fullName: "Oliver Thompson",
-    email: "oliver.thompson@example.com",
-    domain: "Industry",
-    department: "Software",
-    status: "Active",
-  },
-  {
-    serial: 9,
-    profilePic: "Isabella Lee",
-    fullName: "Isabella Lee",
-    email: "isabella.lee@example.com",
-    domain: "Academia",
-    department: "E&TC",
-    status: "Blocked",
-  },
-  {
-    serial: 10,
-    profilePic: "James Wilson",
-    fullName: "James Wilson",
-    email: "james.wilson@example.com",
-    domain: "DRDO",
-    department: "Data Science",
-    status: "Active",
-  },
-];
-
 const getRandomColor = () => {
   const colors = [
-    "#0fa3b1",  
+    "#0fa3b1",
     "#9d4edd",
     "#f85e00",
     "#588157",
@@ -134,9 +42,10 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const CandidateListPage = () => {
+const ExpertDetailsPage = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rows, setRows] = useState([]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -146,6 +55,43 @@ const CandidateListPage = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const base_url = import.meta.env.VITE_BASE_URL;
+  const allExperts = async () => {
+    try {
+      const response = await axios.get(`${base_url}/api/candidate/all`, {
+        withCredentials: true,
+      });
+      setRows(response?.data);
+      console.log(response?.data);
+    } catch (error) {
+      console.log("error fetching the all route");
+    }
+  };
+
+  const [delId, setdelId] = useState("");
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this expert?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const response = await axios.delete(`${base_url}/api/expert/del/${id}`, {
+        withCredentials: true,
+      });
+      if (response) {
+        setRows((prevRows) => prevRows.filter((row) => row._id !== id));
+        console.log("Expert deleted successfully");
+      }
+    } catch (error) {
+      console.error("Error deleting the expert", error);
+    }
+  };
+
+  useEffect(() => {
+    allExperts();
+  }, []);
 
   return (
     <section className="h-screen w-screen flex bg-[#f6f6f6]">
@@ -239,40 +185,20 @@ const CandidateListPage = () => {
                               color: "#fff",
                             }}
                           >
-                            {row.profilePic.charAt(0)}
+                            {/* {row?.personalDetails?.name?.fullName?.charAt(0)} */}
                           </Avatar>
                         </TableCell>
-                        <TableCell>{row.fullName}</TableCell>
-                        <TableCell>{row.email}</TableCell>
                         <TableCell>
-                          <span
-                            className={`border px-4 py-2 rounded-md`}
-                            style={{
-                              color:
-                                row.domain === "DRDO"
-                                  ? "#0897FF"
-                                  : row.domain === "Academia"
-                                  ? "#FF5EF9"
-                                  : "#00BD40", // Default: Industry
-                              borderColor:
-                                row.domain === "DRDO"
-                                  ? "#0897FF"
-                                  : row.domain === "Academia"
-                                  ? "#FF5EF9"
-                                  : "#00BD40", // Default: Industry
-                              backgroundColor:
-                                row.domain === "DRDO"
-                                  ? "rgba(8, 151, 255, 0.12)"
-                                  : row.domain === "Academia"
-                                  ? "rgba(255, 94, 249, 0.1)"
-                                  : "rgba(0, 189, 64, 0.12)", // Default: Industry
-                            }}
-                          >
-                            {row.domain}
-                          </span>
+                          {row?.personalDetails?.name?.firstName}{" "}
+                          {row?.personalDetails?.name?.lastName}
+                        </TableCell>
+                        <TableCell>
+                          {row?.personalDetails?.contact?.email}
                         </TableCell>
 
-                        <TableCell>{row.department}</TableCell>
+                        {/* <TableCell>
+                          {row?.fieldOfExpertise?.designation}
+                        </TableCell> */}
                         <TableCell>
                           <span
                             className={`border px-4 py-2 rounded-md`}
@@ -287,12 +213,13 @@ const CandidateListPage = () => {
                                   : "rgba(255, 0, 0, 0.12)", // Default: Industry
                             }}
                           >
-                            {row.status}
+                            {row.status ? "Blocked" : "Active"}
                           </span>
                         </TableCell>
                         <TableCell>
                           <Tooltip title="View Details" arrow>
                             <button
+                              onClick={() => handleDelete(row?._id)}
                               style={{
                                 border: "2px solid #0897FF",
                                 color: "#0897FF",
@@ -333,4 +260,4 @@ const CandidateListPage = () => {
   );
 };
 
-export default CandidateListPage;
+export default ExpertDetailsPage;

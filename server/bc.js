@@ -58,7 +58,7 @@ const contractABI = [
 ];
 
 // const contractAddress = process.env.CONTRACT_ADDRESS;
-const contractAddress = "0x26a86F3ec5343C3aF8Bc343A758F13b38719E18F"; // Replace with your actual contract address
+const contractAddress = "0x26a86F3ec5343C3aF8Bc343A758F13b38719E18F";
 
 // const provider = new ethers.JsonRpcProvider(process.env.ETH_RPC_URL);
 const provider = new ethers.JsonRpcProvider(

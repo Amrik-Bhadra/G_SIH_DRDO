@@ -11,7 +11,10 @@ const {
   deletePanel,
   createPanel,
 } = require("../controllers/panelController/panel_Crud");
+const { getExperts } = require("../controllers/panelController/getExperts");
 const router = express.Router();
+
+// const {getExperts} = require("../controllers/panelController/getExperts")
 
 //  protected..Routes>
 router.post(
@@ -22,7 +25,7 @@ router.post(
   createPanel
 );
 router.get("/all", apiLimiter, authenticate, getAllPanel);
-router.get("/get/:id", apiLimiter, getPanel);
+router.get("/get/:id", getPanel); 
 router.delete(
   "/del/:id",
   apiLimiter,
@@ -40,5 +43,7 @@ router.put(
 
 // fetching the panels using the jobId
 router.get("/job/:jobID", fetchPanelsUsingJobId);
+
+router.get("/getExperts",getExperts);
 
 module.exports = router;

@@ -260,4 +260,4 @@ const ExpertDetailsPage = () => {
   );
 };
 
-export default ExpertDetailsPage;
+export default CandidateListPage;

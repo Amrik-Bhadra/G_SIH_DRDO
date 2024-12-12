@@ -30,9 +30,9 @@ const CandyCard = ({ info }) => {
     >
       <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
         <Avatar
-          src="/static/images/avatar/1.jpg"
+          src={info?.expertName}
           sx={{ "--Avatar-size": "5rem" }}
-        />
+        >{info?.candidateName[0]}</Avatar>
         <Chip
           size="sm"
           variant="soft"
@@ -40,54 +40,61 @@ const CandyCard = ({ info }) => {
           sx={{
             mt: -2.5,
             mb: 1,
-            border: "3px solid",
-            borderColor: "background.surface",
+            backgroundColor:
+            (parseInt(info?.finalSkillScoreOutOf70 % 10) >= 0 && parseInt(info?.finalSkillScoreOutOf70 % 10) <= 4 )
+                ? "#0E8CCA"
+                : (parseInt(info?.finalSkillScoreOutOf70 % 10) >= 5 && parseInt(info?.finalSkillScoreOutOf70 % 10) <= 8 )
+                ? "#00B65E"
+                : "#FF0000",
+            color: "#fff",
             py: 0.5,
             px: 1,
           }}
         >
-          PRO
+          {
+            (parseInt(info?.finalSkillScoreOutOf70 % 10) >= 0 && parseInt(info?.finalSkillScoreOutOf70 % 10) <= 4 ) ? "Cat-1" : (parseInt(info?.finalSkillScoreOutOf70 % 10) >= 5 && parseInt(info?.finalSkillScoreOutOf70 % 10) <= 8 ) ? "Cat-2" : "Cat-3"
+          }
         </Chip>
 
         <Typography level="title-lg" sx={{ color: "#36CFEA" }}>
           {info?.candidateName}
         </Typography>
-        <Typography
+        {/* <Typography
           level="title-md"
           sx={{ color: "#676767", fontWeight: "500" }}
         >
           Head of Department
-        </Typography>
+        </Typography> */}
         <Typography level="body2" sx={{ color: "#ACABAB" }}>
-          10years Experience
+          {parseInt(info?.finalSkillScoreOutOf70 % 10)} years Experience
         </Typography>
         <Box sx={{ display: "flex", gap: "0 2rem", marginTop: "1rem" }}>
-          <Stack spacing={1} sx={{ alignItems: "center" }}>
-            <CircularProgress size="lg" determinate value={65}>
-              <Typography>{parseInt(info?.finalSkillScoreOutOf70)}</Typography>
+          {/* <Stack spacing={1} sx={{ alignItems: "center" }}>
+            <CircularProgress size="lg" determinate value={((info?.finalSkillScoreOutOf70 * 100)/70)}>
+              <Typography level="body-sm">{`${parseInt(info?.finalSkillScoreOutOf70)}/70`}</Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
               Skill
             </Typography>
-          </Stack>
-          <Stack spacing={1}>
-            <CircularProgress size="lg" determinate value={89}>
-              <Typography>
-                {parseInt(info?.approachRelevancyScoreOutOf30)}
+          </Stack> */}
+          {/* <Stack spacing={1}>
+            <CircularProgress size="lg" determinate value={((info?.approachRelevancyScoreOutOf30 * 100)/30)}>
+              <Typography level="body-sm">
+                {`${parseInt(info?.approachRelevancyScoreOutOf30)}/30`}
               </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
               Approach
             </Typography>
-          </Stack>
-          <Stack spacing={1} sx={{ alignItems: "center" }}>
-            <CircularProgress size="lg" determinate value={65}>
-              <Typography>
-                {parseInt(info?.finalCombinedScoreOutOf100)}
+          </Stack> */}
+          <Stack spacing={1} sx={{ alignItems: "center", display:"flex" }}>
+            <CircularProgress size="lg" determinate value={(info?.finalCombinedScoreOutOf100 )}>
+              <Typography level="body-sm">
+                {`${parseInt(info?.finalCombinedScoreOutOf100)}/100`}
               </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
-              Total
+              Skill Relevancy Score
             </Typography>
           </Stack>
         </Box>

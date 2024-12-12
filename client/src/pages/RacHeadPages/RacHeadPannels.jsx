@@ -37,13 +37,13 @@ const RacHeadPannels = () => {
       {/* Main Content */}
       <main className="flex px-8 py-4 flex-col w-full gap-y-12 pt-6">
         <RacHeader />
-        <div className="main-content md:flex justify-between items-center">
-          <h2 className="font-semibold mb-5 md:mb-0 text-[#464646] text-xl">
-            Interview Panels
+        <div className="main-content flex justify-between items-center">
+          <h2 className="font-semibold text-[#464646] text-2xl">
+            Created Jobs
           </h2>
           <div className="button-grp md:flex md:gap-x-3 items-center">
             {/* Select Department Filter */}
-            <FormControl
+            {/* <FormControl
               sx={{
                 background: "#fff",
                 boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
@@ -64,33 +64,8 @@ const RacHeadPannels = () => {
                 <MenuItem value="applicant">Applicant</MenuItem>
                 <MenuItem value="expert">Expert</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
 
-            {/* Select Interview Status Filter */}
-            <FormControl
-              sx={{
-                background: "#fff",
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                borderRadius: "6px",
-                minWidth: "220px", // Adjust as per content
-              }}
-            >
-              <InputLabel id="interview-status-select-label">
-                Select Interview Status
-              </InputLabel>
-              <Select
-                labelId="interview-status-select-label"
-                id="interview-status-select"
-                label="Select Interview Status"
-                sx={{
-                  textAlign: "left",
-                }}
-              >
-                <MenuItem value="applicant">Upcoming</MenuItem>
-                <MenuItem value="expert">Inprogress</MenuItem>
-                <MenuItem value="expert">Completed</MenuItem>
-              </Select>
-            </FormControl>
 
             {/* Button */}
             <Button
@@ -102,9 +77,11 @@ const RacHeadPannels = () => {
                 "&:hover": {
                   backgroundColor: "#333",
                 },
+                textTransform:"capitalize"
               }}
+              onClick={()=>{navigate('/rachead/jobcreationform')}}
             >
-              Create Panel
+              Create Job
             </Button>
           </div>
         </div>

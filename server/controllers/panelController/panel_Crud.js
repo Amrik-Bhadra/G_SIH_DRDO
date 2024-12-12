@@ -36,7 +36,7 @@ const createPanel = asyncHandler(async (req, res) => {
     if (existingPanel) {
       return res
         .status(200)
-        .json({ message: `Panel with ID ${panelID} already Created.` });
+        .json({ message: `Panel with ID ${panelID} already Created. `});
     }
 
     // Create a new panel

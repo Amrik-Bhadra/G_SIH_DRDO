@@ -125,7 +125,7 @@ def calculate_candidate_scores(job, candidates):
 
         skills_score = aggregate_similarity(job_skills, candidate_skills)
         experience_score = calculate_experience_score(candidate_experience, max_experience)
-        qualification_score = 10 if any(q['degree'] in job_qualification for q in candidate_qualification) else 0
+        qualification_score = 10
         research_score = aggregate_similarity(job_skills, candidate_publications)
         project_score = aggregate_similarity(job_skills, candidate_projects)
 
@@ -211,7 +211,7 @@ def calculate_expert_scores(job, selected_experts, maxi):
         # Calculate individual scores
         skills_score = aggregate_similarity(job_skills, expert_skills)
         experience_score = calculate_experience_score(expert_experience, max_experience)
-        qualification_score = 10 if any(q['degree'] in job_qualification for q in expert_qualification) else 0
+        qualification_score = 10 
         research_score = aggregate_similarity(job_skills, expert_publications)
         project_score = aggregate_similarity(job_skills, expert_projects)
 
@@ -235,6 +235,7 @@ def calculate_expert_scores(job, selected_experts, maxi):
         scores.append({
             "expertID": expert['_id'],
             "expertName": f"{expert['personalDetails']['name']['firstName']} {expert['personalDetails']['name']['lastName']}",
+            "domain": expert['personalDetails']['domain'],
             "skillRelevancyScore": {
                 "skills": skills_score,
                 "yearsOfExperience": round(experience_score, 2),
@@ -297,7 +298,7 @@ def create_balanced_panels(scores, num_panels, experts_per_panel, job_id):
             "panelID": f"Panel_{i+1}",
             "jobID": job_id,
             "panelInfo": {
-                "panelExperts": [{"expertID": e['expertID'], "expertName": e['expertName']} for e in panel],
+                "panelExperts": [{"expertID": e['expertID'], "expertName": e['expertName'], "domain": e['domain']} for e in panel],
             },
             "totalSkillRelevancyScore": avg_skill_score,
             "totalApproachRelevancyScore": avg_approach_score,
@@ -390,9 +391,10 @@ def assign_candidates_to_panels(panels, candidates, max_candidates_per_panel):
             nearest_panel['candidates'].append({
                 'candidateID': candidate.get('_id', ''),
                 'candidateName': candidate_name,
+                'candidate_experience': candidate.get('yearsOfExperience', 0),
                 'skillsScore': candidate.get('skillRelevancyScore', {}).get('skills', 0),
                 'experienceScore': candidate.get('skillRelevancyScore', {}).get('yearsOfExperience', 0),
-                'qualificationScore': candidate.get('skillRelevancyScore', {}).get('qualification', 0),
+                'qualificationScore': candidate.get('skillRelevancyScore', {}).get('qualification', 10),
                 'researchScore': candidate.get('skillRelevancyScore', {}).get('researchPapers', 0),
                 'projectScore': candidate.get('skillRelevancyScore', {}).get('projects', 0),
                 'finalSkillScoreOutOf70': candidate.get('skillRelevancyScore', {}).get('totalSkillRelevancyScore', 0),
@@ -402,13 +404,10 @@ def assign_candidates_to_panels(panels, candidates, max_candidates_per_panel):
 
     return panels
 
-    def select_candidates_by_job_id(job_id, candidates):
-        # Filter candidates where the jobID matches
-        selected_candidates = [candidate for candidate in candidates if candidate.get("jobId") == job_id]
-        return selected_candidates
-    if not selected_candidates: 
-        print(f"No candidates found matching the job ID: {job_id}") 
-        return
+def select_candidates_by_job_id(job_id, candidates):
+    # Filter candidates where the jobID matches
+    selected_candidates = [candidate for candidate in candidates if candidate.get("jobId") == job_id]
+    return selected_candidates
 
 
 def update_candidates_in_panels(api_url, panels):

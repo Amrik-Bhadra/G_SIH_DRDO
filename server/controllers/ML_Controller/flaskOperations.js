@@ -2,7 +2,7 @@ const express = require("express");
 const { exec } = require("child_process");
 const asyncHandler = require("express-async-handler");
 
-const route = "C:\\Users\\varun\\Desktop\\SIH@2024\\G_SIH_DRDO\\flask";
+const route = "C:\\Users\\amkbh\\Music\\G_SIH_DRDO\\flask";
 const flaskOperations = asyncHandler(async (req, res) => {
   console.log(typeof req.body.finalSkillScore);
   console.log(`python ${route}\\candidateScore.py`);

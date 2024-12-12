@@ -62,7 +62,7 @@ const RacHeadDashboard = () => {
           <Grid container spacing={2} >
             <Grid size={5}>
               {/* Number cards */}
-              <Grid container rowSpacing={2} columnSpacing={2} sx={{border:"2px solid red"}}>
+              <Grid container rowSpacing={2} columnSpacing={2}>
                 <DashboardNumberCards
                   numberCardsStyle={numberCardsStyle}
                   title="Total Experts"
@@ -137,51 +137,16 @@ const RacHeadDashboard = () => {
                 <h1 className="font-semibold text-xl text-[#333]">
                   Upcoming Interviews
                 </h1>
-                <FormControl
-                  sx={{
-                    m: 1,
-                    minWidth: 160,
-                    background: "rgba(227, 227, 227, 0.25)",
-                  }}
-                  size="small"
-                >
-                  <InputLabel
-                    id="demo-select-small-label"
-                    sx={{ color: "#646464" }}
-                  >
-                    Select Month
-                  </InputLabel>
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    label="Select Month"
-                    sx={{
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": { border: "none" },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#646464",
-                        },
-                      },
-                      color: "#646464",
-                    }}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
+                
               </div>
-              <div className="md:h-[80%] h-[70%] w-full p-2">
-                <Slider {...settings}>
+              <div className="md:h-[80%] h-[70%] w-full p-2 flex gap-x-3 overflow-x-auto">
+                
+                  <InterviewCardComponent/>
                   <InterviewCardComponent />
                   <InterviewCardComponent />
                   <InterviewCardComponent />
                   <InterviewCardComponent />
-                  <InterviewCardComponent />
-                </Slider>
+                
               </div>
             </Grid>
           </Grid>

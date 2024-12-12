@@ -24,7 +24,7 @@ export const AuthContextProvider = ({ children }) => {
       }
     };
 
-    fetchUser();
+    fetchUser()
   }, [base_url]);
 
   if (loading) {

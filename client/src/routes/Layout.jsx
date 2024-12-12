@@ -11,6 +11,7 @@ export const RequiredAuth = () => {
         Loading...
       </div>
     );
+    
   }
   console.log(currentUser.role);
 

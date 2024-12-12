@@ -39,11 +39,11 @@ const RacHeadPannels = () => {
         <RacHeader />
         <div className="main-content flex justify-between items-center">
           <h2 className="font-semibold text-[#464646] text-2xl">
-            Interview Panels
+            Created Jobs
           </h2>
           <div className="button-grp flex gap-x-3 items-center">
             {/* Select Department Filter */}
-            <FormControl
+            {/* <FormControl
               sx={{
                 background: "#fff",
                 boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
@@ -63,7 +63,7 @@ const RacHeadPannels = () => {
                 <MenuItem value="applicant">Applicant</MenuItem>
                 <MenuItem value="expert">Expert</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
 
 
             {/* Button */}
@@ -78,6 +78,7 @@ const RacHeadPannels = () => {
                 },
                 textTransform:"capitalize"
               }}
+              onClick={()=>{navigate('/rachead/jobcreationform')}}
             >
               Create Job
             </Button>

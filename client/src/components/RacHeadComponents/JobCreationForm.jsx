@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import Button from "@mui/material/Button";
 import Grid from '@mui/material/Grid';
-import TextField from "@mui/material/TextField";
+import '../../styles/RacHeadStyle.css';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import pdf from 'pdf-parse';
+import { useSpeechToText } from "../../hooks/UseSpeechToText";
+import { TextField, IconButton, InputAdornment } from '@mui/material';
+import { FaMicrophone } from "react-icons/fa6";
+import { FaMicrophoneSlash } from "react-icons/fa";
+import { color } from '@mui/system';
 
 const JobCreationForm = () => {
     const [isManual, setIsManual] = useState(true);
@@ -19,6 +22,7 @@ const JobCreationForm = () => {
     const [inputValue, setInputValue] = useState("");
     const [selectedDepartment, setSelectedDepartment] = useState("");
     const [fileNames, setFileNames] = useState([]);
+    const description = useSpeechToText("");
 
     const handleChange = (event) => {
         setSelectedDepartment(event.target.value);
@@ -42,27 +46,15 @@ const JobCreationForm = () => {
         setFileNames(fileArray); // Update the state with file names
     };
 
-    const handleUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        try {
-            const arrayBuffer = await file.arrayBuffer(); // Read file as an array buffer
-
-            // Use pdf-parse to extract text from the PDF
-            const data = await pdf(arrayBuffer);
-            console.log("Extracted Text:", data.text);
-
-            setFormData({ extractedText: data.text }); // Store extracted text in formData
-            setIsManual(false); // Switch to auto-filled mode
-        } catch (error) {
-            console.error("Error processing PDF file:", error);
-        }
+    const handleFileUploadpdf = (event) => {
+        const files1 = event.target.files;
+        const fileArray1 = Array.from(files1).map((file1) => file1.name); // Get file names
+        setFileNames(fileArray1); // Update the state with file names
     };
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter" && inputValue.trim()) {
-            e.preventDefault(); 
+            e.preventDefault();
             setTags((prev) => [...prev, inputValue.trim()]);
             setInputValue("");
         }
@@ -73,52 +65,45 @@ const JobCreationForm = () => {
     };
 
     return (
-        <main className="h-[100vh] w-[100vw] bg-[#eee] flex justify-center items-center">
-            <div className="form-div bg-white w-[80%] h-fit py-8 rounded-lg shadow-sm flex flex-col justify-center items-center gap-y-8 text-center p-4">
-                <h1 className='font-semibold text-xl'>Create Job Application</h1>
-                <div className='flex flex-row justify-between w-1/3'>
-                    
-                    <Button
-                        component="label"
-                        variant="contained"
-                        sx={{
-                            backgroundColor: "#0e8cca",
-                            padding: "0.8em 1rem",
-                            fontWeight: 600,
-                            textTransform: "capitalize",
-                            letterSpacing: "2px",
-                            boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px;",
-                        }}
-                    >
-                        Upload PDF
-                        <input
-                            type="file"
-                            accept="application/pdf"
-                            hidden
-                            onChange={handleUpload}
-                        />
-                    </Button>
+        <main className="h-[100vh] w-[100vw] bg-[#eee] flex justify-center items-center overflow-hidden">
+            <div className="form-div bg-white w-[80%] h-fit py-8 rounded-lg shadow-sm flex flex-col justify-center items-center gap-y-8 text-center p-4 mb-6 mt-6">
+                <h1 className='font-semibold text-3xl text-cyan-500'>Create Job Application</h1>
+                <div className='flex  w-full h-18 bg-white border border-2 rounded-lg items-center'>
+                    <h1 className='p-4 text-slate-800'>Create Job automatically by uploading pdf</h1>
+                    <div className='flex w-40 h-12 ml-auto overflow-hidden'>
 
-                    <Button
-                        type='submit'
-                        variant="contained"
-                        sx={{
-                            backgroundColor: "#0e8cca",
-                            padding: "0.8em 1rem",
-                            fontWeight: 600,
-                            textTransform: "capitalize",
-                            letterSpacing: "2px",
-                            boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px;",
-                        }}
-                    >
-                        Create Job
-                    </Button>
+                        <Button
+                            component="label"
+                            variant="contained"
+                            sx={{
+                                backgroundColor: "#0e8cca",
+                                padding: "0.8em 1rem",
+                                fontWeight: 600,
+                                textTransform: "capitalize",
+                                letterSpacing: "2px",
+                                boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px;",
+                            }}
+                        >
+                            Upload PDF
+                            <input
+                                type="file"
+                                accept="application/pdf"
+                                hidden
+                                onChange={handleFileUploadpdf}
+                            />
+                        </Button>
+                        {fileNames.length > 0 && (
+                            <div>{fileNames.join(", ")}</div>
+                        )}
+                    </div>
+
+
                 </div>
 
                 <div className="w-full px-4 mt-6">
                     {isManual ? (
                         <form className="flex flex-col gap-y-4 w-full">
-                            <Grid container spacing={2} xs={12}>
+                            <Grid container spacing={2}>
                                 <Grid item xs={4}>
                                     <TextField
                                         id="JobTitle"
@@ -149,8 +134,7 @@ const JobCreationForm = () => {
                                                 borderRadius: "4px",
                                                 border: "1px solid #ccc",
                                                 width: "100%",
-                                                maxWidth: "400px",
-                                                color: "gray"
+                                                color: "gray",
                                             }}
                                         >
                                             <option value="" disabled>
@@ -170,16 +154,36 @@ const JobCreationForm = () => {
                                 </Grid>
                             </Grid>
 
-                            <Grid container spacing={2} >
+                            <Grid container spacing={2}>
                                 <Grid item xs={6}>
                                     <TextField
                                         id="JobDescription"
                                         label="Job Description"
                                         type="description"
                                         autoComplete="description"
+                                        value={description.value}
                                         fullWidth
                                         multiline
                                         rows={4}
+                                        onChange={(e) => {description.setValue(e.target.value)
+                                            setInputValue(e.target.value)
+                                            }}                                
+                                        InputProps={{
+                                            endAdornment: (
+                                                <>{true && <InputAdornment position="end">
+                                                    <IconButton sx={{ fontSize: "1.2rem" }} onClick={description.toggleListening}>
+                                                        {description.isListening ? (
+                                                            <FaMicrophoneSlash style={{
+                                                                color: "red"
+                                                            }} />
+                                                        ) : (
+                                                            <FaMicrophone />
+                                                        )}
+                                                    </IconButton>
+                                                </InputAdornment>}</>
+                                            ),
+                                        }}
+
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
@@ -204,12 +208,10 @@ const JobCreationForm = () => {
                                             ))}
                                         </Box>
 
-                                        <Box >
+                                        <Box mt={2}>
                                             <Button
                                                 component="label"
-                                                role={undefined}
                                                 variant="contained"
-                                                tabIndex={-1}
                                                 startIcon={<CloudUploadIcon />}
                                             >
                                                 Upload files
@@ -219,74 +221,70 @@ const JobCreationForm = () => {
                                                 />
                                             </Button>
                                             {fileNames.length > 0 && (
-                                                <div>
-                                                    {fileNames.join(", ")}
-                                                </div>
+                                                <div>{fileNames.join(", ")}</div>
                                             )}
                                         </Box>
                                     </Box>
                                 </Grid>
-
                             </Grid>
 
-                            <Grid container mt={1} spacing={2} ml={0.5}>
-
-                                <Grid xs={6}>
+                            <Grid container spacing={2} mt={1}>
+                                <Grid item xs={4}>
                                     <TextField
                                         id="MinQualification"
                                         label="Minimum Qualification"
                                         type="qualification"
                                         autoComplete="qualification"
                                         fullWidth
-
                                     />
                                 </Grid>
-
-                                <Grid xs={3}>
+                                <Grid item xs={3}>
                                     <TextField
                                         id="Experience"
                                         label="Experience (yrs)"
                                         type="number"
+                                        fullWidth
                                     />
                                 </Grid>
-
-                                <Grid xs={3}>
-                                    <TextField
-                                        id="noOfPanels"
-                                        label="Number of Panels"
-                                        type="number"
-                                    />
+                                <Grid xs={3} sx={{ marginLeft: "18px", marginTop: "12px" }}>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DatePicker
+                                            label="Application Deadline"
+                                            value={formData.applicationDeadline}
+                                            onChange={(newValue) =>
+                                                setFormData({ ...formData, applicationDeadline: newValue })
+                                            }
+                                            renderInput={(params) => <TextField {...params} fullWidth />}
+                                        />
+                                    </LocalizationProvider>
                                 </Grid>
 
                             </Grid>
-                            <Grid container spacing={2} mt={1}>
-                                <Grid xs={3}>
-                                    <TextField
-                                        id="noOfExperts"
-                                        label="Number of Experts"
-                                        type="number"
-                                    />
-                                </Grid>
-                                <Grid xs={3}>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DemoContainer>
-                                            <DatePicker
-                                                label="Application Deadline"
-                                                value={formData.applicationDeadline}
-                                                onChange={(newValue) =>
-                                                    setFormData({ ...formData, applicationDeadline: newValue })
-                                                }
-                                                renderInput={(params) => <TextField {...params} fullWidth />}
-                                            />
-                                        </DemoContainer>
-                                    </LocalizationProvider>
+
+                            <Grid container spacing={2} mt={1} >
+
+
+                                <Grid xs={4} sx={{ marginRight: "0", marginLeft: "auto" }}>
+                                    <Button
+                                        type='submit'
+                                        variant="contained"
+                                        sx={{
+                                            backgroundColor: "#0e8cca",
+                                            padding: "0.8em 1rem",
+                                            fontWeight: 600,
+                                            textTransform: "capitalize",
+                                            letterSpacing: "2px",
+                                            boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px;",
+                                        }}
+                                    >
+                                        Create Job
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </form>
                     ) : (
                         <Box>
                             <h3>Extracted Details:</h3>
-                            <p>{formData.extractedText}</p>
                         </Box>
                     )}
                 </div>

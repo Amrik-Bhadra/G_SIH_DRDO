@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { IoIosInformationCircleOutline } from "react-icons/io";
 
-function CandidateEvaluationSection({ sectionTitle, evaluationCriteria }) {
+function CandidateEvaluationSection({ sectionTitle, evaluationCriteria = [] }) {
+    // Ensure evaluationCriteria is an array, and set default scores
     const [scores, setScores] = useState(
         evaluationCriteria.reduce((acc, criterion) => {
             acc[criterion.key] = "";
             return acc;
         }, { total: "" })
     );
+    const [suggestions, setSuggestions] = useState("");
 
     const handleChange = (key) => (event) => {
         const inputValue = event.target.value;
@@ -26,6 +28,10 @@ function CandidateEvaluationSection({ sectionTitle, evaluationCriteria }) {
                 return updatedScores;
             });
         }
+    };
+
+    const handleSuggestionsChange = (event) => {
+        setSuggestions(event.target.value);
     };
 
     return (
@@ -65,16 +71,15 @@ function CandidateEvaluationSection({ sectionTitle, evaluationCriteria }) {
                 </div>
                 <div className="col-span-1 flex flex-col">
                     <div className="text-gray-700 pb-2">Suggestions</div>
-                    <div>
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Enter Suggestions"
-                            multiline
-                            rows={6}
-                            sx={{ width: 250 }}
-                        />
-                    </div>
-
+                    <TextField
+                        id="outlined-suggestions-input"
+                        label="Enter Suggestions"
+                        multiline
+                        rows={6}
+                        value={suggestions}
+                        onChange={handleSuggestionsChange}
+                        sx={{ width: 250 }}
+                    />
                     <div className="flex absolute bottom-7 right-34 items-center gap-x-1">
                         <div className="bg-gradient-to-r from-sky-600 to-cyan-400 text-transparent bg-clip-text text-xl font-bold">
                             Total

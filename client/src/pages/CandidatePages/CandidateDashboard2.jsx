@@ -261,9 +261,8 @@ const CandidateDashboard2 = () => {
                   msOverflowStyle: "none", // For Internet Explorer/Edge
                 }}
               >
-                <CandidateApplicationCard />
-                <CandidateApplicationCard />
-                <CandidateApplicationCard />
+                <CandidateApplicationCard title={'Scientist B'} desc={'Entry-level scientist, research-focused, engineering solutions for defense.'} status={'In Progress'} />
+                <CandidateApplicationCard title={'Scientist D'} desc={'Mid-level scientist, project management, innovation, technical expertise, leadership.'} status={'Interview Scheduled'}/>
               </main>
             </div>
 

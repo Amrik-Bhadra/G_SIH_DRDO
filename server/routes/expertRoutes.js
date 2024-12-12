@@ -8,6 +8,7 @@ const {
   updateExperts,
   delExpert,
   findExpertByEmail,
+  uniqueJobDomain,
 } = require("../controllers/expertController/expert_Crud");
 const authenticate = require("../middleware/authenticate");
 const {
@@ -22,7 +23,7 @@ const multiRoleAccess = require("../middleware/roleBasedAccess");
 router.get("/all", apiLimiter, allExperts); // here i have removed the authenticate middlware
 router.get("/get/:id", apiLimiter, findExpert);
 router.get("/get/email/:id", apiLimiter, findExpertByEmail);
-
+router.get("/uniqueDomain", uniqueJobDomain);
 router.get("/dashboard",apiLimiter,expertDetails);
 
 router.put(

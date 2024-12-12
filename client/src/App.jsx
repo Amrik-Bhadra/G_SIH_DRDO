@@ -45,6 +45,7 @@ import PanelsPage from "./components/RacHeadComponents/RacHeadPannels";
 import ExternalPanelsList from "./components/RacHeadComponents/ExternalPanelsList";
 
 import { useSetDefaultLang } from "./hooks/UseSpeechToText";
+import JobCreationForm from "./components/RacHeadComponents/JobCreationForm";
 
 // Create a Context for managing the sidebar state
 export const SidebarContext = createContext();
@@ -93,6 +94,7 @@ const App = () => {
     { path: "/rachead/candidateData", element: <CandidateListPage /> },
     { path: "/performanceReport", element: <PerformanceReport/>},
     { path: "/expert/dashboard/", element: <ExpertDashboard /> },
+    {path:"/rachead/jobcreationform",element:<JobCreationForm/>},
     
     
 

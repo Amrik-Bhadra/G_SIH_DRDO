@@ -7,22 +7,21 @@ import { FaRegBuilding } from "react-icons/fa";
 import { FaRegClock } from "react-icons/fa6";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
-const CandidateApplicationCard = () => {
+const CandidateApplicationCard = ({title, desc, status}) => {
   return (
     <div className="w-[37vh] bg-[#F6F8FB] rounded-lg shrink-0 p-4 flex flex-col gap-y-4" style={{boxShadow: "rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px"}}>
       {/* Card Content */}
       <div className="flex items-center justify-between gap-x-4">
-        <h1 className="font-semibold text-2 xl text-[#3C3C3C]">Scientist A</h1>
+        <h1 className="font-semibold text-2 xl text-[#3C3C3C]">{title}</h1>
         <Chip
-          label="Selected"
+          label={`${status}`}
           sx={{ backgroundColor: "#00B65E", color: "#fff" }}
         />
       </div>
 
       <div className="flex flex-col gap-y-3">
         <p className="interview-desc text-sm text-[#464646] font-normal mt-1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam fugiat,
-          dicta
+          {desc}
         </p>
 
         <div className="flex gap-x-2 gap-y-2 flex-wrap mt-1">

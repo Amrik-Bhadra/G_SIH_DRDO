@@ -3,7 +3,6 @@ import Avatar from "react-avatar";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { RiNotification2Line } from "react-icons/ri";
 import { Badge } from "@mui/material";
-import FontSizeAdjuster from "../../utils/FontSizeAdjuster";
 
 const RacHeader = () => {
   const currentDate = new Date();
@@ -57,7 +56,7 @@ const RacHeader = () => {
           <IoMdArrowDropdown size={"1.4rem"} color="#0E8CCA" />
         </div>
 
-        <FontSizeAdjuster/>
+        {/* <FontSizeAdjuster/> */}
       </span>
     </header>
   );

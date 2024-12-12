@@ -3,6 +3,7 @@ const Expert = require("../../model/expert");
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const eExpert = require("../../model/externalExperts");
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/expert/all
@@ -160,7 +161,25 @@ const delExpert = asyncHandler(async (req, res) => {
   }
 });
 
+const uniqueJobDomain = asyncHandler(async (req, res) => {
+  try {
+    const uniqueDomains = await eExpert.distinct("fieldOfExpertise.domain");
+    res.status(200).json({
+      message: "Unique job domains retrieved successfully",
+      success: true,
+      data: uniqueDomains,
+    });
+  } catch (error) {
+    console.error("Error retrieving unique domains:", error);
+    res.status(500).json({
+      message: "Error retrieving unique domains",
+      success: false,
+    });
+  }
+});
+
 module.exports = {
+  uniqueJobDomain,
   allExperts,
   findExpert,
   updateExperts,

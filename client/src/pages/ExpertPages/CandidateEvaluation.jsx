@@ -44,7 +44,7 @@ const CandidateEvaluation = () => {
     "Technical Knowledge": {
       fundamentalKnowledge: {
         question: "Explain the basics of the subject related to this domain.",
-        score: 0,
+        score: '',
       },
       applicationKnowledge: {
         question:
@@ -61,6 +61,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
+      suggestions:""
     },
     "Problem Solving": {
       problemSolvingApproach: {
@@ -78,6 +79,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
+      suggestions:""
     },
     "Research And Project Experience": {
       qualityOfResearchWork: {
@@ -95,6 +97,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
+      suggestions:""
     },
     "Communication Skills": {
       qualityOfSpeaking: {
@@ -112,12 +115,14 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
+      suggestions:""
     },
     "Leadership And Teamwork Abilities": {
       collaborativeWork: {
         question:
           "Provide an example of your contributions to a collaborative project.",
         score: 0,
+        
       },
       leadershipPotential: {
         question: "Describe a time when you demonstrated leadership qualities.",
@@ -129,6 +134,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
+      suggestions:""
     },
     "General Aptitude": {
       willingnessToLearn: {
@@ -146,12 +152,13 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
+      suggestions:""
     },
   });
 
   return (
-    <div className="container mx-auto items-center bg-gray-100 min-w-full min-h-screen">
-      <div className="container mx-auto bg-gray-100 flex flex-row gap-x-8 p-10 ">
+    <div className="flex justify-center bg-gray-100 w-full min-h-screen">
+      <div className="bg-gray-100 flex flex-row gap-x-8 p-10 h-fit">
         {userData.map((user, index) => (
           <div
             key={index}
@@ -244,7 +251,7 @@ const CandidateEvaluation = () => {
             </div>
           </div>
         ))}
-        <div className="flex flex-col gap-y-10">
+        <div className="flex flex-col gap-y-6">
           {Object.entries(interviewScores).map(
             ([sectionTitle, sectionData], index) => (
               <CandidateEvaluationSection

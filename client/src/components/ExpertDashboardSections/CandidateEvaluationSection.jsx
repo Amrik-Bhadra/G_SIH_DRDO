@@ -2,37 +2,31 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { IoIosInformationCircleOutline } from "react-icons/io";
 
-function CandidateEvaluationSection({ sectionTitle, evaluationCriteria = [] }) {
-    // Ensure evaluationCriteria is an array, and set default scores
-    const [scores, setScores] = useState(
-        evaluationCriteria.reduce((acc, criterion) => {
-            acc[criterion.key] = "";
-            return acc;
-        }, { total: "" })
-    );
-    const [suggestions, setSuggestions] = useState("");
+function CandidateEvaluationSection({ sectionTitle, evaluationCriteria }) {
+    // Initialize scores and suggestions state
+    const [scores, setScores] = useState({});
+    const [suggestions, setSuggestions] = useState(evaluationCriteria.suggestions || "");
 
-    const handleChange = (key) => (event) => {
-        const inputValue = event.target.value;
-        if (inputValue === "" || (inputValue >= 0 && inputValue <= 10)) {
-            setScores((prevScores) => {
-                const updatedScores = {
-                    ...prevScores,
-                    [key]: inputValue,
-                };
-                const totalScore = evaluationCriteria.reduce(
-                    (sum, criterion) => sum + (parseFloat(updatedScores[criterion.key]) || 0),
-                    0
-                );
-                updatedScores.total = totalScore.toString();
-                return updatedScores;
-            });
-        }
+    // Handle score change
+    const handleChange = (key) => (e) => {
+        setScores({
+            ...scores,
+            [key]: e.target.value,
+        });
     };
 
-    const handleSuggestionsChange = (event) => {
-        setSuggestions(event.target.value);
+    // Handle suggestions change
+    const handleSuggestionsChange = (e) => {
+        setSuggestions(e.target.value);
     };
+
+    // Map through the evaluationCriteria object
+    const criteriaArray = Object.entries(evaluationCriteria)
+        .filter(([key]) => key !== "totalScore" && key !== "suggestions")  // Exclude totalScore and suggestions
+        .map(([key, value]) => ({
+            key,
+            label: value.question,  // Use the question as the label
+        }));
 
     return (
         <div
@@ -50,14 +44,14 @@ function CandidateEvaluationSection({ sectionTitle, evaluationCriteria = [] }) {
 
             <div className="grid grid-cols-[auto_2fr_1fr] gap-4">
                 <div className="flex flex-col gap-y-8 ml-5 col-span-2">
-                    {evaluationCriteria.map((criterion) => (
+                    {criteriaArray.map((criterion) => (
                         <div key={criterion.key} className="flex flex-col gap-y-5">
                             <div className="text-gray-700">{criterion.label}</div>
                             <TextField
                                 id={`outlined-score-input-${criterion.key}`}
                                 label="Score(0-10)"
                                 type="number"
-                                value={scores[criterion.key]}
+                                value={scores[criterion.key] || 0}  // Handle default value
                                 onChange={handleChange(criterion.key)}
                                 sx={{ width: "150px", marginLeft: "20px" }}
                                 variant="outlined"
@@ -89,8 +83,8 @@ function CandidateEvaluationSection({ sectionTitle, evaluationCriteria = [] }) {
                                 id="outlined-score-input-total"
                                 label=""
                                 type="number"
-                                value={scores.total}
-                                onChange={handleChange("total")}
+                                value={Object.values(scores).reduce((acc, score) => acc + score, 0)}  // Calculate total score
+                                onChange={() => {}}
                                 sx={{ width: "100px", marginRight: "10px" }}
                                 variant="outlined"
                                 inputProps={{
@@ -98,7 +92,7 @@ function CandidateEvaluationSection({ sectionTitle, evaluationCriteria = [] }) {
                                 }}
                             />
                         </div>
-                        <div className="text-gray-500">max score: {evaluationCriteria.length * 10}</div>
+                        <div className="text-gray-500">max score: {criteriaArray.length * 10}</div>
                     </div>
                 </div>
             </div>

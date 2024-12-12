@@ -50,7 +50,7 @@ const createPanel = asyncHandler(async (req, res) => {
       panelID,
       jobID,
       panelInfo: {
-        panelExperts: panelInfo.panelExperts,
+        panelExperts: panelInfo.panelExperts, 
       },
       finalSkillScore: finalSkillScore,
       finalApproachScore: finalApproachScore,

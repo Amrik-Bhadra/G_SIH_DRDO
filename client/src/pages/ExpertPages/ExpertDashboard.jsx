@@ -15,6 +15,7 @@ import axios from "axios";
 import Avatar from "@mui/joy/Avatar";
 import InterviewPanelCards from "../../components/ExpertDashboardSections/InterviewPanelCards";
 import { toast, Toaster } from "react-hot-toast";
+import ExpertCalender from "../../components/ExpertDashboardSections/ExpertCalender";
 // import Calendar from "../../components/CommonComponents/Calender";
 
 const ExpertDashboard = () => {
@@ -207,7 +208,7 @@ const ExpertDashboard = () => {
 
   return (
     <div className="w-full min-h-screen bg-[#f8f9fa] flex justify-center items-start">
-      <div className="w-[85%] max-h-[95%] h-full flex flex-col justify-start items-center">
+      <div className="w-[85%] min-h-[95%] h-full flex flex-col justify-start items-center">
         {/* Header Section */}
         <ExpertHeader user={expertData.personalDetails} />
 
@@ -313,38 +314,10 @@ const ExpertDashboard = () => {
           </div>
 
           {/* calender */}
-          <div className="box d">
-            {/* Calendar Section */}
-            <div className="rounded-md">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateCalendar
-                  value={selectedDate}
-                  onChange={handleDateChange}
-                  views={["day"]}
-                  sx={{
-                    border: "1px solid #f1f1f1",
-                    borderRadius: "10px",
-                    padding: "none",
-                    width: "100%",
-                    ".MuiDayCalendar-weekContainer": {
-                      display: "flex", // Ensure the container uses flex layout
-                      // justifyContent: "space-around", // Align weekday labels evenly
-                    },
-                    ".MuiDayCalendar-weekDayLabel": {
-                      color: "#0E8CCA", // Custom color for weekday labels
-                      fontSize: "1rem", // Adjust font size as needed
-                    },
-                    ".MuiDayCalendar-day": {
-                      fontSize: "1rem", // Adjust font size of the days
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </div>
-          </div>
+          <ExpertCalender></ExpertCalender>
 
           {/* expert profile details */}
-          <div className="box c p-3 flex flex-col justify-center items-center gap-y-3">
+          <div className="box c p-3 flex flex-col justify-center items-center gap-y-3 h-fit">
             {/* profile pic */}
             <div className="border-2 border-[#F7F7F7] rounded-[1000px] p-[9px]">
               <div className="border-2 border-[#F3F3F3] rounded-[1000px] p-[8px]">

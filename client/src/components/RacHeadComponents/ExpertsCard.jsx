@@ -77,9 +77,9 @@ const ExpertsCard = ({ info, index }) => {
             mb: 1,
             border: "3px solid",
             backgroundColor:
-              index === 0
+              info?.domain === 'DRDO'
                 ? "#0E8CCA"
-                : randomDomain === "Industry"
+                : info?.domain === "NIT Delhi"
                 ? "#00B65E"
                 : "#FF0000",
             color: "#fff",
@@ -87,23 +87,23 @@ const ExpertsCard = ({ info, index }) => {
             px: 1,
           }}
         >
-          {index === 0 ? "DRDO" : randomDomain}
+          {info?.domain}
         </Chip>
 
         <Typography level="title-lg" sx={{ color: "#36CFEA" }}>
           {info?.expertName}
         </Typography>
-        <Typography
+        {/* <Typography
           level="title-md"
           sx={{ color: "#676767", fontWeight: "500" }}
         >
           {index === 0 ? "DRDO" : randomDomain}
-        </Typography>
+        </Typography> */}
         <Typography level="body2" sx={{ color: "#ACABAB" }}>
           {otherInfo?.fieldOfExpertise?.yearsOfExperience} Years of Experience
         </Typography>
         <Box sx={{ display: "flex", gap: "0 2rem", marginTop: "1rem" }}>
-          <Stack spacing={1} sx={{ alignItems: "center" }}>
+          {/* <Stack spacing={1} sx={{ alignItems: "center" }}>
             <CircularProgress
               size="lg"
               determinate
@@ -143,8 +143,8 @@ const ExpertsCard = ({ info, index }) => {
             <Typography level="body-xs" sx={{ color: "#333" }}>
               Approach Score
             </Typography>
-          </Stack>
-          <Stack spacing={1}>
+          </Stack> */}
+          <Stack spacing={1} sx={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
             <CircularProgress
               size="lg"
               determinate
@@ -154,8 +154,8 @@ const ExpertsCard = ({ info, index }) => {
                 otherInfo?.finalScore
               )}/100`}</Typography>
             </CircularProgress>
-            <Typography level="body-xs" sx={{ color: "#333" }}>
-              Total Score
+            <Typography level="body-xs" sx={{ color: "#333", textAlign: "center" }}>
+              Total Skill Relevancy Score
             </Typography>
           </Stack>
         </Box>

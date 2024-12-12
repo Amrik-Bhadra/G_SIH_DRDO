@@ -69,15 +69,15 @@ const CandyCard = ({ info }) => {
           {parseInt(info?.finalSkillScoreOutOf70 % 10)} years Experience
         </Typography>
         <Box sx={{ display: "flex", gap: "0 2rem", marginTop: "1rem" }}>
-          <Stack spacing={1} sx={{ alignItems: "center" }}>
+          {/* <Stack spacing={1} sx={{ alignItems: "center" }}>
             <CircularProgress size="lg" determinate value={((info?.finalSkillScoreOutOf70 * 100)/70)}>
               <Typography level="body-sm">{`${parseInt(info?.finalSkillScoreOutOf70)}/70`}</Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
               Skill
             </Typography>
-          </Stack>
-          <Stack spacing={1}>
+          </Stack> */}
+          {/* <Stack spacing={1}>
             <CircularProgress size="lg" determinate value={((info?.approachRelevancyScoreOutOf30 * 100)/30)}>
               <Typography level="body-sm">
                 {`${parseInt(info?.approachRelevancyScoreOutOf30)}/30`}
@@ -86,15 +86,15 @@ const CandyCard = ({ info }) => {
             <Typography level="body-xs" sx={{ color: "#333" }}>
               Approach
             </Typography>
-          </Stack>
-          <Stack spacing={1} sx={{ alignItems: "center" }}>
+          </Stack> */}
+          <Stack spacing={1} sx={{ alignItems: "center", display:"flex" }}>
             <CircularProgress size="lg" determinate value={(info?.finalCombinedScoreOutOf100 )}>
               <Typography level="body-sm">
                 {`${parseInt(info?.finalCombinedScoreOutOf100)}/100`}
               </Typography>
             </CircularProgress>
             <Typography level="body-xs" sx={{ color: "#333" }}>
-              Total
+              Skill Relevancy Score
             </Typography>
           </Stack>
         </Box>

@@ -1,8 +1,10 @@
-import React from "react";
 import ai_image from "../../assets/images/ai_in_defence_image.jpg";
 import { IoArrowUndoCircle } from "react-icons/io5";
 import ExpertHeader from "../../components/ExpertDashboardSections/ExpertHeader";
 import PanelCandidateCard from "../../components/ExpertDashboardSections/PanelCandidateCard.jsx";
+import axios from "axios";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { AuthContext } from "../../context/AuthenticationContext";
 
 const PanelDetails = () => {
   const testPanelists = [
@@ -49,6 +51,24 @@ const PanelDetails = () => {
       specialization: "Artificial Intelligence",
     },
   ];
+  const { currentUser } = useContext(AuthContext);
+  const userInformation = currentUser?.response;
+  const user = {
+    name:
+      userInformation?.personalDetails?.name?.firstName +
+        " " +
+        userInformation?.personalDetails?.name?.lastName || "NA",
+    email:
+      userInformation?.personalDetails?.contact?.email ||
+      currentUser?.email ||
+      "No email",
+    avatar: `${
+      userInformation?.personalDetails?.name?.firstName.slice(0, 1) || "N"
+    }${userInformation?.personalDetails?.name?.lastName?.slice(0, 1) || "A"}`,
+    domain:
+      userInformation?.fieldOfExpertise?.designation ||
+      currentUser?.designation,
+  };
   return (
     <div className="bg-gray-100 min-h-screen pb-5">
       <div className="container mx-auto px-4 max-w-[1260px] flex flex-col gap-y-5">

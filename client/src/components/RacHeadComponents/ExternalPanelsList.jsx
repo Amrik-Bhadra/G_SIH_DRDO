@@ -97,7 +97,7 @@ const ExternalPanelsList = () => {
       ) : error ? (
         <div className="text-red-500">No experts available.</div>
       ) : data.length > 0 ? (
-        <TableContainer sx={{ maxHeight: 560 }} className="no-scrollbar">
+        <TableContainer sx={{ maxHeight: 560, width: "fit-content", background:"white" }} className="no-scrollbar">
           <Table stickyHeader>
             <TableHead>
               <TableRow>

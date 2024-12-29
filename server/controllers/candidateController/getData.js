@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Candidate = require("../../model/candidate");
 const Application = require("../../model/application");
 const Jobs = require("../../model/jobRole");
+const Panel = require("../../model/panel")
 const asyncHandler = require("express-async-handler");
 
 //http://localhost:8000/api/candidate/dashboard
@@ -25,26 +26,33 @@ const dashboardDetails = asyncHandler(async (req, res) => {
                 message: "Candidate not found",
             });
         }
-        console.log(typeof id);
-        const candId = "674aaf2e7976acc877362715";
-        // Fetch applications for the candidate using find
-        const applications = await Application.find({
-            "applicationStatus.candidateId": "674aaf2e7976acc877362715", 
-        });
 
-        // Ensure the applications array is not empty
-        if (applications.length === 0) {
+        // Fetch all panels where this candidate exists
+        const panels = await Panel.find(
+            { "candidates.candidateID": id },  // Find panels where this candidate exists
+            { jobID: 1, _id: 0 }  // Only return the jobID field (exclude _id)
+        );
+
+        // Check if the panels array is empty
+        if (panels.length === 0) {
             return res.status(404).json({
                 success: false,
-                message: "No applications found for the candidate",
+                message: "No panels found for the candidate",
             });
         }
 
-        // Send the response
+        // Extract jobIDs from panels
+        const jobIDs = panels.map(panel => panel.jobID);
+
+        // Fetch job details for all jobIDs
+        const jobs = await Jobs.find({ _id: { $in: jobIDs } });
+
+        // Send the response with candidate, jobIDs, and job details
         res.status(200).json({
             success: true,
             candidate,
-            applications,
+            jobIDs,  
+            jobs,    
         });
     } catch (error) {
         // Handle server errors
@@ -55,6 +63,8 @@ const dashboardDetails = asyncHandler(async (req, res) => {
         });
     }
 });
+
+
 
 
 //http://localhost:8000/api/candidate/getJobs
@@ -74,4 +84,4 @@ const jobData = asyncHandler(async (req, res) => {
     }
 })
 
-module.exports = {dashboardDetails,jobData};
+module.exports = { dashboardDetails, jobData };

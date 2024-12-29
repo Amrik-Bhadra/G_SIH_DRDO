@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const email_sender = require("../localController/emailSender");
 const htmlBody = require("../../assets/htmlBodies/TwoFactorAuth");
 const fs = require('fs');
-const upload = require('../../db/uploadconfig')
+// const upload = require('../../db/uploadconfig')
 
 const addCandidate = asyncHandler(async (req, res) => {
   try {
@@ -265,4 +265,4 @@ const twoFacAuth = asyncHandler(async (req, res) => {
   }
 })
 
-module.exports = { addCandidate, upload, loginCandidate, signoutCandidate, twoFacAuth };
+module.exports = { addCandidate, loginCandidate, signoutCandidate, twoFacAuth };

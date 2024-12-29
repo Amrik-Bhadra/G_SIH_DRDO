@@ -1,4 +1,5 @@
 const express = require("express");
+const testPDFGeneration = require("../controllers/expertController/reportGen")
 const router = express.Router();
 const {
   allExperts,
@@ -34,6 +35,7 @@ router.delete(
   multiRoleAccess(["Expert", "Admin"]),
   delExpert
 );
+router.get("/test-pdf", testPDFGeneration);
 
 // login and signup routes public..Routes>
 router.post("/signup", apiLimiter, createExpert);

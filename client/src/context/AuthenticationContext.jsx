@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
@@ -15,9 +16,11 @@ export const AuthContextProvider = ({ children }) => {
           withCredentials: true,
         });
         const userInfo = response?.data?.payload;
+        console.log('User ka info: ', userInfo);
         setCurrentUser(userInfo);
       } catch (error) {
         console.error("Error fetching user info, please re-login.", error);
+        toast.error(error.message);
         setCurrentUser(null);
       } finally {
         setLoading(false);

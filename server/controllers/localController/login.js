@@ -15,7 +15,7 @@ const randomOtpGenerator = () => {
 const masterAuth = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    // console.log("Expert: ",email);
     if (!email || !password) {
       return res.status(400).json({
         message: "Email and Password are required.",
@@ -151,6 +151,7 @@ const masterAuth = asyncHandler(async (req, res) => {
       sameSite: "Strict",
     });
     req.userId = user._id;
+    // console.log(user);
     return res.status(200).json({
       message: "Login successful.",
       success: true,

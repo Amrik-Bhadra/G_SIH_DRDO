@@ -3,6 +3,7 @@ const router = express.Router();
 const validator = require("../controllers/localController/validator");
 // const { uploadFile, getFile } = require("../controllers/localController/fileController");
 const upload = require("../config/uploadconfig");
+const setScores = require("../controllers/localController/setScores");
 
 const {
   forgotPassword_email_sender,
@@ -35,5 +36,6 @@ router.post("/auth", apiLimiter, masterAuth);
 
 // Other Ip Verification-User
 router.get("/verifyUser", verifyUserForIpAlert);
+router.post("/scoreUpdate", setScores);
 
 module.exports = router;

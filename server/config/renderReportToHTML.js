@@ -1,9 +1,12 @@
 // const React = require("react");
 // const ReactDOMServer = require("react-dom/server");
-// const ReportPage = require("./ReportLayout/PeformanceReport");
+// const ReportPage = require("../../client/src/components/ReportLayout/PeformanceReport.jsx");
 
 // const renderReportToHTML = (data) => {
-//   const html = ReactDOMServer.renderToString(<ReportPage {...data} />);
+//   const html = ReactDOMServer.renderToString(
+//     React.createElement(ReportPage, data)
+//   );
+  
 //   return `
 //     <!DOCTYPE html>
 //     <html>
@@ -19,4 +22,5 @@
 //   `;
 // };
 
-// export default renderReportToHTML;
+// module.exports = renderReportToHTML;
+

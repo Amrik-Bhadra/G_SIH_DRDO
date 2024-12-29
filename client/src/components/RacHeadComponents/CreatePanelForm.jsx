@@ -1,15 +1,24 @@
 import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import { InputAdornment, Tooltip } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import { IoMdArrowDropdown } from "react-icons/io";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+// import { GrCircleInformation } from "react-icons/gr";
+// import Tooltip from '@mui/material/Tooltip';
 
 const CreatePanelForm = () => {
   const navigate = useNavigate();
@@ -62,6 +71,12 @@ const CreatePanelForm = () => {
   const [selectedJobRole, setSelectedJobRole] = useState("");
   const [jobRoles, setJobRoles] = useState([]);
   const [description, setDescription] = useState("");
+  const [criteriaData, setCriteriaData] = useState({
+    "Problem Solving": { isSelected: false, detail: "" },
+    Collaboration: { isSelected: false, detail: "" },
+    "Decision Making": { isSelected: false, detail: "" },
+    "Analytical Depth": { isSelected: false, detail: "" },
+  });
 
   const handleDepartmentChange = (event) => {
     const department = event.target.value;
@@ -79,56 +94,77 @@ const CreatePanelForm = () => {
     );
   };
 
+  const handleCriteriaChange = (key, field, value) => {
+    setCriteriaData((prev) => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        [field]: value,
+      },
+    }));
+  };
+
   return (
-    <main className="screen-bg min-h-screen w-screen bg-[#eee] flex items-center justify-center relative top-0 left-0">
+    <main className="min-h-screen w-screen bg-[#eee] flex items-center justify-center py-8">
       <div className="form-page bg-white w-[80%] rounded-xl z-10 flex justify-center items-center py-8 px-12 md:w-2/4">
         <div className="box-content w-full">
           <h1 className="text-4xl text-[#333] font-semibold mb-12">
             Create New Panel
           </h1>
           <form>
-            <Grid container spacing={3}>
+            <Grid
+              sx={{ display: "flex", flexDirection: "column", gap: "1.5rem 0" }}
+            >
               {/* Row 1 */}
-              <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
-                  <InputLabel id="department-label">Department</InputLabel>
-                  <Select
-                    labelId="department-label"
-                    id="department"
-                    label="Department"
-                    value={selectedDepartment}
-                    onChange={handleDepartmentChange}
-                  >
-                    {Object.keys(data.departments).map((department) => (
-                      <MenuItem key={department} value={department}>
-                        {department}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
-                  <InputLabel id="job-role-label">Job Role</InputLabel>
-                  <Select
-                    labelId="job-role-label"
-                    id="job-role"
-                    label="Job Role"
-                    value={selectedJobRole}
-                    onChange={handleJobRoleChange}
-                    disabled={!selectedDepartment}
-                  >
-                    {jobRoles.map((jobRole) => (
-                      <MenuItem key={jobRole} value={jobRole}>
-                        {jobRole}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              <Grid
+                container
+                rowSpacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              >
+                {/* Department */}
+                <Grid size={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="department-label">Department</InputLabel>
+                    <Select
+                      labelId="department-label"
+                      id="department"
+                      label="Department"
+                      value={selectedDepartment}
+                      onChange={handleDepartmentChange}
+                    >
+                      {Object.keys(data.departments).map((department) => (
+                        <MenuItem key={department} value={department}>
+                          {department}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                {/* Job Role */}
+                <Grid size={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="job-role-label">Job Role</InputLabel>
+                    <Select
+                      labelId="job-role-label"
+                      id="job-role"
+                      label="Job Role"
+                      value={selectedJobRole}
+                      onChange={handleJobRoleChange}
+                      disabled={!selectedDepartment}
+                    >
+                      {jobRoles.map((jobRole) => (
+                        <MenuItem key={jobRole} value={jobRole}>
+                          {jobRole}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
               </Grid>
 
               {/* Row 2 */}
-              <Grid item xs={12}>
+              <Grid item>
                 <TextField
                   id="board-subject"
                   label="Interview Board Subject"
@@ -138,7 +174,7 @@ const CreatePanelForm = () => {
               </Grid>
 
               {/* Row 3 */}
-              <Grid item xs={12}>
+              <Grid item>
                 <TextField
                   label="Interview Board Description"
                   multiline
@@ -154,34 +190,157 @@ const CreatePanelForm = () => {
                 />
               </Grid>
 
+              <div className="flex items-center gap-x-4">
+                <p className="text-[#1c89c0] font-medium">
+                  Available experts: 32
+                </p>
+
+                
+                {/* <Tooltip title="Delete"/>
+                  <GrCircleInformation style={{
+                      color:"#464646",
+                      fontSize: "1.1rem"
+                    }}/>
+                <Tooltip/> */}
+                
+              </div>
+
               {/* Row 4 */}
-              <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
-                  <InputLabel id="experts-label">No. of Experts</InputLabel>
-                  <Select
-                    labelId="experts-label"
-                    id="experts"
-                    label="No. of Experts"
-                  >
-                    {[1, 2, 3, 4, 5].map((num) => (
-                      <MenuItem key={num} value={num}>
-                        {num}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              <Grid
+                container
+                rowSpacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                columns={12}
+              >
+                {/* number of pannels */}
+                <Grid size={4}>
+                  <FormControl fullWidth>
+                    <InputLabel id="panels-label">No. of Panels</InputLabel>
+                    <Select
+                      labelId="panels-label"
+                      id="panels"
+                      label="No. of Panels"
+                    >
+                      {[1, 2, 3, 4, 5].map((num) => (
+                        <MenuItem key={num} value={num}>
+                          {num}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                {/* number of experts in panel */}
+                <Grid size={4}>
+                  <FormControl fullWidth>
+                    <InputLabel id="experts-label">No. of Experts</InputLabel>
+                    <Select
+                      labelId="experts-label"
+                      id="experts"
+                      label="No. of Experts"
+                    >
+                      {[1, 2, 3, 4, 5].map((num) => (
+                        <MenuItem key={num} value={num}>
+                          {num}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                {/* date of interview */}
+                <Grid size={4}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Select a Date"
+                      inputFormat="DD/MM/YYYY"
+                      renderInput={(params) => (
+                        <TextField {...params} fullWidth variant="outlined" />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Select a Date"
-                    inputFormat="DD/MM/YYYY" // This will format the date to dd/mm/yyyy
-                    renderInput={(params) => (
-                      <TextField {...params} fullWidth variant="outlined" />
-                    )}
-                  />
-                </LocalizationProvider>
-              </Grid>
+
+              <Accordion
+                sx={{
+                  boxShadow: "none", // Remove box shadow
+                  border: "1px solid #ccc", // Add a simple border
+                  "&:before": {
+                    display: "none", // Remove the default MUI divider line
+                  },
+                  "& .MuiAccordionSummary-root": {
+                    minHeight: "48px", // Optional: Adjust summary height for a cleaner look
+                  },
+                  "& .MuiAccordionSummary-root.Mui-expanded": {
+                    minHeight: "48px", // Maintain height consistency when expanded
+                  },
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={<IoMdArrowDropdown />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
+                >
+                  <h1 className="font-semibold text-[#1c89c0] text-lg">
+                    Advance Settings
+                  </h1>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {Object.entries(criteriaData).map(([key, value]) => (
+                    <div
+                      key={key}
+                      style={{
+                        marginBottom: "1rem",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        paddingRight: "5rem",
+                      }}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={value.isSelected}
+                            onChange={(e) =>
+                              handleCriteriaChange(
+                                key,
+                                "isSelected",
+                                e.target.checked
+                              )
+                            }
+                          />
+                        }
+                        label={key}
+                      />
+                      {value.isSelected && (
+                        <TextField
+                          id="standard-number"
+                          type="number"
+                          variant="standard"
+                          value={value.detail}
+                          onChange={(e) =>
+                            handleCriteriaChange(key, "detail", e.target.value)
+                          }
+                          slotProps={{
+                            inputLabel: {
+                              shrink: true,
+                            },
+                          }}
+                          style={{
+                            width: "5rem",
+                            marginLeft: "3rem",
+                          }}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">%</InputAdornment>
+                            ),
+                          }}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </AccordionDetails>
+              </Accordion>
             </Grid>
 
             <div className="flex gap-x-4 mt-6">

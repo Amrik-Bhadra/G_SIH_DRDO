@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-
+const renderReportToHTML = require("./renderReportToHTML");
 
 const generatePDF = async (data, outputPath) => {
   const htmlContent = renderReportToHTML(data); // Render HTML with dynamic data
@@ -19,4 +19,5 @@ const generatePDF = async (data, outputPath) => {
   await browser.close();
 };
 
-export default generatePDF;
+module.exports = generatePDF;
+

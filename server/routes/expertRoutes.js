@@ -1,5 +1,6 @@
 const express = require("express");
 const testPDFGeneration = require("../controllers/expertController/reportGen")
+const { dashboardDetailsForExpert } = require("../controllers/expertController/getDataE");
 const router = express.Router();
 const {
   allExperts,
@@ -21,6 +22,9 @@ const multiRoleAccess = require("../middleware/roleBasedAccess");
 router.get("/all", apiLimiter, allExperts); // here i have removed the authenticate middlware
 router.get("/get/:id", apiLimiter, authenticate, findExpert);
 router.get("/get/email/:id", apiLimiter, findExpertByEmail);
+
+router.get("/dashboard", apiLimiter, dashboardDetailsForExpert);
+
 router.put(
   "/update/:id",
   apiLimiter,

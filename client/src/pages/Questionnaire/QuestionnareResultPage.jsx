@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
-import RadarChartComponent from "../../components/ChartsComponents/RadarChartComp2";
+import RadarChartComponent from "../../components/ChartsComponents/RadarChartComponent";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -10,13 +10,6 @@ const QuestionnareResultPage = ({ totalScore }) => {
   console.log(expertData);
   const user_id = expertData.user_id;
   const [normalizedScores, setNormalizedScores] = useState({
-    problemSolving: 0,
-    decisionMaking: 0,
-    creativity: 0,
-    analyticalDepth: 0,
-    collaboration: 0,
-  });
-  const [superNormalized, setSuperNormalizedScores] = useState({
     problemSolving: 0,
     decisionMaking: 0,
     creativity: 0,
@@ -47,15 +40,6 @@ const QuestionnareResultPage = ({ totalScore }) => {
       analyticalDepth:
         (totalScore["Analytical Depth"] / 25) * maxValues.analyticalDepth,
     };
-    const superNormalized = {
-      problemSolving: totalScore["Problem Solving"],
-      collaboration: totalScore["Collaborative Thinking"],
-      decisionMaking: totalScore["Decision Making"],
-      creativity: totalScore["Creative Thinking"],
-      analyticalDepth: totalScore["Analytical Depth"]
-    };
-    console.log(superNormalized);
-    setSuperNormalizedScores(superNormalized);
 
     // console.log(normalized);
 
@@ -105,7 +89,7 @@ const QuestionnareResultPage = ({ totalScore }) => {
             sx={{ borderRight: "1px solid #f4f4f4", borderRadius: "10px" }}
           >
             {/* Mount the radar graph with normalized scores */}
-            <RadarChartComponent data={superNormalized} />
+            <RadarChartComponent data={normalizedScores} />
             <h1 className="mt-8 text-center text-2xl font-semibold">
               <span
                 className="px-5 py-4 border border-[#f4f4f4] rounded-md"

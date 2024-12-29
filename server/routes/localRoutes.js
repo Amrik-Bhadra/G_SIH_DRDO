@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const validator = require("../controllers/localController/validator");
 // const { uploadFile, getFile } = require("../controllers/localController/fileController");
-const upload = require("../config/uploadconfig");
-const setScores = require("../controllers/localController/setScores");
+const upload = require("../db/uploadconfig");
+const setScores = require("../controllers/localController/getScores")
 
 const {
   forgotPassword_email_sender,

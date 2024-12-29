@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Job = require("../../model/jobRole");
-const upload = require("../../config/uploadconfig")
+const upload = require("../../db/uploadconfig");
 const asyncHandler = require("express-async-handler");
 
 // PRIVATE ROUTE
@@ -25,10 +25,10 @@ const createJob = asyncHandler(async (req, res) => {
         fileName: req.file.filename,
         fileType: req.file.mimetype,
       },
-      keyResponsibilities:"default",
-      minimumQualifications:"default",
-      yearsOfExperience:0,
-      preferredSkills:"default"
+      keyResponsibilities: "default",
+      minimumQualifications: "default",
+      yearsOfExperience: 0,
+      preferredSkills: "default",
     });
     await newJob.save();
 
@@ -63,7 +63,9 @@ const getAllJobs = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching all jobs:", error);
-    res.status(500).json({ message: "Error fetching all jobs", success: false });
+    res
+      .status(500)
+      .json({ message: "Error fetching all jobs", success: false });
   }
 });
 
@@ -100,7 +102,7 @@ const deleteJob = asyncHandler(async (req, res) => {
   }
 });
 
-const getJobByID = asyncHandler(async(req, res)=>{
+const getJobByID = asyncHandler(async (req, res) => {
   const jobId = req.params.id;
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
     return res.status(400).json({
@@ -108,7 +110,7 @@ const getJobByID = asyncHandler(async(req, res)=>{
       success: false,
     });
   }
-  try{
+  try {
     const job = await Job.findById(jobId);
 
     if (!job) {
@@ -122,11 +124,39 @@ const getJobByID = asyncHandler(async(req, res)=>{
       success: true,
       data: job,
     });
-  }catch(error){
+  } catch (error) {
     console.error(`Error fetching job with ID ${jobId}:`, error);
     res.status(500).json({ message: "Error fetching job", success: false });
   }
-})
+});
+
+const jobUpdate = asyncHandler(async (req, res) => {
+  const jobId = req.params.jobId;
+  const { data } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(jobId)) {
+    return res.status(400).json({
+      message: "Invalid job ID",
+      success: false,
+    });
+  }
+  try {
+    const job = await Job.findByIdAndUpdate(jobId, data);
+    if (!job) {
+      return res.status(404).json({
+        message: `Unable to Update the job with ID: ${jobId}`,
+        success: false,
+      });
+    }
+    res.status(200).json({
+      message: "Updated Job successfully",
+      success: true,
+      data: job,
+    });
+  } catch (error) {
+    console.error(`Error fetching job with ID ${jobId}:`, error);
+    res.status(500).json({ message: "Error fetching job", success: false });
+  }
+});
 
 module.exports = {
   createJob,
@@ -134,4 +164,5 @@ module.exports = {
   upload,
   deleteJob,
   getJobByID,
+  jobUpdate,
 };

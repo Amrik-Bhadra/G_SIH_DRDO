@@ -1,6 +1,6 @@
 const express = require("express");
-const testPDFGeneration = require("../controllers/expertController/reportGen")
-const { dashboardDetailsForExpert } = require("../controllers/expertController/getDataE");
+// const testPDFGeneration = require("../controllers/expertController/reportGen")
+const expertDetails = require("../controllers/expertController/getDataE");
 const router = express.Router();
 const {
   allExperts,
@@ -8,6 +8,7 @@ const {
   updateExperts,
   delExpert,
   findExpertByEmail,
+  uniqueJobDomain,
 } = require("../controllers/expertController/expert_Crud");
 const authenticate = require("../middleware/authenticate");
 const {
@@ -20,10 +21,10 @@ const multiRoleAccess = require("../middleware/roleBasedAccess");
 
 //  protected..Routes>
 router.get("/all", apiLimiter, allExperts); // here i have removed the authenticate middlware
-router.get("/get/:id", apiLimiter, authenticate, findExpert);
+router.get("/get/:id", apiLimiter, findExpert);
 router.get("/get/email/:id", apiLimiter, findExpertByEmail);
-
-router.get("/dashboard", apiLimiter, dashboardDetailsForExpert);
+router.get("/uniqueDomain", uniqueJobDomain);
+router.get("/dashboard",apiLimiter,expertDetails);
 
 router.put(
   "/update/:id",
@@ -39,7 +40,7 @@ router.delete(
   multiRoleAccess(["Expert", "Admin"]),
   delExpert
 );
-router.get("/test-pdf", testPDFGeneration);
+// router.get("/test-pdf", testPDFGeneration);
 
 // login and signup routes public..Routes>
 router.post("/signup", apiLimiter, createExpert);

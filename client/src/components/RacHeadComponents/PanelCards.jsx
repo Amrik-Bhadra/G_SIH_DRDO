@@ -13,17 +13,19 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import pannelWallpaper from "../../assets/pannel_images/ai-in_defence.jpeg";
+import pannelWallpaper from "../../assets/pannel_images/i2.jpg";
+import { useNavigate } from "react-router-dom";
 
-const PanelCards = () => {
+const PanelCards = ({ panel }) => {
+  const navigate = useNavigate();
   return (
     <Card sx={{ width: 320, maxHeight: "fit-content", borderRadius: "0.4rem" }}>
-      <CardMedia sx={{ height: 120 }} image={pannelWallpaper} />
+      <CardMedia sx={{ height: 180 }} image={pannelWallpaper} />
       <CardContent className="flex flex-col gap-y-3">
         <div className="content-header flex items-center justify-between">
           <div className="left flex flex-col gap-y-2">
             <h1 className="text-2xl font-semibold text-[#333]">
-              AI in Defence
+              {panel?.panelID}
             </h1>
             <p className="text-xs font-medium text-[#797979]">
               Dept. of AI & ML
@@ -41,17 +43,6 @@ const PanelCards = () => {
           </div>
         </div>
 
-        <div className="content-para text-sm text-[#646464] text-justify">
-          <p>
-            AI for Defence explores the application of artificial intelligence
-            in military operations, enhancing decision-making, threat
-            detection..{" "}
-            <span className="font-semibold text-[#3C8CE7] cursor-pointer">
-              Read more
-            </span>
-          </p>
-        </div>
-
         <div className="details-div flex items-center justify-between text-sm text-[#BBBBBB]">
           <span className="flex items-center gap-x-1">
             <LuClock />
@@ -63,13 +54,18 @@ const PanelCards = () => {
           <span className="flex items-center gap-x-1">
             <MdGroups size={"1.4rem"} />
             <p>
-              <span className="text-[#464646] font-semibold">5</span> experts
+              <span className="text-[#464646] font-semibold">
+                {panel?.panelInfo?.panelExperts?.length}
+              </span>{" "}
+              experts
             </p>
           </span>
           <span className="flex items-center gap-x-1">
             <FaUser />
             <p>
-              <span className="text-[#464646] font-semibold">25</span>{" "}
+              <span className="text-[#464646] font-semibold">
+                {panel?.candidates?.length}
+              </span>{" "}
               candidates
             </p>
           </span>
@@ -86,6 +82,7 @@ const PanelCards = () => {
       >
         <Button
           variant="contained"
+          onClick={() => navigate(`/rachead/generatedExperts/${panel?._id}`)}
           sx={{
             background: "#464646",
             textTransform: "capitalize",

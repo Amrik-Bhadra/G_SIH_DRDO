@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const candidateSchema = new mongoose.Schema({
   candidateID: { type: String, required: true },
   candidateName: { type: String, required: true },
+  candidate_experience: {type:String, required: true},
   skillsScore: { type: Number, required: true },
   experienceScore: { type: Number, required: true },
   qualificationScore: { type: Number, required: true },
@@ -16,11 +17,13 @@ const candidateSchema = new mongoose.Schema({
 
 const panelSchema = new mongoose.Schema({
   panelID: { type: String, required: true, unique: true },
+  jobID: { type: String, required: true },
   panelInfo: {
     panelExperts: [
       {
         expertID: { type: String, required: true },
         expertName: { type: String, required: true },
+        domain: {type:String, required:true}
       },
     ],
   },

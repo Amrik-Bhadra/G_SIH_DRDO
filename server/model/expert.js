@@ -52,6 +52,11 @@ const expertSchema = new mongoose.Schema({
         required: true,
       },
     },
+    domain: {
+      type: String,
+      enum: ["DRDO", "Academia", "Industry"],
+      default: "DRDO",
+    },
     role: {
       type: String,
       required: true,
@@ -224,7 +229,6 @@ const expertSchema = new mongoose.Schema({
       },
     },
   ],
-
 });
 
 module.exports = mongoose.model("Expert", expertSchema);

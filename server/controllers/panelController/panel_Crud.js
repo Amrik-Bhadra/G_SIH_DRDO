@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Panel = require("../../model/panel");
 const candidate = require("../../model/candidate");
 const expert = require("../../model/expert");
+const { writeFunctionality } = require("../../bc");
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/panel/create
@@ -10,6 +11,7 @@ const expert = require("../../model/expert");
 const createPanel = asyncHandler(async (req, res) => {
   const {
     panelID,
+    jobID,
     panelInfo,
     finalSkillScore,
     finalApproachScore,
@@ -17,16 +19,8 @@ const createPanel = asyncHandler(async (req, res) => {
   } = req.body;
   console.log("Panel model loaded:", Panel); // Debug panel model
   console.log(panelID);
+
   try {
-    // if (
-    //   !panelInfo ||
-    //   !Array.isArray(panelInfo.panelExperts) ||
-    //   panelInfo.panelExperts.length === 0
-    // ) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Invalid or missing panelExperts array" });
-    // }
     // Validate panelExperts structure
     for (const expert of panelInfo.panelExperts) {
       if (!expert.expertID || !expert.expertName) {
@@ -41,12 +35,13 @@ const createPanel = asyncHandler(async (req, res) => {
     if (existingPanel) {
       return res
         .status(200)
-        .json({ message: `Panel with ID ${panelID} already Created.` });
+        .json({ message: `Panel with ID ${panelID} already Created. `});
     }
 
     // Create a new panel
     const newPanel = new Panel({
       panelID,
+      jobID,
       panelInfo: {
         panelExperts: panelInfo.panelExperts,
       },
@@ -55,8 +50,15 @@ const createPanel = asyncHandler(async (req, res) => {
       finalScore: finalScore,
     });
 
-    // Save the new panel
     const savedPanel = await newPanel.save();
+    console.log("Panel saved successfully");
+
+    const expertIds = newPanel.panelInfo.panelExperts.map(
+      (expert) => expert.expertID
+    );
+
+    await writeFunctionality(savedPanel._id.toString(), expertIds);
+
     return res.status(201).json(savedPanel);
   } catch (error) {
     console.error("Error adding panel:", error);
@@ -71,6 +73,7 @@ const createPanel = asyncHandler(async (req, res) => {
 const updatePanel = asyncHandler(async (req, res) => {
   const {
     panelID,
+    jobID,
     panelInfo,
     finalSkillScore,
     finalApproachScore,
@@ -94,6 +97,7 @@ const updatePanel = asyncHandler(async (req, res) => {
     // Update panel information
     panel.panelInfo = panelInfo;
     panel.finalSkillScore = finalSkillScore;
+    panel.jobID = jobID;
     panel.finalApproachScore = finalApproachScore;
     panel.finalScore = finalScore;
 
@@ -111,7 +115,6 @@ const updatePanel = asyncHandler(async (req, res) => {
       .json({ message: "Internal server error", error: error.message });
   }
 });
-
 
 // PRIVATE ROUTE
 // http://localhost:8000/api/panel/del/:id

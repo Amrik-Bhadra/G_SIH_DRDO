@@ -81,54 +81,6 @@ const dashboardDetailsForExpert = asyncHandler(async (req, res) => {
     }
 });
 
-const panelData = asyncHandler(async (req, res) => {
-
-    // Controller function to get panel details including experts and candidates
-    exports.getPanelDetails = async (req, res) => {
-        try {
-            // Fetch the panel document using the panelID from the request
-            const panelID = req.query.panelID; // Assuming the panelID is passed as a URL parameter
-
-            const panel = await Panel.findOne({ panelID: panelID }).exec();
-
-            if (!panel) {
-                return res.status(404).json({ message: 'Panel not found' });
-            }
-
-            // Extract panel information
-            const panelData = {
-                panelID: panel.panelID,
-                jobID: panel.jobID,
-                finalScore: panel.finalScore,
-                createdOn: panel.createdOn,
-                lastModified: panel.lastModified,
-                panelExperts: panel.panelInfo.panelExperts.map(expert => ({
-                    expertID: expert.expertID,
-                    expertName: expert.expertName
-                })),
-                candidates: panel.candidates.map(candidate => ({
-                    candidateID: candidate.candidateID,
-                    candidateName: candidate.candidateName,
-                    skillsScore: candidate.skillsScore,
-                    experienceScore: candidate.experienceScore,
-                    qualificationScore: candidate.qualificationScore,
-                    researchScore: candidate.researchScore,
-                    projectScore: candidate.projectScore,
-                    finalSkillScoreOutOf70: candidate.finalSkillScoreOutOf70,
-                    approachRelevancyScoreOutOf30: candidate.approachRelevancyScoreOutOf30,
-                    finalCombinedScoreOutOf100: candidate.finalCombinedScoreOutOf100
-                }))
-            };
-
-            // Send the data to the frontend
-            return res.status(200).json(panelData);
-
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: 'Server error', error: error.message });
-        }
-    };
-})
 
 
-module.exports = { dashboardDetailsForExpert, panelData };
+module.exports = dashboardDetailsForExpert;

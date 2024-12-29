@@ -44,7 +44,7 @@ const CandidateEvaluation = () => {
     "Technical Knowledge": {
       fundamentalKnowledge: {
         question: "Explain the basics of the subject related to this domain.",
-        score: '',
+        score: "",
       },
       applicationKnowledge: {
         question:
@@ -61,7 +61,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
-      suggestions:""
+      suggestions: "",
     },
     "Problem Solving": {
       problemSolvingApproach: {
@@ -79,7 +79,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
-      suggestions:""
+      suggestions: "",
     },
     "Research And Project Experience": {
       qualityOfResearchWork: {
@@ -97,7 +97,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
-      suggestions:""
+      suggestions: "",
     },
     "Communication Skills": {
       qualityOfSpeaking: {
@@ -115,14 +115,13 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
-      suggestions:""
+      suggestions: "",
     },
     "Leadership And Teamwork Abilities": {
       collaborativeWork: {
         question:
           "Provide an example of your contributions to a collaborative project.",
         score: 0,
-        
       },
       leadershipPotential: {
         question: "Describe a time when you demonstrated leadership qualities.",
@@ -134,7 +133,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
-      suggestions:""
+      suggestions: "",
     },
     "General Aptitude": {
       willingnessToLearn: {
@@ -152,7 +151,7 @@ const CandidateEvaluation = () => {
         score: 0,
       },
       totalScore: 0,
-      suggestions:""
+      suggestions: "",
     },
   });
 

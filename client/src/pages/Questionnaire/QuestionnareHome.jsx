@@ -30,34 +30,62 @@ const QuestionnareHome = () => {
       console.error("User ID is not available in AuthContext.");
       return;
     }
-  
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/expert/dashboard",
-          {
-            params: { id: currentUser.id },
+    console.log(currentUser);
+    if (currentUser.role=="Expert") {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:8000/api/expert/dashboard",
+            {
+              params: { id: currentUser.id },
+            }
+          );
+          console.log("Expert: ", response.data.expert);
+    
+          // Destructure and set expert data
+          const expert = response.data.expert;
+          const exp = {
+            name: expert.personalDetails?.name?.firstName + " " + expert.personalDetails?.name?.lastName,
+            email: expert.personalDetails?.contact?.email,
+            avatar: expert.personalDetails?.name?.firstName[0] + expert.personalDetails?.name?.lastName[0],
+            user_id:expert._id
           }
-        );
-        console.log("Expert: ", response.data.expert);
-  
-        // Destructure and set expert data
-        const expert = response.data.expert;
-        const exp = {
-          name: expert.personalDetails?.name?.firstName + " " + expert.personalDetails?.name?.lastName,
-          email: expert.personalDetails?.contact?.email,
-          avatar: expert.personalDetails?.name?.firstName[0] + expert.personalDetails?.name?.lastName[0],
-          user_id:expert._id
+          setExpertData(exp);
+          console.log(exp);
+        } catch (err) {
+          console.error("Error fetching data:", err.message || err);
+          toast.error("Failed to fetch expert data.");
         }
-        setExpertData(exp);
-        console.log(exp);
-      } catch (err) {
-        console.error("Error fetching data:", err.message || err);
-        toast.error("Failed to fetch expert data.");
-      }
-    };
-  
+      };
     fetchData();
+    } else {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:8000/api/candidate/dashboard",
+            {
+              params: { id: currentUser.id },
+            }
+          );
+          console.log("Candidate: ", response);
+        
+          // Destructure and set expert data
+          const expert = response.data.expert;
+          const exp = {
+            name: expert.personalDetails?.name?.firstName + " " + expert.personalDetails?.name?.lastName,
+            email: expert.personalDetails?.contact?.email,
+            avatar: expert.personalDetails?.name?.firstName[0] + expert.personalDetails?.name?.lastName[0],
+            user_id:expert._id
+          }
+          setExpertData(exp);
+          console.log(exp);
+        } catch (err) {
+          console.error("Error fetching data:", err.message || err);
+          toast.error("Failed to fetch expert data.");
+        }
+    fetchData();
+      };
+    }
   }, [currentUser?.id]);
 
   const [checked, setChecked] = React.useState(false) ;

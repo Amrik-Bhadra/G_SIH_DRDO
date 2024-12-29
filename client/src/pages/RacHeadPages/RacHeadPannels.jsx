@@ -1,18 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SideNavbar from "../../components/RacHeadComponents/SideNavbar";
 import RacHeader from "../../components/RacHeadComponents/RacHeader";
 import PanelCards from "../../components/RacHeadComponents/PanelCards";
 import "../../styles/RacHeadStyle.css";
+import axios from "axios";
+import { FetchListedJobs } from "../../context/RacHeadContexts/FetchListedJobs";
+import JobsCards from "../../components/RacHeadComponents/JobsCards";
 
 const RacHeadPannels = () => {
+  const base_url = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
-  
+  const {
+    jobs,
+    setJobs,
+    loading,
+    setLoading,
+    role,
+    title,
+    department,
+    description,
+  } = useContext(FetchListedJobs);
+  console.log(jobs);
+  const params = useParams();
+  const jobId = params.jobId;
   return (
     <section className="h-screen w-screen flex bg-[#f6f6f6]">
       {/* Sidebar */}
@@ -22,12 +38,12 @@ const RacHeadPannels = () => {
       <main className="flex px-8 py-4 flex-col w-full gap-y-12 pt-6">
         <RacHeader />
         <div className="main-content flex justify-between items-center">
-          <h2 className="font-semibold text-[#464646] text-xl">
-            Interview Panels
+          <h2 className="font-semibold text-[#464646] text-2xl">
+            Created Jobs
           </h2>
           <div className="button-grp flex gap-x-3 items-center">
             {/* Select Department Filter */}
-            <FormControl
+            {/* <FormControl
               sx={{
                 background: "#fff",
                 boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
@@ -47,33 +63,8 @@ const RacHeadPannels = () => {
                 <MenuItem value="applicant">Applicant</MenuItem>
                 <MenuItem value="expert">Expert</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
 
-            {/* Select Interview Status Filter */}
-            <FormControl
-              sx={{
-                background: "#fff",
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                borderRadius: "6px",
-                minWidth: "220px", // Adjust as per content
-              }}
-            >
-              <InputLabel id="interview-status-select-label">
-                Select Interview Status
-              </InputLabel>
-              <Select
-                labelId="interview-status-select-label"
-                id="interview-status-select"
-                label="Select Interview Status"
-                sx={{
-                  textAlign: "left",
-                }}
-              >
-                <MenuItem value="applicant">Upcoming</MenuItem>
-                <MenuItem value="expert">Inprogress</MenuItem>
-                <MenuItem value="expert">Completed</MenuItem>
-              </Select>
-            </FormControl>
 
             {/* Button */}
             <Button
@@ -85,11 +76,11 @@ const RacHeadPannels = () => {
                 "&:hover": {
                   backgroundColor: "#333",
                 },
+                textTransform:"capitalize"
               }}
-
-              onClick={()=>{navigate('/rachead/createPanel')}}
+              onClick={()=>{navigate('/rachead/jobcreationform')}}
             >
-              Create Panel
+              Create Job
             </Button>
           </div>
         </div>
@@ -104,14 +95,11 @@ const RacHeadPannels = () => {
             msOverflowStyle: "none", // For Internet Explorer and Edge
           }}
         >
-          <PanelCards />
-          <PanelCards />
-          <PanelCards />
-          <PanelCards />
+          {jobs?.map((job, index) => (
+            <JobsCards job={job} key={job} />
+          ))}
         </div>
       </main>
-
-      
     </section>
   );
 };

@@ -11,6 +11,7 @@ const panelRoutes = require("./routes/panelRoute");
 const machineLearningRoutes = require("./routes/ML_Routes");
 const jobRoutes = require("./routes/jobRoutes");
 const qnaRoutes = require("./routes/qnaRoutes");
+const chatbotRoutes = require("./routes/chatbotRoute")
 const { flaskFlag } = require("./config/flaskConnect");
 
 const corsOptions = {
@@ -31,6 +32,7 @@ app.use("/api/panel", panelRoutes);
 app.use("/api/mlr", machineLearningRoutes);
 app.use("/api/job", jobRoutes);
 app.use("/api/qna", qnaRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 const PORT = process.env.PORT || 8000;
 const mongoURI = process.env.MONGO_URI;

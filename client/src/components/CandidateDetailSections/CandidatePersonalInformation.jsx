@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import TextField from "@mui/material/TextField";
+import { TextField, IconButton, InputAdornment } from '@mui/material';
 import {
   Select,
   MenuItem,
@@ -10,6 +10,7 @@ import {
   Radio,
   FormLabel,
 } from "@mui/material";
+import { FaMicrophone } from "react-icons/fa6";
 import axios from "axios";
 
 const CandidatePersonalInformation = ({ userData, setUserData }) => {
@@ -92,6 +93,15 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             onChange={handleInputChange}
             name="firstName"
             fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton sx={{fontSize: "1.2rem"}}>
+                    < FaMicrophone />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             id="outlined-password-input"
@@ -101,6 +111,15 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             onChange={handleInputChange}
             name="middleName"
             fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton sx={{fontSize: "1.2rem"}}>
+                    < FaMicrophone />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             id="outlined-password-input"
@@ -111,6 +130,15 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             onChange={handleInputChange}
             name="lastName"
             fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton sx={{fontSize: "1.2rem"}}>
+                    < FaMicrophone />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </div>
 
@@ -124,6 +152,15 @@ const CandidatePersonalInformation = ({ userData, setUserData }) => {
             required
             value={userData.personalInfo.phoneNo}
             onChange={handleInputChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton sx={{fontSize: "1.2rem"}}>
+                    < FaMicrophone />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <FormControl variant="outlined" sx={{ minWidth: 200 }}>
             <InputLabel id="demo-simple-select-label">Govt. ID Type</InputLabel>

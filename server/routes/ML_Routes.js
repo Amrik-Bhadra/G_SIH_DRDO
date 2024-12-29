@@ -7,6 +7,7 @@ const {
 const {
   flaskOperations,
   expertSelectionRoute,
+  totalSelectedExperts,
 } = require("../controllers/ML_Controller/flaskOperations");
 const router = express.Router();
 
@@ -27,5 +28,6 @@ router.post("/c_bulk", insertManyCandidates);
 // run_expert_candidate_score_updator
 router.get("/recsu", flaskOperations);
 router.post("/expertSelection", expertSelectionRoute);
+router.post("/totalSelectedExperts", totalSelectedExperts);
 
 module.exports = router;

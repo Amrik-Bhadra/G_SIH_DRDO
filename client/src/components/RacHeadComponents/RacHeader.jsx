@@ -55,6 +55,8 @@ const RacHeader = () => {
           </span>
           <IoMdArrowDropdown size={"1.4rem"} color="#0E8CCA" />
         </div>
+
+        {/* <FontSizeAdjuster/> */}
       </span>
     </header>
   );

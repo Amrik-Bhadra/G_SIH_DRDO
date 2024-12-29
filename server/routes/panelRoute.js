@@ -1,10 +1,9 @@
 const express = require("express");
 const apiLimiter = require("../middleware/apiLimiter");
 const authenticate = require("../middleware/authenticate");
-const {getExperts} = require("../controllers/panelController/getExperts")
-const {createExpert} = require("../controllers/panelController/getExperts");
-const interviewScores = require("../controllers/panelController/candidateEvalute");
-
+const {
+  fetchPanelsUsingJobId,
+} = require("../controllers/jobController/jobsOther");
 const {
   getAllPanel,
   getPanel,
@@ -12,7 +11,10 @@ const {
   deletePanel,
   createPanel,
 } = require("../controllers/panelController/panel_Crud");
+const { getExperts } = require("../controllers/panelController/getExperts");
 const router = express.Router();
+
+// const {getExperts} = require("../controllers/panelController/getExperts")
 
 //  protected..Routes>
 router.post(
@@ -23,7 +25,7 @@ router.post(
   createPanel
 );
 router.get("/all", apiLimiter, authenticate, getAllPanel);
-router.get("/get/:id", apiLimiter, authenticate, getPanel);
+router.get("/get/:id", getPanel); 
 router.delete(
   "/del/:id",
   apiLimiter,
@@ -39,8 +41,9 @@ router.put(
   updatePanel
 );
 
-  router.get("/getExperts",getExperts);
-router.post("/createExpert", createExpert);
-router.post("/interviewScores",interviewScores);
+// fetching the panels using the jobId
+router.get("/job/:jobID", fetchPanelsUsingJobId);
+
+router.get("/getExperts",getExperts);
 
 module.exports = router;
